@@ -1,3 +1,5 @@
+import 'whatwg-fetch';
+
 /**
  * Parses the JSON returned by a network request
  *
@@ -38,6 +40,12 @@ function checkStatus(response) {
  * @return {object}           The response data
  */
 export default function request(url, options) {
+  options.headers = {
+    ...options.headers,
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('jwt') ? localStorage.getItem('jwt') : ''}`,
+  };
   return fetch(url, options)
     .then(checkStatus)
     .then(parseJSON);
