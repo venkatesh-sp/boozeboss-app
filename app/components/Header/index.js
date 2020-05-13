@@ -1,7 +1,13 @@
 import React, { Component } from 'react'
-import { IconButton, Icon, Drawer, Sidenav, Dropdown, Nav, Toggle } from 'rsuite'
+import PropTypes from 'prop-types';
+import { IconButton, Icon, Drawer, Sidenav, Dropdown, Nav} from 'rsuite'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
+import { makeSelectIsAuthenticated, makeSelectScope, makeSelectRole } from '../../containers/App/selectors';
 
 const MobileHeaderContainer = styled.div`
     display: flex;
@@ -15,9 +21,6 @@ const MobileHeaderContainer = styled.div`
     background-color: ${props => props.darkTheme ? '#2b2b2c' : '#F5F5F5'} !important;
 `
 
-const StyledToggle = styled(Toggle)`
-  margin: 0 0 0 10px;
-`
 
 const StyledImage = styled.img`
     height: 15px;
@@ -40,7 +43,7 @@ const StyledSidenav = styled(Sidenav)`
     background-color: ${props => props.darkTheme ? '#313131' : '#F5F5F5'} !important;
 `
 
-export default class MobileHeader extends Component {
+class Header extends Component {
 
     state = {
         show: false,
@@ -57,10 +60,10 @@ export default class MobileHeader extends Component {
     }
 
     render() {
-        const {pathname, handleLogout, isAuthenticated, darkTheme, toggleTheme} = this.props;
+        const {pathname, handleLogout, isAuthenticated} = this.props;
         const {show} = this.state;
         return (
-            <MobileHeaderContainer darkTheme={darkTheme}>
+            <MobileHeaderContainer>
                 <IconButton 
                     icon={<Icon icon="bars" />} 
                     onClick={this.toggleMenu}
@@ -72,7 +75,6 @@ export default class MobileHeader extends Component {
                     size="xs"
                     show={show}
                     onHide={this.toggleMenu}
-                    darkTheme={darkTheme}
                     full
                 >
                     <Drawer.Header>
@@ -80,7 +82,7 @@ export default class MobileHeader extends Component {
                     </Drawer.Header>
                     <Drawer.Body>
                         
-                        <StyledSidenav darkTheme={darkTheme}>
+                        <StyledSidenav>
                             <Sidenav.Body>
                             <Nav activeKey={pathname}>
                                 <Link to="/" ><Nav.Item onClick={() => this.handleMenuClick('/')} eventKey="/" icon={<Icon icon="home" />} >Home</Nav.Item></Link>
@@ -107,3 +109,27 @@ export default class MobileHeader extends Component {
         )
     }
 }
+
+Header.propTypes = {
+    isAuthenticated: PropTypes.bool,
+    scope: PropTypes.string,
+    role: PropTypes.role,
+  };
+  
+const mapStateToProps = createStructuredSelector({
+    isAuthenticated: makeSelectIsAuthenticated(),
+    scope: makeSelectScope(),
+    role: makeSelectRole(),
+});
+
+const mapDispatchToProps = dispatch => ({
+    // logout: () => dispatch(logout()),
+})
+
+
+const withConnect = connect(
+mapStateToProps,
+mapDispatchToProps
+);
+
+export default compose(withConnect)(Header);
