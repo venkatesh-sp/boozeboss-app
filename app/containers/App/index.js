@@ -34,23 +34,33 @@ const AppWrapper = styled.div`
   flex-direction: column;
 `;
 
-export default function App() {
-  return (
-    <AppWrapper>
-      <Helmet
-        titleTemplate="%s - React.js Boilerplate"
-        defaultTitle="React.js Boilerplate"
-      >
-        <meta name="description" content="A React.js Boilerplate application" />
-      </Helmet>
-      <Header />
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <GuardedRoute path="/signup" component={SignupPage} />
-        <GuardedRoute path="/login" component={LoginPage} />
-        <Route path="" component={NotFoundPage} />
-      </Switch>
-      <GlobalStyle />
-    </AppWrapper>
-  );
+export default class App extends React.Component {
+
+  componentWillMount = () => {
+    // Login with Facebook status
+    /* window.FB.getLoginStatus(function(response) {
+       console.log(response);
+    }); */
+  }
+
+  render () {
+    return (
+        <AppWrapper>
+          <Helmet
+            titleTemplate="%s - React.js Boilerplate"
+            defaultTitle="React.js Boilerplate"
+          >
+            <meta name="description" content="A React.js Boilerplate application" />
+          </Helmet>
+          <Header />
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <GuardedRoute path="/signup" component={SignupPage} />
+            <GuardedRoute path="/login" component={LoginPage} />
+            <Route path="" component={NotFoundPage} />
+          </Switch>
+          <GlobalStyle />
+        </AppWrapper>
+      );
+  }
 }

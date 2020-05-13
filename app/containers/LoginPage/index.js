@@ -22,7 +22,7 @@ import messages from './messages';
 
 
 import {LoginForm} from './components';
-import { login } from './actions';
+import { login, facebookAuth } from './actions';
 
 /* eslint-disable react/prefer-stateless-function */
 export class LoginPage extends React.Component {
@@ -44,6 +44,7 @@ export class LoginPage extends React.Component {
 
 LoginPage.propTypes = {
   login: PropTypes.func.isRequired,
+  facebookAuth: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -54,6 +55,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     login: (auth) => dispatch(login(auth)),
+    facebookAuth: (auth) => dispatch(facebookAuth(auth)),
   };
 }
 

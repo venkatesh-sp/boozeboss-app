@@ -22,7 +22,7 @@ import messages from './messages';
 
 
 import {SignupForm} from './components'
-import { signup } from './actions';
+import { signup, facebookAuth } from './actions';
 
 /* eslint-disable react/prefer-stateless-function */
 export class ClientSignup extends React.Component {
@@ -53,7 +53,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    signup: (guest) => dispatch(signup(guest))
+    signup: (guest) => dispatch(signup(guest)),
+    facebookAuth: (auth) => dispatch(facebookAuth(auth))
   };
 }
 

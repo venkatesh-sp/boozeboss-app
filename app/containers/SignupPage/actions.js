@@ -4,7 +4,10 @@
  *
  */
 
-import { SIGNUP_GUEST_REQUEST, SIGNUP_GUEST_SUCCESS, SIGNUP_GUEST_ERROR } from './constants';
+import { 
+  SIGNUP_GUEST_REQUEST, SIGNUP_GUEST_SUCCESS, SIGNUP_GUEST_ERROR,
+  FACEBOOK_LOGIN_REQUEST, FACEBOOK_LOGIN_SUCCESS, FACEBOOK_LOGIN_ERROR
+} from './constants';
 
 export function signup(guest) {
   return {
@@ -23,6 +26,27 @@ export function signupSuccess(success) {
 export function signupError(error) {
   return {
     type: SIGNUP_GUEST_ERROR,
+    error
+  };
+}
+
+export function facebookAuth(auth) {
+  return {
+    type: FACEBOOK_LOGIN_REQUEST,
+    auth
+  };
+}
+
+export function facebookAuthSuccess(success) {
+  return {
+    type: FACEBOOK_LOGIN_SUCCESS,
+    success
+  };
+}
+
+export function facebookAuthError(error) {
+  return {
+    type: FACEBOOK_LOGIN_ERROR,
     error
   };
 }

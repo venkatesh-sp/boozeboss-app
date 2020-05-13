@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
+import FacebookButton from 'components/FacebookButton';
 
 import PropTypes from 'prop-types';
 
@@ -173,6 +174,7 @@ export default class SignupForm extends Component {
               >
                 Signup
               </StyledButton>
+              <FacebookButton {...this.props}/>
           </StyledContainer>
           );
       }

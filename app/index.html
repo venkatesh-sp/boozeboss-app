@@ -11,9 +11,43 @@
   <!-- Allow installing the app to the homescreen -->
   <meta name="mobile-web-app-capable" content="yes">
 
+  <!-- Facebook import -->
+<!--   <script>
+
+    function checkLoginState() {
+      FB.getLoginStatus(function(response) {
+        console.log(response);
+        //statusChangeCallback(response);
+      });
+    }
+
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '532621444084960',
+        cookie     : true,
+        xfbml      : true,
+        version    : 'v7.0'
+      });
+        
+      FB.AppEvents.logPageView();   
+      FB.getLoginStatus(function(response) {
+        console.log(response);
+      });
+    };
+  
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v7.0&appId=532621444084960";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+  </script> -->
+
   <link rel="icon" href="/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap" rel="stylesheet">
-  <title>React.js Boilerplate</title>
+  <title>BoozeBoss</title>
+  
 </head>
 
 <body>
@@ -21,7 +55,10 @@
   <noscript>If you're seeing this message, that means
     <strong>JavaScript has been disabled on your browser</strong>, please
     <strong>enable JS</strong> to make this app work.</noscript>
-
+  
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v7.0&appId=532621444084960&autoLogAppEvents=1"></script>
+  
   <!-- The app hooks into this div -->
   <div id="app"></div>
 

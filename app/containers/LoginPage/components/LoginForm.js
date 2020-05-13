@@ -4,8 +4,13 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
+import FacebookButton from 'components/FacebookButton';
 
 import PropTypes from 'prop-types';
+
+const StyledFacebookContainer = styled.div`
+    margin: 1em 0 0 0;
+`
 
 const StyledContainer = styled.div`
   display: flex;
@@ -73,7 +78,7 @@ export default class LoginForm extends Component {
 
         login({email, password});
       }
-  
+
       render() {
           const {error, success} = this.props;
           const {email, password} = this.state;
@@ -109,7 +114,10 @@ export default class LoginForm extends Component {
               >
                 Login
               </StyledButton>
-          </StyledContainer>
+              <StyledFacebookContainer>
+                <FacebookButton {...this.props} />
+              </StyledFacebookContainer>
+            </StyledContainer>
           );
       }
 }
