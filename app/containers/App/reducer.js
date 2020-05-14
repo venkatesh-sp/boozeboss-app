@@ -29,11 +29,17 @@ const getRole = () => {
   return token.role;
 }
 
+const getAgeVerify = () => {
+  const token = decode(localStorage.getItem('jwt'));
+  return token.isAgeVerified;
+}
+
 // The initial state of the App
 export const initialState = fromJS({
   loading: false,
   error: false,
   isAuthenticated: !!localStorage.getItem('jwt') && !tokenIsExpired(),
+  isAgeVerified: !!localStorage.getItem('jwt') && getAgeVerify(),
   scope: !!localStorage.getItem('jwt') && getScope(),
   role: !!localStorage.getItem('jwt') && getRole(),
 });
@@ -44,6 +50,7 @@ const appReducer = (state = initialState, action) => {
     case AUTHENTICATE:
       return state
       .set('isAuthenticated', true)
+      .set('isAgeVerified', action.is_age_verified)
       .set('scope', action.scope)
       .set('role', action.role);
     case LOGOUT: 

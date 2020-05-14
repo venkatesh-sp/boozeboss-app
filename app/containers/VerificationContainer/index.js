@@ -1,10 +1,10 @@
 /**
  *
- * ClientSignup
+ * VerificationContainer
  *
  */
 
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -14,26 +14,27 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { makeSelectError, makeSelectSuccess } from './selectors';
+import makeSelectVerificationContainer from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import { makeSelectIsAgeVerified } from '../App/selectors';
+import {uploadVerification} from './actions'
 
-import { HomePageContainer } from './components'
+import {Verification} from './components'
 
 
-/* eslint-disable react/prefer-stateless-function */
-export class HomePage extends React.Component {
-
+class VerificationContainer extends React.Component {
   render() {
     return (
       <div>
         <Helmet>
-          <title>Home Page</title>
-          <meta name="description" content="Signup for clients" />
+          <title>VerificationContainer</title>
+          <meta
+            name="description"
+            content="Description of VerificationContainer"
+          />
         </Helmet>
-        <HomePageContainer 
+        <Verification 
           {...this.props}
         />
       </div>
@@ -41,16 +42,17 @@ export class HomePage extends React.Component {
   }
 }
 
-HomePage.propTypes = {
-  // clientSignup: PropTypes.func.isRequired,
+VerificationContainer.propTypes = {
+  dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  isAgeVerified: makeSelectIsAgeVerified(),
+  verificationContainer: makeSelectVerificationContainer(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    uploadVerification: (verification_type, file) => dispatch(uploadVerification(verification_type, file)),
   };
 }
 
@@ -59,11 +61,11 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-const withReducer = injectReducer({ key: 'homepage', reducer });
-const withSaga = injectSaga({ key: 'homepage', saga });
+const withReducer = injectReducer({ key: 'verification', reducer });
+const withSaga = injectSaga({ key: 'verification', saga });
 
 export default compose(
   withReducer,
   withSaga,
   withConnect,
-)(HomePage);
+)(VerificationContainer);

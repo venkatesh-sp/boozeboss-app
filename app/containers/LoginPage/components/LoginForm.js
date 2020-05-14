@@ -85,7 +85,6 @@ export default class LoginForm extends Component {
           return (
           <StyledContainer>
                 {error && <StyledMessage type="error" description={error} />}
-                {success && <StyledMessage type="success" description={success} />}
               <InputGroup style={styles}>
                 <InputGroup.Addon>
                   <Icon icon="envelope" />

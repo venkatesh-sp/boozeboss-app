@@ -8,12 +8,13 @@ import {
 export function authenticate(token) {
     localStorage.setItem('jwt', token);
     const decoded = decode(token);
-    const {scope, role} = decoded;
+    const {scope, role, is_age_verified} = decoded;
     return {
       type: AUTHENTICATE,
       token,
       scope, 
-      role
+      role,
+      is_age_verified
     };
 }
 

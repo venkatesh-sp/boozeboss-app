@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import { logout } from '../../containers/App/actions'
 import { makeSelectIsAuthenticated, makeSelectScope, makeSelectRole } from '../../containers/App/selectors';
 
 const MobileHeaderContainer = styled.div`
@@ -59,8 +60,13 @@ class Header extends Component {
         this.setState({show: false});
     }
 
+    handleLogout = () => {
+        const {logout} = this.props;
+        logout();
+    }
+
     render() {
-        const {pathname, handleLogout, isAuthenticated} = this.props;
+        const {pathname, isAuthenticated} = this.props;
         const {show} = this.state;
         return (
             <MobileHeaderContainer>
@@ -88,11 +94,8 @@ class Header extends Component {
                                 <Link to="/" ><Nav.Item onClick={() => this.handleMenuClick('/')} eventKey="/" icon={<Icon icon="home" />} >Home</Nav.Item></Link>
                             </Nav>
                             { isAuthenticated ? (
-                                <Nav pullRight>
-                                    <Dropdown title="More">
-                                        {/* <Dropdown.Item icon={<Icon icon='moon-o' />}>Dark Mode<StyledToggle size="md" onChange={toggleTheme} checked={darkTheme} /></Dropdown.Item> */}
-                                        <Dropdown.Item onSelect={handleLogout}>Logout</Dropdown.Item>
-                                    </Dropdown>
+                                <Nav>
+                                    <Nav.Item onClick={this.handleLogout}>Logout</Nav.Item>
                                 </Nav>
                             ) : (
                                 <Nav pullRight>
@@ -123,7 +126,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-    // logout: () => dispatch(logout()),
+    logout: () => dispatch(logout()),
 })
 
 

@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
+import VerificationContainer from 'containers/VerificationContainer/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import SignupPage from 'containers/SignupPage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
@@ -57,6 +58,13 @@ export default class App extends React.Component {
             <Route exact path="/" component={HomePage} />
             <GuardedRoute path="/signup" component={SignupPage} />
             <GuardedRoute path="/login" component={LoginPage} />
+            <PrivateRoute
+              exact
+              path="/verification"
+              component={VerificationContainer}
+              scopesRequired={['GUEST']}
+              rolesRequired={['REGULAR', 'VIP', 'VIP']}
+            />
             <Route path="" component={NotFoundPage} />
           </Switch>
           <GlobalStyle />

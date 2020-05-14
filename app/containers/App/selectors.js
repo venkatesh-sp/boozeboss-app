@@ -13,6 +13,11 @@ const makeSelectIsAuthenticated = () =>
     globalState.get('isAuthenticated'),
   );
 
+const makeSelectIsAgeVerified = () =>
+  createSelector(selectGlobal, globalState =>
+    globalState.get('isAgeVerified'),
+  );
+
 const makeSelectScope = () =>
   createSelector(selectGlobal, globalState =>
     globalState.get('scope'),
@@ -27,5 +32,6 @@ export {
   makeSelectLocation,
   makeSelectIsAuthenticated,
   makeSelectScope,
-  makeSelectRole
+  makeSelectRole,
+  makeSelectIsAgeVerified
 };
