@@ -14,13 +14,14 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { makeSelectError, makeSelectSuccess } from './selectors';
+import { makeSelectError, makeSelectSuccess, makeSelectEvents } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import { makeSelectIsAgeVerified } from '../App/selectors';
+import { makeSelectIsAgeVerified, makeSelectIsAuthenticated } from '../App/selectors';
 
 import { HomePageContainer } from './components'
+import { getEvents } from './actions';
 
 
 /* eslint-disable react/prefer-stateless-function */
@@ -47,10 +48,13 @@ HomePage.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   isAgeVerified: makeSelectIsAgeVerified(),
+  isAuthenticated: makeSelectIsAuthenticated(),
+  events: makeSelectEvents(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    getEvents: () => dispatch(getEvents()),
   };
 }
 

@@ -5,48 +5,25 @@
  */
 
 import { 
-  SIGNUP_GUEST_REQUEST, SIGNUP_GUEST_SUCCESS, SIGNUP_GUEST_ERROR,
-  FACEBOOK_LOGIN_REQUEST, FACEBOOK_LOGIN_SUCCESS, FACEBOOK_LOGIN_ERROR
+  GET_GUEST_EVENTS_REQUEST, GET_GUEST_EVENTS_SUCCESS, GET_GUEST_EVENTS_ERROR
 } from './constants';
 
-export function signup(guest) {
+export function getEvents() {
   return {
-    type: SIGNUP_GUEST_REQUEST,
-    guest
+    type: GET_GUEST_EVENTS_REQUEST,
   };
 }
 
-export function signupSuccess(success) {
+export function getEventsSuccess(events) {
   return {
-    type: SIGNUP_GUEST_SUCCESS,
-    success
+    type: GET_GUEST_EVENTS_SUCCESS,
+    events
   };
 }
 
-export function signupError(error) {
+export function getEventsError(error) {
   return {
-    type: SIGNUP_GUEST_ERROR,
-    error
-  };
-}
-
-export function facebookAuth(auth) {
-  return {
-    type: FACEBOOK_LOGIN_REQUEST,
-    auth
-  };
-}
-
-export function facebookAuthSuccess(success) {
-  return {
-    type: FACEBOOK_LOGIN_SUCCESS,
-    success
-  };
-}
-
-export function facebookAuthError(error) {
-  return {
-    type: FACEBOOK_LOGIN_ERROR,
+    type: GET_GUEST_EVENTS_ERROR,
     error
   };
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components';
 import { Message, Button } from 'rsuite';
+import EventList from './EventList';
 
 const Container = styled.div`
     display: flex;
@@ -19,6 +20,12 @@ const StyledButton = styled(Button)`
 
 export default class HomePageContainer extends Component {
 
+    componentWillMount = () => {
+        const {getEvents} = this.props;
+        console.log('Getting events')
+        getEvents();
+    }
+
     goToRoute = () => {
         const { history } = this.props;
         history.push({
@@ -27,10 +34,10 @@ export default class HomePageContainer extends Component {
     }
 
     render() {
-        const { isAgeVerified } = this.props;
+        const { isAgeVerified, isAuthenticated } = this.props;
         return (
             <Container>
-                {!isAgeVerified && (
+                {isAuthenticated && !isAgeVerified && (
                     <MessageContainer>
                         <Message 
                             type="warning" 
@@ -44,8 +51,10 @@ export default class HomePageContainer extends Component {
                             Verify my age
                         </StyledButton>
                     </MessageContainer>
-                    
                 )}
+                <EventList 
+                    {...this.props}
+                />
             </Container>
         )
     }

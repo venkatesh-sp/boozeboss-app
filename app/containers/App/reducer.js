@@ -31,7 +31,7 @@ const getRole = () => {
 
 const getAgeVerify = () => {
   const token = decode(localStorage.getItem('jwt'));
-  return token.isAgeVerified;
+  return token.is_age_verified;
 }
 
 // The initial state of the App

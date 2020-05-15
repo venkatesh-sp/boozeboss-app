@@ -4,10 +4,7 @@
  *
  */
 
-export const SIGNUP_GUEST_REQUEST = 'app/SignupPage/SIGNUP_GUEST_REQUEST';
-export const SIGNUP_GUEST_SUCCESS = 'app/SignupPage/SIGNUP_GUEST_SUCCESS';
-export const SIGNUP_GUEST_ERROR = 'app/SignupPage/SIGNUP_GUEST_ERROR';
+export const GET_GUEST_EVENTS_REQUEST = 'app/SignupPage/GET_GUEST_EVENTS_REQUEST';
+export const GET_GUEST_EVENTS_SUCCESS = 'app/SignupPage/GET_GUEST_EVENTS_SUCCESS';
+export const GET_GUEST_EVENTS_ERROR = 'app/SignupPage/GET_GUEST_EVENTS_ERROR';
 
-export const FACEBOOK_LOGIN_REQUEST = 'app/SignupPage/FACEBOOK_LOGIN_REQUEST';
-export const FACEBOOK_LOGIN_SUCCESS = 'app/SignupPage/FACEBOOK_LOGIN_SUCCESS';
-export const FACEBOOK_LOGIN_ERROR = 'app/SignupPage/FACEBOOK_LOGIN_ERROR';
