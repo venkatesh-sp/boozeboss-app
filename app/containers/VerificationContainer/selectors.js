@@ -1,26 +1,18 @@
 import { createSelector } from 'reselect';
-import { initialState } from './reducer';
 
-/**
- * Direct selector to the verificationContainer state domain
- */
+const selectVerification = state => state.verification;
 
-const selectVerificationContainerDomain = state =>
-  state.verificationContainer || initialState;
-
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by VerificationContainer
- */
-
-const makeSelectVerificationContainer = () =>
-  createSelector(
-    selectVerificationContainerDomain,
-    substate => substate,
+const makeSelectError = () =>
+  createSelector(selectVerification, verificationState =>
+    verificationState.get('error'),
   );
 
-export default makeSelectVerificationContainer;
-export { selectVerificationContainerDomain };
+const makeSelectSuccess = () =>
+  createSelector(selectVerification, verificationState =>
+    verificationState.get('success'),
+  );
+
+export { 
+  makeSelectSuccess,
+  makeSelectError
+};

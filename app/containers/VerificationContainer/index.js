@@ -14,21 +14,27 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectVerificationContainer from './selectors';
+import { makeSelectError, makeSelectSuccess } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import {uploadVerification} from './actions'
+import {uploadVerification, submitVerification, checkVerification} from './actions'
 
 import {Verification} from './components'
 
 
 class VerificationContainer extends React.Component {
+
+  componentDidMount = () => { 
+    const {checkVerification} = this.props;
+    checkVerification();
+  }
+
   render() {
     return (
       <div>
         <Helmet>
-          <title>VerificationContainer</title>
+          <title>Verifcation</title>
           <meta
             name="description"
             content="Description of VerificationContainer"
@@ -47,12 +53,15 @@ VerificationContainer.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  verificationContainer: makeSelectVerificationContainer(),
+  error: makeSelectError(),
+  success: makeSelectSuccess(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    checkVerification: () => dispatch(checkVerification()),
     uploadVerification: (verification_type, file) => dispatch(uploadVerification(verification_type, file)),
+    submitVerification: (status) => dispatch(submitVerification(status)),
   };
 }
 

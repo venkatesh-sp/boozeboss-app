@@ -4,13 +4,30 @@ import request from 'utils/request';
 import fileRequest from 'utils/fileRequest';
 
 import { 
-  UPLOAD_VERIFICATION_REQUEST,
+  UPLOAD_VERIFICATION_REQUEST, SUBMIT_VERIFICATION_REQUEST, CHECK_VERIFICATION_REQUEST,
 } from './constants';
 
 import {
-  uploadVerificationSuccess, uploadVerificationError
+  uploadVerificationSuccess, uploadVerificationError, 
+  submitVerificationSuccess, submitVerificationError, 
+  checkVerificationSuccess, checkVerificationError
 } from './actions';
 
+function* checkVerificationSaga() {
+  const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${process.env.API_PORT}/api/verifications/check-status`;
+
+  const options = {
+    method: 'GET',
+  };
+
+  try {
+    const response = yield call(fileRequest, requestURL, options);
+    yield put(checkVerificationSuccess(response));
+  } catch (error) {
+    const jsonError = yield error.response ? error.response.json() : error;
+    yield put(checkVerificationError(jsonError));
+  }
+}
 
 function* uploadVerificationSaga(params) {
   const {verification_type, file} = params;
@@ -23,8 +40,6 @@ function* uploadVerificationSaga(params) {
     body: formData
   };
 
-  console.log('saga', formData)
-
   try {
     const response = yield call(fileRequest, requestURL, options);
     yield put(uploadVerificationSuccess(response));
@@ -34,12 +49,40 @@ function* uploadVerificationSaga(params) {
   }
 }
 
+function* submitVerificationSaga(params) {
+  const {age_verification_status} = params;
+  const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${process.env.API_PORT}/api/verifications/submit`;
+
+  const options = {
+    method: 'POST',
+    body: JSON.stringify({age_verification_status})
+  };
+
+  try {
+    const response = yield call(request, requestURL, options);
+    yield put(submitVerificationSuccess(response));
+  } catch (error) {
+    const jsonError = yield error.response ? error.response.json() : error;
+    yield put(submitVerificationError(jsonError));
+  }
+}
+
+function* checkVerificationRequest() {
+  yield takeLatest(CHECK_VERIFICATION_REQUEST, checkVerificationSaga);
+}
+
 function* uploadVerificationRequest() {
   yield takeLatest(UPLOAD_VERIFICATION_REQUEST, uploadVerificationSaga);
 }
 
+function* submitVerificationRequest() {
+  yield takeLatest(SUBMIT_VERIFICATION_REQUEST, submitVerificationSaga);
+}
+
 export default function* rootSaga() {
   yield all([
-    fork(uploadVerificationRequest)
+    fork(checkVerificationRequest),
+    fork(uploadVerificationRequest),
+    fork(submitVerificationRequest),
   ]);
 }
