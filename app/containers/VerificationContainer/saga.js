@@ -1,7 +1,7 @@
 import { call, put, select, takeLatest, fork, all } from 'redux-saga/effects';
 
 import request from 'utils/request';
-import fileRequest from 'utils/fileRequest';
+import fileRequest from 'utils/filerequest';
 
 import { 
   UPLOAD_VERIFICATION_REQUEST, SUBMIT_VERIFICATION_REQUEST, CHECK_VERIFICATION_REQUEST,

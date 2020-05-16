@@ -14,7 +14,7 @@ import { Switch, Route } from 'react-router-dom';
 import HomePage from 'containers/HomePage/Loadable';
 import VerificationContainer from 'containers/VerificationContainer/Loadable';
 import InviteCodeContainer from 'containers/InviteCodeContainer/Loadable';
-import VerifyCheckin from 'containers/VerifyCheckin/Loadable';
+import VerifyCheckin from 'containers/VerifyCheckIn/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import SignupPage from 'containers/SignupPage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
