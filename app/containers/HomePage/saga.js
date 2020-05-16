@@ -3,13 +3,12 @@ import { call, put, select, takeLatest, fork, all } from 'redux-saga/effects';
 import request from 'utils/request';
 
 import { 
-  SIGNUP_GUEST_REQUEST,
-  FACEBOOK_LOGIN_REQUEST,
-  GET_GUEST_EVENTS_REQUEST
+  GET_GUEST_EVENTS_REQUEST,
+  GET_AGENCY_EVENTS_REQUEST
 } from './constants';
 
 import {
-  getEventsSuccess, getEventsError,
+  getEventsSuccess, getEventsError, getAgencyEventsSuccess, getAgencyEventsError
 } from './actions';
 
 function* getEventsSaga() {
@@ -27,12 +26,33 @@ function* getEventsSaga() {
   }
 }
 
+
+function* getAgencyEventsSaga() {
+  const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${process.env.API_PORT}/api/events`;
+  const options = {
+    method: 'GET',
+  };
+
+  try {
+    const response = yield call(request, requestURL, options);
+    yield put(getAgencyEventsSuccess(response));
+  } catch (error) {
+    const jsonError = yield error.response ? error.response.json() : error;
+    yield put(getAgencyEventsError(jsonError));
+  }
+}
+
 function* getEventsRequest() {
   yield takeLatest(GET_GUEST_EVENTS_REQUEST, getEventsSaga);
 }
 
+function* getAgencyEventsRequest() {
+  yield takeLatest(GET_AGENCY_EVENTS_REQUEST, getAgencyEventsSaga);
+}
+
 export default function* rootSaga() {
   yield all([
-    fork(getEventsRequest)
+    fork(getEventsRequest),
+    fork(getAgencyEventsRequest),
   ]);
 }

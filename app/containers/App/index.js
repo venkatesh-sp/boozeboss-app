@@ -13,6 +13,8 @@ import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
 import VerificationContainer from 'containers/VerificationContainer/Loadable';
+import InviteCodeContainer from 'containers/InviteCodeContainer/Loadable';
+import VerifyCheckin from 'containers/VerifyCheckin/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import SignupPage from 'containers/SignupPage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
@@ -64,6 +66,19 @@ export default class App extends React.Component {
               component={VerificationContainer}
               scopesRequired={['GUEST']}
               rolesRequired={['REGULAR', 'VIP', 'VIP']}
+            />
+            <PrivateRoute
+              exact
+              path="/qr-invite"
+              component={InviteCodeContainer}
+              scopesRequired={['GUEST']}
+              rolesRequired={['REGULAR', 'VIP', 'VIP']}
+            />
+            <PrivateRoute
+              path="/check-in"
+              component={VerifyCheckin}
+              scopesRequired={['AGENCY']}
+              rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
             />
             <Route path="" component={NotFoundPage} />
           </Switch>

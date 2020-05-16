@@ -2,9 +2,9 @@
 // import { mount } from 'enzyme';
 // import { enzymeFind } from 'styled-components/test-utils';
 
-// import { {{ properCase name }} } from '../index';
+// import { InviteCodeContainer } from '../index';
 
-describe('<{{ properCase name }} />', () => {
+describe('<InviteCodeContainer />', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(false);
   });

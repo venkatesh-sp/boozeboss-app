@@ -107,7 +107,6 @@ export default class LoginForm extends Component {
                 />
               </InputGroup>
               <StyledButton 
-                disabled={success}
                 color="green"
                 onClick={this.handleSubmit}
               >

@@ -22,51 +22,51 @@ const EventRow = styled.div`
     align-items: center;
 `
 
+const StyledEvent = styled(Panel)`
+    margin: 1em 0 1em 0;
+`
+
 class EventCard extends Component {
 
-    handleShowInvite = () => {
-        const {history, event_guest} = this.props;
+    handleGoToEvent = () => {
+        const {history, brief_event} = this.props;
         history.push({
-            pathname: 'qr-invite',
+            pathname: `event/${brief_event.event.id}`,
             state: {
-                event: event_guest.event,
+                event: brief_event,
             }
         })
     }
 
     render() {
-        const {event_guest} = this.props;
+        const {brief_event} = this.props;
         return (
-            <Panel bordered>
+            <StyledEvent bordered>
                 <EventRow>
-                    <p>{moment(event_guest.event.started_at).format('DD/MM/YYYY')}</p>
-                    <p style={{margin: 0}}>Starting {moment(event_guest.event.started_at).fromNow()}</p>
+                    <p>{moment(brief_event.event.started_at).format('DD/MM/YYYY')}</p>
+                    <p style={{margin: 0}}>Starting {moment(brief_event.event.started_at).fromNow()}</p>
                 </EventRow>
                 <EventRow style={{margin: '1em 0 0 0'}}>
-                    <b>{event_guest.event.brief_event.name}</b>
+                    <b>{brief_event.name}</b>
                 </EventRow>
                 <Divider />
                 <EventRow>
-                    {event_guest.checked_in ? (
-                        <Button color="green" block>Menu</Button>
-                    ) : (
-                        <Button color="green" block onClick={this.handleShowInvite}>Check-In</Button>
-                    )}
+                    <Button color="green" block onClick={this.handleGoToEvent}>Go to Event</Button>
                 </EventRow>
-            </Panel>
+            </StyledEvent>
         )
     }
 }
 
 export default class EventList extends Component {
     render() {
-        const { events } = this.props;
+        const { agencyEvents } = this.props;
         return (
             <EventListContainer>
                 <EventTitle>My Events</EventTitle>
-                {events &&
-                    events.length > 0 && 
-                    events.map(event_guest => <EventCard {...this.props} event_guest={event_guest}/>) 
+                {agencyEvents &&
+                    agencyEvents.length > 0 && 
+                    agencyEvents.map(brief_event => <EventCard {...this.props} brief_event={brief_event}/>) 
                 } 
             </EventListContainer>
         )

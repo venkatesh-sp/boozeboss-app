@@ -7,6 +7,11 @@ const makeSelectEvents = () =>
     homepageState.get('events'),
   );
 
+const makeSelectAgencyEvents = () =>
+  createSelector(selectHomepage, homepageState =>
+    homepageState.get('agencyEvents'),
+  );
+
 const makeSelectError = () =>
   createSelector(selectHomepage, homepageState =>
     homepageState.get('error'),
@@ -19,6 +24,7 @@ const makeSelectSuccess = () =>
 
 export { 
   makeSelectEvents,
+  makeSelectAgencyEvents,
   makeSelectSuccess,
   makeSelectError
 };
