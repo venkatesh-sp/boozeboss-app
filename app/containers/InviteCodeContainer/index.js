@@ -76,7 +76,7 @@ export class InviteCodeContainer extends React.PureComponent {
             <p>Please scan this code in the venue entrance to check-in into the event.</p>
             <QRSection>
               {code ? (
-                <QRCode value={`${process.env.SCHEMA}://${process.env.HOST}${process.env.PORT && `:${process.env.PORT}`}/check-in/${code}`}/>
+                <QRCode value={`${process.env.APP_SCHEMA}://${process.env.APP_HOST}${process.env.APP_PORT && `:${process.env.APP_PORT}`}/check-in/${code}`}/>
               ) : (
                 <Loader />
               )}

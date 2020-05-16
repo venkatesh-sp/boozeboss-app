@@ -113,9 +113,9 @@ module.exports = options => ({
     // drop any unreachable code.
     new webpack.EnvironmentPlugin({
       NODE_ENV: process.env.NODE_ENV,
-      SCHEMA: process.env.SCHEMA,
-      HOST: process.env.HOST,
-      PORT: process.env.PORT,
+      APP_SCHEMA: process.env.APP_SCHEMA,
+      APP_HOST: process.env.APP_HOST,
+      APP_PORT: process.env.APP_PORT,
       API_SCHEMA: process.env.API_SCHEMA,
       API_HOST: process.env.API_HOST,
       API_PORT: process.env.API_PORT,
