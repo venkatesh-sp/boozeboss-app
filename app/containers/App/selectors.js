@@ -28,10 +28,16 @@ const makeSelectRole = () =>
     globalState.get('role'),
   );
 
+const makeSelectUser = () =>
+  createSelector(selectGlobal, globalState =>
+    globalState.get('user'),
+  );
+
 export { 
   makeSelectLocation,
   makeSelectIsAuthenticated,
   makeSelectScope,
   makeSelectRole,
-  makeSelectIsAgeVerified
+  makeSelectIsAgeVerified,
+  makeSelectUser
 };

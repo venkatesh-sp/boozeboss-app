@@ -26,6 +26,10 @@ import GuardedRoute from 'components/GuardedRoute';
 
 import GlobalStyle from '../../global-styles';
 
+import { compose } from 'redux';
+import injectSaga from 'utils/injectSaga';
+import saga from './saga';
+
 import 'rsuite/dist/styles/rsuite-default.css';
 
 const AppWrapper = styled.div`
@@ -37,7 +41,7 @@ const AppWrapper = styled.div`
   flex-direction: column;
 `;
 
-export default class App extends React.Component {
+class App extends React.Component {
 
   componentWillMount = () => {
     // Login with Facebook status
@@ -87,3 +91,7 @@ export default class App extends React.Component {
       );
   }
 }
+
+const withSaga = injectSaga({ key: 'app', saga });
+
+export default compose(withSaga)(App);

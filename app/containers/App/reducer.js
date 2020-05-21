@@ -9,7 +9,7 @@
 
 
 import { fromJS } from 'immutable';
-import {  AUTHENTICATE, LOGOUT } from './constants';
+import {  AUTHENTICATE, LOGOUT, GET_USER_REQUEST, GET_USER_SUCCESS, GET_USER_ERROR } from './constants';
 
 import { decode } from 'utils/tokenUtils';
 
@@ -47,6 +47,12 @@ export const initialState = fromJS({
 /* eslint-disable default-case, no-param-reassign */
 const appReducer = (state = initialState, action) => {
   switch (action.type) {
+    case GET_USER_REQUEST:
+      return state;
+    case GET_USER_SUCCESS:
+      return state.set('user', action.user);
+    case GET_USER_ERROR:
+      return state;
     case AUTHENTICATE:
       return state
       .set('isAuthenticated', true)

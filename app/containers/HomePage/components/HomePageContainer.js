@@ -41,7 +41,7 @@ export default class HomePageContainer extends Component {
     }
 
     render() {
-        const { isAgeVerified, isAuthenticated } = this.props;
+        const { isAgeVerified, isAuthenticated, user } = this.props;
         return (
             <Container>
                 <RoleValidator
@@ -49,7 +49,7 @@ export default class HomePageContainer extends Component {
                     scopes={['GUEST']}
                     roles={['REGULAR', 'VIP', 'VVIP']}
                 >
-                    {isAuthenticated && !isAgeVerified && (
+                    {isAuthenticated && user && user.age_verification_status !== 'APPROVED' && (
                         <MessageContainer>
                             <Message 
                                 type="warning" 

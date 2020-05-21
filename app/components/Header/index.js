@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { logout } from '../../containers/App/actions'
+import { logout, getUser } from '../../containers/App/actions'
 import { makeSelectIsAuthenticated, makeSelectScope, makeSelectRole } from '../../containers/App/selectors';
 
 const MobileHeaderContainer = styled.div`
@@ -21,7 +21,6 @@ const MobileHeaderContainer = styled.div`
     padding: 0.5em 1em 0 1em;
     background-color: ${props => props.darkTheme ? '#2b2b2c' : '#F5F5F5'} !important;
 `
-
 
 const StyledImage = styled.img`
     height: 15px;
@@ -48,6 +47,11 @@ class Header extends Component {
 
     state = {
         show: false,
+    }
+
+    componentDidMount = () => {
+        const {getUser} = this.props;
+        getUser();
     }
 
     toggleMenu = () => {
@@ -127,6 +131,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
     logout: () => dispatch(logout()),
+    getUser: () => dispatch(getUser()),
 })
 
 

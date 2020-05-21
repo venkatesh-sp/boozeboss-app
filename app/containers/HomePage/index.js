@@ -14,6 +14,7 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
+import { makeSelectUser } from '../App/selectors'
 import { makeSelectError, makeSelectSuccess, makeSelectEvents, makeSelectAgencyEvents } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -47,6 +48,7 @@ HomePage.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  user: makeSelectUser(),
   isAgeVerified: makeSelectIsAgeVerified(),
   isAuthenticated: makeSelectIsAuthenticated(),
   role: makeSelectRole(),
