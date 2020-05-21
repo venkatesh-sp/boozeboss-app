@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Panel, Button, Divider } from 'rsuite';
 import moment from 'moment';
+import Countdown from 'react-countdown';
 
 const EventTitle = styled.b`
     margin: 0 0 1em 0;
@@ -21,8 +22,27 @@ const EventRow = styled.div`
     flex: 1;
     align-items: center;
 `
+/* const renderer = ({ days, hours, minutes, seconds, completed }) => {
+    if (completed) {
+      // Render a completed state
+      return <p>Ready</p>;
+    } else {
+      // Render a countdown
+        return <span>{days}D : {hours}H : {minutes}M : {seconds} S</span>;
+    }
+  }; */
 
 class EventCard extends Component {
+
+    renderer = ({ days, hours, minutes, seconds, completed }) => {
+        if (completed) {
+          // Render a completed state
+          return <Button color="green" block onClick={this.handleShowInvite}>Check-In</Button>;
+        } else {
+          // Render a countdown
+            return <span>{days}D : {hours}H : {minutes}M : {seconds}S</span>;
+        }
+      };
 
     handleShowInvite = () => {
         const {history, event_guest} = this.props;
@@ -46,13 +66,22 @@ class EventCard extends Component {
                     <b>{event_guest.event.brief_event.name}</b>
                 </EventRow>
                 <Divider />
-                <EventRow>
-                    {event_guest.checked_in ? (
-                        <Button color="green" block>Menu</Button>
-                    ) : (
-                        <Button color="green" block onClick={this.handleShowInvite}>Check-In</Button>
-                    )}
-                </EventRow>
+                { event_guest.event.started_at >= new Date ? (
+                     <EventRow>
+                        {event_guest.checked_in ? (
+                            <Button color="green" block>Menu</Button>
+                        ) : (
+                            <Button color="green" block onClick={this.handleShowInvite}>Check-In</Button>
+                        )}
+                    </EventRow>
+                ): (
+                    <Button disabled block>
+                            <Countdown 
+                                date={event_guest.event.started_at} 
+                                renderer={this.renderer}
+                            />
+                    </Button>
+                )}
             </Panel>
         )
     }

@@ -80,6 +80,7 @@ export class InviteCodeContainer extends React.PureComponent {
               ) : (
                 <Loader />
               )}
+              {code && <p>{`${process.env.APP_SCHEMA}://${process.env.APP_HOST}${process.env.APP_PORT && `:${process.env.APP_PORT}`}/check-in/${code}`}</p>}
             </QRSection>
             <Button block color="green" onClick={() => this.props.history.goBack()}>
               Go Back
