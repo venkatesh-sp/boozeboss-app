@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Panel, Button, Divider } from 'rsuite';
+import { Panel, Button, Divider, Input, InputGroup, Icon } from 'rsuite';
 import moment from 'moment';
 import Countdown from 'react-countdown';
+
+const styles = {
+    width: '100%',
+    marginTop: 10,
+    marginBottom: 10,
+  };
+  
 
 const EventTitle = styled.b`
     margin: 0 0 1em 0;
@@ -63,10 +70,10 @@ class EventCard extends Component {
                     <p style={{margin: 0}}>Starting {moment(event_guest.event.started_at).fromNow()}</p>
                 </EventRow>
                 <EventRow style={{margin: '1em 0 0 0'}}>
-                    <b>{event_guest.event.brief_event.name}</b>
+                    <b>{event_guest.event.brief_event.name}<p>@ {event_guest.event.brief_event.venue.name} ({event_guest.event.brief_event.venue.address})</p></b>
                 </EventRow>
                 <Divider />
-                { event_guest.event.started_at >= new Date ? (
+                { event_guest.event.started_at >= new Date() ? (
                      <EventRow>
                         {event_guest.checked_in ? (
                             <Button color="green" block>Menu</Button>
@@ -75,7 +82,7 @@ class EventCard extends Component {
                         )}
                     </EventRow>
                 ): (
-                    <Button disabled block>
+                    <Button block color="green">
                             <Countdown 
                                 date={event_guest.event.started_at} 
                                 renderer={this.renderer}
@@ -88,8 +95,27 @@ class EventCard extends Component {
 }
 
 export default class EventList extends Component {
+
+    state = {
+        code: null
+    }
+    
+    handleEventCodeChange = (code) => {
+        if (code.length < 7) {
+            this.setState({code})
+        }
+    }
+
+    handleSubmitCode = () => {
+        const {submitEventCode} = this.props;
+        const {code} = this.state;
+        
+        submitEventCode(code);
+    }
+
     render() {
         const { events } = this.props;
+        const {code} = this.state;
         return (
             <EventListContainer>
                 <EventTitle>My Events</EventTitle>
@@ -97,6 +123,22 @@ export default class EventList extends Component {
                     events.length > 0 && 
                     events.map(event_guest => <EventCard {...this.props} event_guest={event_guest}/>) 
                 } 
+                {events &&
+                    events.length < 1 && (
+                        <Panel bordered>
+                            <p>No upcoming events.</p>
+                            <p>Do you have an event invite code?</p> 
+                            <InputGroup style={styles}>
+                                <InputGroup.Addon>
+                                    <Icon icon="key" />
+                                </InputGroup.Addon>
+                                <Input onChange={this.handleEventCodeChange} value={code}/>
+                            </InputGroup>
+                            <Button block color="green" disabled={!code || code.length < 6} onClick={this.handleSubmitCode}>
+                                Submit
+                            </Button>
+                        </Panel>
+                )}
             </EventListContainer>
         )
     }

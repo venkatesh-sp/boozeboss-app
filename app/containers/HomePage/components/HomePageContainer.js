@@ -4,6 +4,7 @@ import { Message, Button } from 'rsuite';
 import EventList from './EventList';
 import AgencyEventList from './AgencyEventList';
 import RoleValidator from 'components/RoleValidator';
+import MessageContainer from './MessageContainer';
 
 const Container = styled.div`
     display: flex;
@@ -11,10 +12,6 @@ const Container = styled.div`
     margin: 1em;
 `
 
-const MessageContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-`
 
 const StyledButton = styled(Button)`
     margin: 1em 0 0 0;
@@ -44,27 +41,10 @@ export default class HomePageContainer extends Component {
         const { isAgeVerified, isAuthenticated, user } = this.props;
         return (
             <Container>
-                <RoleValidator
-                    {...this.props}
-                    scopes={['GUEST']}
-                    roles={['REGULAR', 'VIP', 'VVIP']}
-                >
-                    {isAuthenticated && user && user.age_verification_status !== 'APPROVED' && (
-                        <MessageContainer>
-                            <Message 
-                                type="warning" 
-                                description={(
-                                    <div>
-                                        <p>Please verify your age to have complete access to BoozeBoss wallet.</p>
-                                    </div>
-                                )} 
-                            />
-                            <StyledButton onClick={this.goToRoute} color="green">
-                                Verify my age
-                            </StyledButton>
-                        </MessageContainer>
-                    )}
-                </RoleValidator>
+                <MessageContainer 
+                    {...this.props} 
+                    goToRoute={this.goToRoute}
+                />
                 <RoleValidator
                     {...this.props}
                     scopes={['GUEST']}

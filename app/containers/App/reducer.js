@@ -60,7 +60,9 @@ const appReducer = (state = initialState, action) => {
       .set('scope', action.scope)
       .set('role', action.role);
     case LOGOUT: 
-      return state.set('isAuthenticated', false);
+      return state
+        .set('user', null)
+        .set('isAuthenticated', false);
     default:
       return state;
   }

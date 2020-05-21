@@ -10,7 +10,7 @@ import {
   loginSuccess, loginError, facebookAuthSuccess, facebookAuthError
 } from './actions';
 
-import { authenticate } from '../App/actions'
+import { authenticate, getUser } from '../App/actions'
 
 function* loginSaga(params) {
   const {auth} = params;
@@ -24,7 +24,7 @@ function* loginSaga(params) {
     const response = yield call(request, requestURL, options);
     yield put(loginSuccess(response));
     yield put(authenticate(response));
-
+    yield put(getUser());
   } catch (error) {
     const jsonError = yield error.response ? error.response.json() : error;
     yield put(loginError(jsonError));
@@ -43,6 +43,7 @@ function* facebookLoginSaga(params) {
     const response = yield call(request, requestURL, options);
     yield put(facebookAuthSuccess(response));
     yield put(authenticate(response));
+    yield put(getUser());
   } catch (error) {
     const jsonError = yield error.response ? error.response.json() : error;
     yield put(facebookAuthError(jsonError));

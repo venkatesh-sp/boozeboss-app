@@ -22,7 +22,7 @@ import messages from './messages';
 import { makeSelectIsAgeVerified, makeSelectIsAuthenticated, makeSelectRole, makeSelectScope } from '../App/selectors';
 
 import { HomePageContainer } from './components'
-import { getEvents, getAgencyEvents } from './actions';
+import { getEvents, getAgencyEvents, submitEventCode } from './actions';
 
 
 /* eslint-disable react/prefer-stateless-function */
@@ -61,6 +61,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getEvents: () => dispatch(getEvents()),
     getAgencyEvents: () => dispatch(getAgencyEvents()),
+    submitEventCode: (code) => dispatch(submitEventCode(code)),
   };
 }
 
