@@ -19,6 +19,7 @@ export function signup(guest) {
 }
 
 export function signupSuccess(token, success) {
+  localStorage.setItem('jwt', token);
   return {
     type: SIGNUP_GUEST_SUCCESS,
     token, 

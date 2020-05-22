@@ -83,6 +83,7 @@ export default class SignupForm extends Component {
         if (!email || !first_name || !last_name || !phone_number || !password || !confirm || !code) return alert('Missing fields');
 
         if (password !== confirm) return alert("Passwords aren't matching");
+        if (!phone_number.match(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)) return alert('Invalid phone number');
 
         signup({email, first_name, phone_number, last_name, password, code});
       }

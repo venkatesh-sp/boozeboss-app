@@ -41,7 +41,7 @@ function clientSignupReducer(state = initialState, action) {
       return state.set('success', action.success).set('isLoading', false);
     case GET_SMS_VERIFICATION_ERROR:
       return state
-        .set('error', action.error)
+        //.set('error', action.error)
         .set('isLoading', false);
     case CHECK_SMS_VERIFICATION_ERROR:
         return state

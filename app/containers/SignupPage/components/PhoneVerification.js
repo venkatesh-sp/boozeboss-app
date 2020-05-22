@@ -47,7 +47,9 @@ export default class PhoneVerification extends Component {
     }
 
     handleChange = (code) => {
-        this.setState({code});
+        if (code.length < 7) {
+            this.setState({code});
+        }
     }
 
     handleSkip = async () => {
