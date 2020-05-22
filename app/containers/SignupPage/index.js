@@ -14,7 +14,7 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { makeSelectError, makeSelectSuccess } from './selectors';
+import { makeSelectError, makeSelectSuccess, makeSelectStep, makeSelectToken } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
@@ -22,7 +22,8 @@ import messages from './messages';
 
 
 import {SignupForm} from './components'
-import { signup, facebookAuth } from './actions';
+import { signup, facebookAuth, getSMSVerification, checkSMSVerification } from './actions';
+import { authenticate, getUser } from '../App/actions';
 
 /* eslint-disable react/prefer-stateless-function */
 export class ClientSignup extends React.Component {
@@ -49,12 +50,18 @@ ClientSignup.propTypes = {
 const mapStateToProps = createStructuredSelector({
   error: makeSelectError(),
   success: makeSelectSuccess(),
+  step: makeSelectStep(),
+  token: makeSelectToken(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    authenticate: (token) => dispatch(authenticate(token)),
+    getUser: () => dispatch(getUser()),
     signup: (guest) => dispatch(signup(guest)),
-    facebookAuth: (auth) => dispatch(facebookAuth(auth))
+    facebookAuth: (auth) => dispatch(facebookAuth(auth)),
+    getSMSVerification: (phone_number) => dispatch(getSMSVerification(phone_number)),
+    checkSMSVerification: (phone_number, code) => dispatch(checkSMSVerification(phone_number, code))
   };
 }
 

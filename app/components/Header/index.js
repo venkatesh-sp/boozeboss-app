@@ -50,8 +50,10 @@ class Header extends Component {
     }
 
     componentDidMount = () => {
-        const {getUser} = this.props;
-        getUser();
+        const {getUser, isAuthenticated} = this.props;
+        if (isAuthenticated) {
+            getUser();
+        }
     }
 
     toggleMenu = () => {

@@ -7,6 +7,7 @@ import 'react-phone-input-2/lib/style.css'
 import FacebookButton from 'components/FacebookButton';
 
 import PropTypes from 'prop-types';
+import PhoneVerification from './PhoneVerification';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -87,95 +88,105 @@ export default class SignupForm extends Component {
       }
   
       render() {
-          const {error, success} = this.props;
+          const {error, success, step} = this.props;
           const {disable_email, email, first_name, last_name, phone_number, password, confirm, code} = this.state;
           return (
-          <StyledContainer>
-                {error && <StyledMessage type="error" description={error} />}
-                {success && <StyledMessage type="success" description={success} />}
-              <InputGroup style={styles}>
-                <InputGroup.Addon>
-                  <Icon icon="envelope" />
-                </InputGroup.Addon>
-                <Input 
-                  placeholder="Email"
-                  disabled={disable_email}
-                  value={email}
-                  onChange={(value) => this.handleChange(value, 'email')}
+            <React.Fragment>
+              {step === 1 && (
+                <StyledContainer>
+                  {error && <StyledMessage type="error" description={error} />}
+                  {success && <StyledMessage type="success" description={success} />}
+                  <InputGroup style={styles}>
+                    <InputGroup.Addon>
+                      <Icon icon="envelope" />
+                    </InputGroup.Addon>
+                    <Input 
+                      placeholder="Email"
+                      disabled={disable_email}
+                      value={email}
+                      onChange={(value) => this.handleChange(value, 'email')}
+                    />
+                  </InputGroup>
+                  <InputGroup style={styles}>
+                    <InputGroup.Addon>
+                      <Icon icon="avatar" />
+                    </InputGroup.Addon>
+                    <Input 
+                      placeholder="First Name"
+                      value={first_name}
+                      onChange={(value) => this.handleChange(value, 'first_name')}
+                    />
+                  </InputGroup>
+                  <InputGroup style={styles}>
+                    <InputGroup.Addon>
+                      <Icon icon="avatar" />
+                    </InputGroup.Addon>
+                    <Input 
+                      placeholder="Last Name"
+                      value={last_name}
+                      onChange={(value) => this.handleChange(value, 'last_name')}
+                    />
+                  </InputGroup>
+                  <PhoneInput
+                      style={{...styles, zIndex: 99}}
+                      country={'us'}
+                      disableSearchIcon
+                      inputProps={{
+                        name: 'phone',
+                        required: true,
+                        autoFocus: true
+                      }}
+                      onChange={(value) => this.handleChange(value, 'phone_number')}
+                    />
+                  <InputGroup style={styles}>
+                    <InputGroup.Addon>
+                      <Icon icon="key" />
+                    </InputGroup.Addon>
+                    <Input 
+                      placeholder="Invite Code"
+                      value={code}
+                      onChange={(value) => this.handleChange(value, 'code')}
+                    />
+                  </InputGroup>
+                  <InputGroup style={styles}>
+                    <InputGroup.Addon>
+                      <Icon icon="lock" />
+                    </InputGroup.Addon>
+                    <Input 
+                      placeholder="Password"
+                      type="password"
+                      value={password}
+                      onChange={(value) => this.handleChange(value, 'password')}
+                    />
+                  </InputGroup>
+                  <InputGroup style={styles}>
+                    <InputGroup.Addon>
+                      <Icon icon="lock" />
+                    </InputGroup.Addon>
+                    <Input 
+                      placeholder="Confirm Password"
+                      type="password"
+                      value={confirm}
+                      onChange={(value) => this.handleChange(value, 'confirm')}
+                    />
+                  </InputGroup>
+                  <StyledButton 
+                    disabled={success}
+                    color="green"
+                    onClick={this.handleSubmit}
+                  >
+                    Signup
+                  </StyledButton>
+                  <FacebookButton {...this.props}/>
+                </StyledContainer>
+              )}
+              {step === 2 && (
+                <PhoneVerification 
+                  {...this.props}
+                  {...this.state}
                 />
-              </InputGroup>
-              <InputGroup style={styles}>
-                <InputGroup.Addon>
-                  <Icon icon="avatar" />
-                </InputGroup.Addon>
-                <Input 
-                  placeholder="First Name"
-                  value={first_name}
-                  onChange={(value) => this.handleChange(value, 'first_name')}
-                />
-              </InputGroup>
-              <InputGroup style={styles}>
-                <InputGroup.Addon>
-                  <Icon icon="avatar" />
-                </InputGroup.Addon>
-                <Input 
-                  placeholder="Last Name"
-                  value={last_name}
-                  onChange={(value) => this.handleChange(value, 'last_name')}
-                />
-              </InputGroup>
-              <PhoneInput
-                  style={{...styles, zIndex: 99}}
-                  country={'us'}
-                  disableSearchIcon
-                  inputProps={{
-                    name: 'phone',
-                    required: true,
-                    autoFocus: true
-                  }}
-                  onChange={(value) => this.handleChange(value, 'phone_number')}
-                />
-              <InputGroup style={styles}>
-                <InputGroup.Addon>
-                  <Icon icon="key" />
-                </InputGroup.Addon>
-                <Input 
-                  placeholder="Invite Code"
-                  value={code}
-                  onChange={(value) => this.handleChange(value, 'code')}
-                />
-              </InputGroup>
-              <InputGroup style={styles}>
-                <InputGroup.Addon>
-                  <Icon icon="lock" />
-                </InputGroup.Addon>
-                <Input 
-                  placeholder="Password"
-                  type="password"
-                  value={password}
-                  onChange={(value) => this.handleChange(value, 'password')}
-                />
-              </InputGroup>
-              <InputGroup style={styles}>
-                <InputGroup.Addon>
-                  <Icon icon="lock" />
-                </InputGroup.Addon>
-                <Input 
-                  placeholder="Confirm Password"
-                  type="password"
-                  value={confirm}
-                  onChange={(value) => this.handleChange(value, 'confirm')}
-                />
-              </InputGroup>
-              <StyledButton 
-                disabled={success}
-                color="green"
-                onClick={this.handleSubmit}
-              >
-                Signup
-              </StyledButton>
-              <FacebookButton {...this.props}/>
-          </StyledContainer>
+              )}
+            </React.Fragment>
           );
       }
 }

@@ -25,7 +25,7 @@ export default class MessageContainerComponent extends Component {
                 {isAuthenticated && (
                     <React.Fragment>
                         {/* Verify if the user was logged in with facebook and has a 48 hour temporal limit */}
-                        {user && user.facebook_user_id && (new Date(user.temporal_age_verification_limit).getTime() >= new Date().getTime()) && (
+                        {user && !user.age_verification_status &&  user.facebook_user_id && (new Date(user.temporal_age_verification_limit).getTime() >= new Date().getTime()) && (
                             <MessageContainer>
                                 <Message 
                                     description={(

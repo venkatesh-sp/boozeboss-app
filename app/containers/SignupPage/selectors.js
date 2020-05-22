@@ -12,7 +12,19 @@ const makeSelectSuccess = () =>
     signupState.get('success'),
   );
 
+const makeSelectStep = () =>
+  createSelector(selectSignup, signupState =>
+    signupState.get('step'),
+  );
+
+const makeSelectToken = () =>
+  createSelector(selectSignup, signupState =>
+    signupState.get('token'),
+  );
+
 export { 
+  makeSelectStep,
+  makeSelectToken,
   makeSelectSuccess,
   makeSelectError
 };
