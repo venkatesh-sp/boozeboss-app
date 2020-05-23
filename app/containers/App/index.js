@@ -79,7 +79,7 @@ class App extends React.Component {
               rolesRequired={['REGULAR', 'VIP', 'VIP']}
             />
             <PrivateRoute
-              path="/check-in"
+                  path="/check-in"
               component={VerifyCheckin}
               scopesRequired={['AGENCY']}
               rolesRequired={['OWNER', 'MANAGER', 'STAFF']}

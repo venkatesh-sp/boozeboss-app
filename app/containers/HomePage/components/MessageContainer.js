@@ -24,6 +24,17 @@ export default class MessageContainerComponent extends Component {
             >
                 {isAuthenticated && (
                     <React.Fragment>
+                        {user && user.age_verification_status === 'SUBMITTED' && (
+                            <MessageContainer>
+                                <Message 
+                                    description={(
+                                        <div>
+                                            <p>Your profile is in process to be verified.</p>
+                                        </div>
+                                    )} 
+                                />
+                            </MessageContainer>
+                        )}
                         {/* Verify if the user was logged in with facebook and has a 48 hour temporal limit */}
                         {user && !user.age_verification_status &&  user.facebook_user_id && (new Date(user.temporal_age_verification_limit).getTime() >= new Date().getTime()) && (
                             <MessageContainer>

@@ -13,4 +13,4 @@ export const GET_USER_SUCCESS = 'boozeboss/App/GET_USER_SUCCESS';
 export const GET_USER_ERROR = 'boozeboss/App/GET_USER_ERROR';
 
 export const AUTHENTICATE = 'boozeboss/App/AUTHENTICATE';
-export const LOGOUT = 'boozeboss/App/LOGOUT';
+export const LOGOUT = 'boozeboss/App/LOGOUT'

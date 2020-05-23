@@ -13,6 +13,8 @@ import {
   checkVerificationSuccess, checkVerificationError
 } from './actions';
 
+import { getUser } from '../App/actions';
+
 function* checkVerificationSaga() {
   const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${process.env.API_PORT}/api/verifications/check-status`;
 
@@ -61,6 +63,7 @@ function* submitVerificationSaga(params) {
   try {
     const response = yield call(request, requestURL, options);
     yield put(submitVerificationSuccess(response));
+    yield put(getUser());
   } catch (error) {
     const jsonError = yield error.response ? error.response.json() : error;
     yield put(submitVerificationError(jsonError));
