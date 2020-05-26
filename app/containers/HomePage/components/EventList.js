@@ -121,6 +121,7 @@ export default class EventList extends Component {
                 <EventTitle>My Events</EventTitle>
                 {events &&
                     events.length > 0 && 
+                    events.filter(event_guest => new Date(event_guest.event.ended_at).getTime() >= new Date().getTime()) &&
                     events.map(event_guest => <EventCard {...this.props} event_guest={event_guest}/>) 
                 } 
                 {events &&

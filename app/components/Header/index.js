@@ -94,7 +94,7 @@ class Header extends Component {
             <MobileHeaderContainer>
                 <HeaderSection>
                     <IconButton 
-                        icon={<Icon icon="bars" />} 
+                        icon={<Icon icon="bars" />}  
                         onClick={this.toggleMenu}
                     />
                 </HeaderSection>
@@ -107,7 +107,7 @@ class Header extends Component {
                         <Icon icon="circle" style={{color: '#c2b90a', margin: '0 0 0 0.5em'}}/>
                     </WalletBalance>
                 ) : (
-                    <div />
+                    <HeaderSection />
                 )}
                 <StyledDrawer
                     placement="left"
