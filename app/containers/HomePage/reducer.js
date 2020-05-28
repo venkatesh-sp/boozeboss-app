@@ -26,7 +26,8 @@ function homepageReducer(state = initialState, action) {
     case GET_AGENCY_EVENTS_REQUEST:
       return state;
     case GET_AGENCY_EVENTS_SUCCESS:
-      return state.set('agencyEvents', action.agencyEvents);
+      const new_events = action.agencyEvents.filter(event => new Date(event.end_time).getTime() >= new Date().getTime());
+      return state.set('agencyEvents', new_events);
     case GET_AGENCY_EVENTS_ERROR:
       return state;
     default:
