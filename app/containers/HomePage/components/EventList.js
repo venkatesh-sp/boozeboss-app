@@ -29,6 +29,12 @@ const EventRow = styled.div`
     flex: 1;
     align-items: center;
 `
+
+const ButtonContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+`
 /* const renderer = ({ days, hours, minutes, seconds, completed }) => {
     if (completed) {
       // Render a completed state
@@ -51,12 +57,24 @@ class EventCard extends Component {
         }
       };
 
-    handleShowInvite = () => {
+    handleShowCheckIn = () => {
         const {history, event_guest} = this.props;
         history.push({
             pathname: 'qr-invite',
             state: {
-                event: event_guest.event,
+                event_guest: event_guest,
+                is_checkin: true
+            }
+        })
+    }
+
+    handleShowCheckOut = () => {
+        const {history, event_guest} = this.props;
+        history.push({
+            pathname: 'qr-invite',
+            state: {
+                event_guest: event_guest,
+                is_checkout: true
             }
         })
     }
@@ -67,18 +85,41 @@ class EventCard extends Component {
             <Panel bordered>
                 <EventRow>
                     <p>{moment(event_guest.event.started_at).format('DD/MM/YYYY')}</p>
-                    <p style={{margin: 0}}>Starting {moment(event_guest.event.started_at).fromNow()}</p>
+                    {/* If its an upcoming event */}
+                    {new Date(event_guest.event.started_at).getTime() >= new Date().getTime() && (
+                        <p style={{margin: 0}}>Starting {moment(event_guest.event.started_at).fromNow()}</p>
+                    )}
+                    {/* If its an ongoing event */}
+                    {(new Date(event_guest.event.started_at).getTime() < new Date().getTime()) && 
+                        (new Date(event_guest.event.ended_at).getTime() >= new Date().getTime()) && (
+                            <b style={{margin: 0}}>ONGOING</b>
+                    )}
+                    {/* If its a finished event */}
+                    {(new Date(event_guest.event.ended_at).getTime() <= new Date().getTime()) && (
+                            <b style={{margin: 0}}>Finished</b>
+                    )}
                 </EventRow>
                 <EventRow style={{margin: '1em 0 0 0'}}>
                     <b>{event_guest.event.brief_event.name}<p>@ {event_guest.event.brief_event.venue.name} ({event_guest.event.brief_event.venue.address})</p></b>
                 </EventRow>
                 <Divider />
-                { event_guest.event.started_at >= new Date() ? (
+                { new Date(event_guest.event.started_at).getTime() <= new Date().getTime() ? (
                      <EventRow>
                         {event_guest.checked_in ? (
-                            <Button color="green" block>Menu</Button>
+                            <React.Fragment>
+                                {event_guest.check_out_time ? (
+                                    <p>Successfully Checked-Out</p>
+                                ) : (
+                                    <ButtonContainer>
+                                        <Button color="green" block>Menu</Button> 
+                                        <Button block onClick={this.handleShowCheckOut}>Check-Out</Button>
+                                    </ButtonContainer>
+                                )}
+                            </React.Fragment>
+                            
+                            
                         ) : (
-                            <Button color="green" block onClick={this.handleShowInvite}>Check-In</Button>
+                            <Button color="green" block onClick={this.handleShowCheckIn}>Check-In</Button>
                         )}
                     </EventRow>
                 ): (

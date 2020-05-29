@@ -54,10 +54,10 @@ export class InviteCodeContainer extends React.PureComponent {
     const {history, getInviteCode} = this.props;
     const {state} = history.location;
     
-    if (!state || !state.event || !state.event.id) {
+    if (!state || !state.event_guest || !state.event_guest.event.id) {
       history.push({pathname: '/'})
     } else {
-      getInviteCode(state.event.id)
+      getInviteCode(state.event_guest.event.id)
     }
   }
 
@@ -66,22 +66,39 @@ export class InviteCodeContainer extends React.PureComponent {
     const {state} = history.location;
     return (
       <InviteContainer>
-        {state.event && (
+        {state.event_guest && (
           <Panel bordered>
             <InfoSection>
-              <h5>{state.event.brief_event.name}</h5>
-              <p>{moment(state.event.started_at).format('DD/MM/YYYY LT')}</p>
+              <h5>{state.event_guest.event.brief_event.name}</h5>
+              <p>{moment(state.event_guest.event.started_at).format('DD/MM/YYYY LT')}</p>
             </InfoSection>
             <Divider />
-            <p>Please scan this code in the venue entrance to check-in into the event.</p>
-            <QRSection>
-              {code ? (
-                <QRCode value={`${process.env.APP_SCHEMA}://${process.env.APP_HOST}${process.env.APP_PORT && `:${process.env.APP_PORT}`}/check-in/${code}`}/>
-              ) : (
-                <Loader />
-              )}
-              {code && <p>{`${process.env.APP_SCHEMA}://${process.env.APP_HOST}${process.env.APP_PORT && `:${process.env.APP_PORT}`}/check-in/${code}`}</p>}
-            </QRSection>
+            {state.is_checkin && (
+              <React.Fragment>
+                <p>Please scan this code in the venue entrance to check-in into the event.</p>
+                <QRSection>
+                  {code ? (
+                    <QRCode value={`${process.env.APP_SCHEMA}://${process.env.APP_HOST}${process.env.APP_PORT && `:${process.env.APP_PORT}`}/check-in/${code}`}/>
+                  ) : (
+                    <Loader />
+                  )}
+                  {code && <p>{`${process.env.APP_SCHEMA}://${process.env.APP_HOST}${process.env.APP_PORT && `:${process.env.APP_PORT}`}/check-in/${code}`}</p>}
+                </QRSection>
+              </React.Fragment>
+            )}
+            {state.is_checkout && (
+              <React.Fragment>
+                <p>Scan this code at the venue exit to checkout and win some rewards.</p>
+                <QRSection>
+                  {code ? (
+                    <QRCode value={`${process.env.APP_SCHEMA}://${process.env.APP_HOST}${process.env.APP_PORT && `:${process.env.APP_PORT}`}/check-out/${code}`}/>
+                  ) : (
+                    <Loader />
+                  )}
+                  {code && <p>{`${process.env.APP_SCHEMA}://${process.env.APP_HOST}${process.env.APP_PORT && `:${process.env.APP_PORT}`}/check-out/${code}`}</p>}
+                </QRSection>
+              </React.Fragment>
+            )}
             <Button block color="green" onClick={() => this.props.history.goBack()}>
               Go Back
             </Button>

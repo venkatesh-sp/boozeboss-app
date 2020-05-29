@@ -15,7 +15,9 @@ import HomePage from 'containers/HomePage/Loadable';
 import VerificationContainer from 'containers/VerificationContainer/Loadable';
 import InviteCodeContainer from 'containers/InviteCodeContainer/Loadable';
 import VerifyCheckin from 'containers/VerifyCheckIn/Loadable';
+import VerifyCheckOut from 'containers/VerifyCheckOut/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
+import EventPage from 'containers/EventPage/Loadable';
 import SignupPage from 'containers/SignupPage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
@@ -65,6 +67,12 @@ class App extends React.Component {
             <GuardedRoute path="/signup" component={SignupPage} />
             <GuardedRoute path="/login" component={LoginPage} />
             <PrivateRoute
+              path="/event"
+              component={EventPage}
+              scopesRequired={['GUEST', 'AGENCY']}
+              rolesRequired={['OWNER', 'MANAGER', 'STAFF', 'REGULAR', 'VIP', 'VIP']}
+            />
+            <PrivateRoute
               exact
               path="/verification"
               component={VerificationContainer}
@@ -81,6 +89,12 @@ class App extends React.Component {
             <PrivateRoute
                   path="/check-in"
               component={VerifyCheckin}
+              scopesRequired={['AGENCY']}
+              rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
+            />
+            <PrivateRoute
+              path="/check-out"
+              component={VerifyCheckOut}
               scopesRequired={['AGENCY']}
               rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
             />

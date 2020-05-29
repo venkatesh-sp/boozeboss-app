@@ -44,7 +44,20 @@ class EventCard extends Component {
             <StyledEvent bordered>
                 <EventRow>
                     <p>{moment(brief_event.event.started_at).format('DD/MM/YYYY')}</p>
-                    <p style={{margin: 0}}>Starting {moment(brief_event.event.started_at).fromNow()}</p>
+                    {/* If its an upcoming event */}
+                    {new Date(brief_event.event.started_at).getTime() >= new Date().getTime() && (
+                        <p style={{margin: 0}}>Starting {moment(brief_event.event.started_at).fromNow()}</p>
+                    )}
+                    {/* If its an ongoing event */}
+                    {(new Date(brief_event.event.started_at).getTime() < new Date().getTime()) && 
+                        (new Date(brief_event.event.ended_at).getTime() >= new Date().getTime()) && (
+                            <b style={{margin: 0}}>ONGOING</b>
+                    )}
+                    {/* If its a finished event */}
+                    {(new Date(brief_event.event.ended_at).getTime() <= new Date().getTime()) && (
+                            <b style={{margin: 0}}>Finished</b>
+                    )}
+
                 </EventRow>
                 <EventRow style={{margin: '1em 0 0 0'}}>
                     <b>{brief_event.name}</b>
