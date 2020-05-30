@@ -11,3 +11,6 @@ export const GET_EVENT_ERROR = 'app/EventPage/GET_EVENT_ERROR';
 export const UPDATE_EVENT_REQUEST = 'app/EventPage/UPDATE_EVENT_REQUEST';
 export const UPDATE_EVENT_SUCCESS = 'app/EventPage/UPDATE_EVENT_SUCCESS';
 export const UPDATE_EVENT_ERROR = 'app/EventPage/UPDATE_EVENT_ERROR';
+
+export const ADD_ITEM_TO_CART = 'app/EventPage/ADD_ITEM_TO_CART';
+

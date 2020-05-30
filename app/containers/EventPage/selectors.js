@@ -7,7 +7,13 @@ const makeSelectEvent = () =>
     eventState.get('event'),
   );
 
+const makeSelectCart = () =>
+  createSelector(selectEvent, eventState =>
+    eventState.get('cart'),
+  );
+
 
 export { 
-  makeSelectEvent
+  makeSelectEvent,
+  makeSelectCart
 };

@@ -14,13 +14,13 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectEventPage, { makeSelectEvent } from './selectors';
+import makeSelectEventPage, { makeSelectEvent, makeSelectCart } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import { EventContainer } from './components';
 import { makeSelectRole, makeSelectScope } from '../App/selectors';
-import { getEvent, getEventSuccess, updateEvent } from './actions';
+import { getEvent, getEventSuccess, updateEvent, addItemToCart } from './actions';
 
 /* eslint-disable react/prefer-stateless-function */
 export class EventPage extends React.Component {
@@ -41,7 +41,7 @@ export class EventPage extends React.Component {
     return (
       <div>
         <Helmet>
-          <title>EventPage</title>
+          <title>Event Page</title>
           <meta name="description" content="Description of EventPage" />
         </Helmet>
         <EventContainer 
@@ -60,6 +60,7 @@ const mapStateToProps = createStructuredSelector({
   role: makeSelectRole(), 
   scope: makeSelectScope(), 
   event: makeSelectEvent(),
+  cart: makeSelectCart(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -67,6 +68,7 @@ function mapDispatchToProps(dispatch) {
     getEvent: event_id => dispatch(getEvent(event_id)),
     getEventSuccess: event => dispatch(getEventSuccess(event)), 
     updateEvent: (event_id, field) => dispatch(updateEvent(event_id, field)),
+    addItemToCart: (item) => dispatch(addItemToCart(item)),
   };
 }
 

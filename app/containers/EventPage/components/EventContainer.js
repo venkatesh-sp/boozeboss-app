@@ -7,6 +7,7 @@ import { Message, Button } from 'rsuite';
 import { updateEventError } from '../actions';
 import EventHeaderContainer from './EventHeaderContainer';
 import EventMenu from './EventMenu';
+import EventCartCheckout from './EventCartCheckout';
 
 const Container = styled.div`
     display: flex;
@@ -37,7 +38,7 @@ export default class EventContainer extends Component {
     }
 
     render() {
-        const {event} = this.props;
+        const {event, cart} = this.props;
         return (
             <Container>
                 {event && (
@@ -75,6 +76,11 @@ export default class EventContainer extends Component {
                             {...this.props}
                         />
                     </RoleValidator>
+                )}
+                {cart && cart.length > 0 && (
+                    <EventCartCheckout 
+                        {...this.props}
+                    />
                 )}
             </Container>
         )

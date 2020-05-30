@@ -39,8 +39,17 @@ const ProductColumn = styled.div`
     ${props => `align-items: ${props.align};` || ''}
 `
 
+const CheckoutPanel = styled(Panel)`
+
+`
 
 export default class EventMenu extends Component {
+
+    handleAddItemToCart = (event_product) => {
+        const {addItemToCart} = this.props;
+        addItemToCart(event_product);
+    }
+ 
     render() {
         const {event} = this.props;
         return (
@@ -59,7 +68,12 @@ export default class EventMenu extends Component {
                                         <b>{event_product.product.name} ({event_product.product.metric_amount}{event_product.product.metric})</b>
                                     </ProductColumn>
                                     <ProductColumn flex={1} align="flex-end">
-                                        <IconButton icon={<Icon icon="plus" />} color="green" circle />
+                                        <IconButton 
+                                            icon={<Icon icon="plus" />}
+                                            color="green" 
+                                            circle 
+                                            onClick={() => this.handleAddItemToCart(event_product)}
+                                        />
                                     </ProductColumn>
                                 </ProductRow>
                                 
