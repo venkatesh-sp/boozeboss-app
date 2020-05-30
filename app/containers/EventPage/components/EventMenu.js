@@ -49,6 +49,22 @@ export default class EventMenu extends Component {
         const {addItemToCart} = this.props;
         addItemToCart(event_product);
     }
+
+    handleRemoveItemFromCart = (item) => {
+        const {removeItemFromCart} = this.props;
+        removeItemFromCart(item);
+    }
+
+    shouldShowMinusButton = (event_product) => {
+        const {cart} = this.props;
+        
+        if (!cart || cart.length < 1) return false;
+
+        const cart_products =
+            cart.filter(item => item.id === event_product.id);
+
+        return cart_products.length > 0;
+    }
  
     render() {
         const {event} = this.props;
@@ -68,15 +84,29 @@ export default class EventMenu extends Component {
                                         <b>{event_product.product.name} ({event_product.product.metric_amount}{event_product.product.metric})</b>
                                     </ProductColumn>
                                     <ProductColumn flex={1} align="flex-end">
-                                        <IconButton 
-                                            icon={<Icon icon="plus" />}
-                                            color="green" 
-                                            circle 
-                                            onClick={() => this.handleAddItemToCart(event_product)}
-                                        />
+                                        <ProductRow>
+                                            <IconButton 
+                                                icon={<Icon icon="plus" />}
+                                                color="green" 
+                                                circle 
+                                                size="sm"
+                                                onClick={() => this.handleAddItemToCart(event_product)}
+                                            />
+                                            {this.shouldShowMinusButton(event_product) && (
+                                                <IconButton 
+                                                    style={{margin: '0 0 0 5px'}}
+                                                    icon={<Icon icon="minus" />}
+                                                    color="red" 
+                                                    circle 
+                                                    size="sm"
+                                                    onClick={() => this.handleRemoveItemFromCart(event_product)}
+                                                />
+                                            )}
+                                            
+                                        </ProductRow>
+                                        
                                     </ProductColumn>
                                 </ProductRow>
-                                
                             </StyledPanel>
                         )
                     })}

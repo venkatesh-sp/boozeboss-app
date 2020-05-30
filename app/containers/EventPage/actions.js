@@ -6,7 +6,8 @@
 
 import { 
   GET_EVENT_REQUEST,  GET_EVENT_SUCCESS, GET_EVENT_ERROR,
-  UPDATE_EVENT_REQUEST, UPDATE_EVENT_SUCCESS, UPDATE_EVENT_ERROR, ADD_ITEM_TO_CART
+  UPDATE_EVENT_REQUEST, UPDATE_EVENT_SUCCESS, UPDATE_EVENT_ERROR, 
+  ADD_ITEM_TO_CART, REMOVE_ITEM_FROM_CART
 } from './constants';
 
 export function getEvent(event_id) {
@@ -56,6 +57,14 @@ export function updateEventError(error) {
 export function addItemToCart(item) {
   return {
     type: ADD_ITEM_TO_CART,
+    item
+  };
+}
+
+// Remove item from cart 
+export function removeItemFromCart(item) {
+  return {
+    type: REMOVE_ITEM_FROM_CART,
     item
   };
 }

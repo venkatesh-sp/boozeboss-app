@@ -35,6 +35,10 @@ const ButtonContainer = styled.div`
     flex-direction: column;
     flex: 1;
 `
+const StyledEvent = styled(Panel)`
+    margin: 1em 0 1em 0;
+`
+
 /* const renderer = ({ days, hours, minutes, seconds, completed }) => {
     if (completed) {
       // Render a completed state
@@ -89,7 +93,7 @@ class EventCard extends Component {
     render() {
         const {event_guest} = this.props;
         return (
-            <Panel bordered>
+            <StyledEvent bordered>
                 <EventRow>
                     <p>{moment(event_guest.event.started_at).format('DD/MM/YYYY')}</p>
                     {/* If its an upcoming event */}
@@ -104,32 +108,14 @@ class EventCard extends Component {
                     {/* If its a finished event */}
                     {(new Date(event_guest.event.ended_at).getTime() <= new Date().getTime()) && (
                             <b style={{margin: 0}}>Finished</b>
-                    )}
+                     )}
                 </EventRow>
                 <EventRow style={{margin: '1em 0 0 0'}}>
                     <b>{event_guest.event.brief_event.name}<p>@ {event_guest.event.brief_event.venue.name} ({event_guest.event.brief_event.venue.address})</p></b>
                 </EventRow>
                 <Divider />
-                { new Date(event_guest.event.started_at).getTime() <= new Date().getTime() ? (
-                     <EventRow>
-                        {event_guest.checked_in ? (
-                            <React.Fragment>
-                                {event_guest.check_out_time ? (
-                                    <p>Successfully Checked-Out</p>
-                                ) : (
-                                    <ButtonContainer>
-                                        <Button color="green" block onClick={this.handleGoToEvent}>Menu</Button> 
-                                        <Button block onClick={this.handleShowCheckOut}>Check-Out</Button>
-                                    </ButtonContainer>
-                                )}
-                            </React.Fragment>
-                            
-                            
-                        ) : (
-                            <Button color="green" block onClick={this.handleShowCheckIn}>Check-In</Button>
-                        )}
-                    </EventRow>
-                ): (
+                {/* If the event haven't started it yet */}
+                {new Date(event_guest.event.started_at).getTime() >= new Date().getTime() && (
                     <Button block color="green">
                             <Countdown 
                                 date={event_guest.event.started_at} 
@@ -137,7 +123,30 @@ class EventCard extends Component {
                             />
                     </Button>
                 )}
-            </Panel>
+                {/* If its an ongoing event */}
+                { new Date(event_guest.event.started_at).getTime() <= new Date().getTime() &&
+                    new Date(event_guest.event.ended_at).getTime() >= new Date().getTime() &&  (
+                        <EventRow>
+                            {event_guest.checked_in ? (
+                                <React.Fragment>
+                                    {event_guest.check_out_time ? (
+                                        <p>Successfully Checked-Out</p>
+                                    ) : (
+                                        <ButtonContainer>
+                                            <Button color="green" block onClick={this.handleGoToEvent}>Menu</Button> 
+                                            <Button block onClick={this.handleShowCheckOut}>Check-Out</Button>
+                                        </ButtonContainer>
+                                    )}
+                                </React.Fragment>
+                            ) : (
+                                <Button color="green" block onClick={this.handleShowCheckIn}>Check-In</Button>
+                            )}
+                        </EventRow>
+                )}
+                {(new Date(event_guest.event.ended_at).getTime() <= new Date().getTime()) && (
+                    <b style={{margin: 0}}>Thanks for coming</b>
+                )}
+            </StyledEvent>
         )
     }
 }

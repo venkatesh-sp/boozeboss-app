@@ -20,7 +20,7 @@ import saga from './saga';
 import messages from './messages';
 import { EventContainer } from './components';
 import { makeSelectRole, makeSelectScope } from '../App/selectors';
-import { getEvent, getEventSuccess, updateEvent, addItemToCart } from './actions';
+import { getEvent, getEventSuccess, updateEvent, addItemToCart, removeItemFromCart } from './actions';
 
 /* eslint-disable react/prefer-stateless-function */
 export class EventPage extends React.Component {
@@ -69,6 +69,7 @@ function mapDispatchToProps(dispatch) {
     getEventSuccess: event => dispatch(getEventSuccess(event)), 
     updateEvent: (event_id, field) => dispatch(updateEvent(event_id, field)),
     addItemToCart: (item) => dispatch(addItemToCart(item)),
+    removeItemFromCart: (item) => dispatch(removeItemFromCart(item))
   };
 }
 
