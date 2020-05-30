@@ -5,6 +5,8 @@ import Countdown from 'react-countdown';
 import moment from 'moment';
 import { Message, Button } from 'rsuite';
 import { updateEventError } from '../actions';
+import EventHeaderContainer from './EventHeaderContainer';
+import EventMenu from './EventMenu';
 
 const Container = styled.div`
     display: flex;
@@ -58,6 +60,20 @@ export default class EventContainer extends Component {
                             (new Date(event.ended_at).getTime() >= new Date().getTime()) && (
                              <Button onClick={this.endEvent} style={{marginTop: '0.5em'}} block color='green'>End of the day</Button>
                          )}
+                    </RoleValidator>
+                )}
+                {event && (
+                    <RoleValidator
+                        {...this.props}
+                        scopes={['GUEST']}
+                        roles={['REGULAR', 'VIP', 'VVIP']}
+                    >
+                        <EventHeaderContainer 
+                            {...this.props}
+                        />
+                        <EventMenu 
+                            {...this.props}
+                        />
                     </RoleValidator>
                 )}
             </Container>

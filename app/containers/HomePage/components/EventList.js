@@ -79,6 +79,13 @@ class EventCard extends Component {
         })
     }
 
+    handleGoToEvent = () => {
+        const {event_guest, history} = this.props;
+        history.push({
+            pathname: `event/${event_guest.event.id}`, 
+        })
+    }
+
     render() {
         const {event_guest} = this.props;
         return (
@@ -111,7 +118,7 @@ class EventCard extends Component {
                                     <p>Successfully Checked-Out</p>
                                 ) : (
                                     <ButtonContainer>
-                                        <Button color="green" block>Menu</Button> 
+                                        <Button color="green" block onClick={this.handleGoToEvent}>Menu</Button> 
                                         <Button block onClick={this.handleShowCheckOut}>Check-Out</Button>
                                     </ButtonContainer>
                                 )}
