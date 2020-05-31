@@ -24,11 +24,26 @@ const StyledCheckoutPanel = styled(Panel)`
 `
 
 export default class EventCartCheckout extends Component {
+
+    handleProccedToOrder = () => {
+        const {history, cart, event} = this.props;
+        history.push({
+            pathname: `/order`,
+            state: {
+                cart,
+                event_id: event.id,
+            }
+        })
+    }
+
     render() {
         const {cart} = this.props;
         return (
             <CheckoutSection>
-                <StyledCheckoutPanel shaded>
+                <StyledCheckoutPanel 
+                    shaded 
+                    onClick={this.handleProccedToOrder}
+                >
                     <b>Go to Checkout ({cart.length} item{cart.length > 1 && 's'})</b>
                 </StyledCheckoutPanel>
             </CheckoutSection>

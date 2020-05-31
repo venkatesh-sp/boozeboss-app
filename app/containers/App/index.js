@@ -16,6 +16,7 @@ import VerificationContainer from 'containers/VerificationContainer/Loadable';
 import InviteCodeContainer from 'containers/InviteCodeContainer/Loadable';
 import VerifyCheckin from 'containers/VerifyCheckIn/Loadable';
 import VerifyCheckOut from 'containers/VerifyCheckOut/Loadable';
+import WalletOrder from 'containers/WalletOrder/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import EventPage from 'containers/EventPage/Loadable';
 import SignupPage from 'containers/SignupPage/Loadable';
@@ -97,6 +98,12 @@ class App extends React.Component {
               component={VerifyCheckOut}
               scopesRequired={['AGENCY']}
               rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
+            />
+            <PrivateRoute
+              path="/order"
+              component={WalletOrder}
+              scopesRequired={['GUEST']}
+              rolesRequired={['REGULAR', 'VIP', 'VIP']}
             />
             <Route path="" component={NotFoundPage} />
           </Switch>

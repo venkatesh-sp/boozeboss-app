@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'; 
 import moment from 'moment';
-import {Divider} from 'rsuite';
+import {Divider} from 'rsuite'; 
 
 const Header = styled.div`
     display: flex; 
