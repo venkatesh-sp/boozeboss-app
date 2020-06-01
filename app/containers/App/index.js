@@ -110,7 +110,7 @@ class App extends React.Component {
             <Route path="" component={NotFoundPage} />
           </Switch>
           <GlobalStyle />
-          <PWAPrompt />
+          <PWAPrompt promptOnVisit={1} timesToShow={999}/>
         </AppWrapper>
       );
   }
