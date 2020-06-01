@@ -120,6 +120,7 @@ module.exports = require('./webpack.base.babel')({
       short_name: 'BoozeBoss',
       description: 'Buy drinks',
       background_color: '#fafafa',
+      display: 'standalone',
       theme_color: '#b1624d',
       inject: true,
       ios: true,
