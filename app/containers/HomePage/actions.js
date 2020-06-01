@@ -10,6 +10,8 @@ import {
   SUBMIT_EVENT_CODE_REQUEST, SUBMIT_EVENT_CODE_SUCCESS, SUBMIT_EVENT_CODE_ERROR
 } from './constants';
 
+import { Alert } from 'rsuite';
+
 export function getEvents() {
   return {
     type: GET_GUEST_EVENTS_REQUEST,
@@ -58,6 +60,7 @@ export function submitEventCode(code) {
 }
 
 export function submitEventCodeSuccess(success) {
+  Alert.success(success);
   return {
     type: SUBMIT_EVENT_CODE_SUCCESS,
     success
@@ -65,6 +68,7 @@ export function submitEventCodeSuccess(success) {
 }
 
 export function submitEventCodeError(error) {
+  Alert.error(error, 3000);
   return {
     type: SUBMIT_EVENT_CODE_ERROR,
     error

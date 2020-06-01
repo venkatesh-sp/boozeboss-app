@@ -7,6 +7,7 @@ import RoleValidator from 'components/RoleValidator';
 const MessageContainer = styled.div`
     display: flex;
     flex-direction: column;
+    margin: -1em -1em 0 -1em;
 `
 
 const StyledButton = styled(Button)`
@@ -42,12 +43,12 @@ export default class MessageContainerComponent extends Component {
                                     description={(
                                         <div>
                                             <p><b>Facebook</b> login has a 48 hour temporal verification limit. Please verify your account by {moment(user.temporal_age_verification_limit).format('DD/MM/YYYY LT')} to keep full access.</p>
+                                            <StyledButton onClick={this.props.goToRoute} color="green" block>
+                                                Verify my age
+                                            </StyledButton>
                                         </div>
                                     )} 
                                 />
-                                <StyledButton onClick={this.props.goToRoute} color="green">
-                                    Verify my age
-                                </StyledButton>
                             </MessageContainer>
                         )}
                         {/* If it isn't a facebook account just show the verification */}
