@@ -65,7 +65,7 @@ class Header extends Component {
         show: false,
     }
 
-    componentDidMount = () => {
+    componentWillMount = () => {
         const {getUser, isAuthenticated} = this.props;
         if (isAuthenticated) {
             getUser();
@@ -148,8 +148,8 @@ class Header extends Component {
 
 Header.propTypes = {
     isAuthenticated: PropTypes.bool,
-    scope: PropTypes.string,
-    role: PropTypes.role,
+    scope: PropTypes.string, 
+    role: PropTypes.string, 
   };
   
 const mapStateToProps = createStructuredSelector({

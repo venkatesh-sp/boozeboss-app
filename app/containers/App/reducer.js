@@ -20,13 +20,20 @@ const tokenIsExpired = () => {
 }
 
 const getScope = () => {
+  const hasToken = !!localStorage.getItem('jwt');
+
+  if (!hasToken) return null;
+
   const token = decode(localStorage.getItem('jwt'));
-  return token.scope;
+  return token.scope || null;
 }
 
 const getRole = () => {
+  const hasToken = !!localStorage.getItem('jwt');
+
+  if (!hasToken) return null;
   const token = decode(localStorage.getItem('jwt'));
-  return token.role;
+  return token.role || null;
 }
 
 const getAgeVerify = () => {
@@ -34,14 +41,15 @@ const getAgeVerify = () => {
   return token.is_age_verified;
 }
 
+
 // The initial state of the App
 export const initialState = fromJS({
   loading: false,
   error: false,
   isAuthenticated: !!localStorage.getItem('jwt') && !tokenIsExpired(),
   isAgeVerified: !!localStorage.getItem('jwt') && getAgeVerify(),
-  scope: !!localStorage.getItem('jwt') && getScope(),
-  role: !!localStorage.getItem('jwt') && getRole(),
+  scope: getScope(),
+  role: getRole(),
 });
 
 /* eslint-disable default-case, no-param-reassign */

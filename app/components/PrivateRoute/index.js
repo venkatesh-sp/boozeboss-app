@@ -20,13 +20,13 @@ const PrivateRoute = ({ component: Component, isAuthenticated, scopesRequired, r
             <Component {...props} />
           ) : (
             <Redirect
-              to={{ pathname: '/', state: { from: props.location } }}
+              to={{ pathname: '/login', state: { from: props.location } }}
             />
           )}
         </React.Fragment>
       ) : (
         <Redirect
-          to={{ pathname: '/', state: { from: props.location } }}
+          to={{ pathname: '/login', state: { from: props.location } }}
         />
       )
     }
@@ -37,7 +37,7 @@ PrivateRoute.propTypes = {
   component: PropTypes.oneOfType([PropTypes.object, PropTypes.any]),
   isAuthenticated: PropTypes.bool,
   scope: PropTypes.string,
-  role: PropTypes.role,
+  role: PropTypes.string,
   location: PropTypes.object,
 };
 
