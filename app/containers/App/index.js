@@ -64,7 +64,7 @@ class App extends React.Component {
           </Helmet>
           <Header />
           <Switch>
-            <Route exact path="/" component={HomePage} />
+            <PrivateRoute exact path="/" component={HomePage} />
             <GuardedRoute path="/signup" component={SignupPage} />
             <GuardedRoute path="/login" component={LoginPage} />
             <PrivateRoute
