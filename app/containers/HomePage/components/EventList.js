@@ -143,7 +143,8 @@ class EventCard extends Component {
                             )}
                         </EventRow>
                 )}
-                {(new Date(event_guest.event.ended_at).getTime() <= new Date().getTime()) && (
+                {event_guest.check_in_time && 
+                    (new Date(event_guest.event.ended_at).getTime() <= new Date().getTime()) && (
                     <b style={{margin: 0}}>Thanks for coming</b>
                 )}
             </StyledEvent>
