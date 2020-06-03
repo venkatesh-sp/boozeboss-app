@@ -53,7 +53,7 @@ export class VerifyCheckIn extends React.PureComponent {
   }
 
   render() {
-    const {guest, success} = this.props;
+    const {guest, success, error} = this.props;
     return (
       <div>
         <Helmet>
@@ -62,6 +62,7 @@ export class VerifyCheckIn extends React.PureComponent {
         </Helmet>
         <VerificationContainer>
           {success && <Message type="success" description={<b>Successful Check-In</b>}/>}
+          {error && <Message type="error" description={error}/>}
           <Divider />
           {guest && (
             <Panel bordered>

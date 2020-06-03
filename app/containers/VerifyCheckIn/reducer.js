@@ -22,7 +22,7 @@ function verifyCheckInReducer(state = initialState, action) {
         .set('success', true)
         .set('guest', action.guest);
     case CHECK_IN_ERROR:
-      return state;
+      return state.set('error', action.error);
     default:
       return state;
   }
