@@ -17,6 +17,7 @@ import InviteCodeContainer from 'containers/InviteCodeContainer/Loadable';
 import VerifyCheckin from 'containers/VerifyCheckIn/Loadable';
 import VerifyCheckOut from 'containers/VerifyCheckOut/Loadable';
 import WalletOrder from 'containers/WalletOrder/Loadable';
+import QrScanner from 'containers/QrScanner/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import EventPage from 'containers/EventPage/Loadable';
 import SignupPage from 'containers/SignupPage/Loadable';
@@ -59,10 +60,10 @@ class App extends React.Component {
     return (
         <AppWrapper>
           <Helmet
-            titleTemplate="%s - React.js Boilerplate"
-            defaultTitle="React.js Boilerplate"
+            titleTemplate="%s - BoozeBoss"
+            defaultTitle="BoozeBoss"
           >
-            <meta name="description" content="A React.js Boilerplate application" />
+            <meta name="description" content="BoozeBoss" />
           </Helmet>
           <Header />
           <Switch>
@@ -82,6 +83,12 @@ class App extends React.Component {
               rolesRequired={['OWNER', 'MANAGER', 'STAFF', 'REGULAR', 'VIP', 'VIP']}
             />
             <PrivateRoute
+              path="/scanner"
+              component={QrScanner}
+              scopesRequired={['AGENCY']}
+              rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
+            />
+            <PrivateRoute
               exact
               path="/verification"
               component={VerificationContainer}
@@ -96,7 +103,7 @@ class App extends React.Component {
               rolesRequired={['REGULAR', 'VIP', 'VIP']}
             />
             <PrivateRoute
-                  path="/check-in"
+              path="/check-in"
               component={VerifyCheckin}
               scopesRequired={['AGENCY']}
               rolesRequired={['OWNER', 'MANAGER', 'STAFF']}

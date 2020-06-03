@@ -10,6 +10,8 @@ import { compose } from 'redux';
 import { logout, getUser } from '../../containers/App/actions'
 import { makeSelectIsAuthenticated, makeSelectScope, makeSelectRole, makeSelectUser } from '../../containers/App/selectors';
 
+import RoleValidator from 'components/RoleValidator';
+
 const MobileHeaderContainer = styled.div`
     display: flex;
     flex-direction: row;
@@ -87,6 +89,15 @@ class Header extends Component {
         logout();
     }
 
+    validateScope = (scopes, roles) => {
+        const {scope, role} = this.props;
+
+        if (scopes.indexOf(scope) < 0) return false;
+        if (roles.indexOf(role) < 0) return false;
+
+        return true;
+    }
+
     render() {
         const {pathname, isAuthenticated, user} = this.props;
         const {show} = this.state;
@@ -120,7 +131,6 @@ class Header extends Component {
                         <Drawer.Title><StyledDrawerLogo src={require('images/logo_transparent.png')}/></Drawer.Title>
                     </Drawer.Header>
                     <Drawer.Body>
-                        
                         <StyledSidenav>
                             <Sidenav.Body>
                             <Nav activeKey={pathname}>
@@ -128,6 +138,9 @@ class Header extends Component {
                             </Nav>
                             { isAuthenticated ? (
                                 <Nav>
+                                    {this.validateScope(['AGENCY'], ['OWNER', 'MANAGER', 'STAFF']) && (
+                                         <Link to="/scanner" ><Nav.Item onClick={() => this.handleMenuClick('/scanner')} eventKey="/scanner" icon={<Icon icon="qrcode" />} >Scanner</Nav.Item></Link>
+                                    )}
                                     <Nav.Item onClick={this.handleLogout}>Logout</Nav.Item>
                                 </Nav>
                             ) : (

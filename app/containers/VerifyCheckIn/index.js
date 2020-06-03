@@ -41,12 +41,11 @@ const FieldContainer = styled.div`
 export class VerifyCheckIn extends React.PureComponent {
 
   componentDidMount = () => {
-    const {checkIn} = this.props;
-    const path = window.location.pathname.split('/');
-    const token = path[2];
+    const {checkIn, history} = this.props;
+    const {state} = history.location;
     
-    if (token) { 
-      checkIn(token);
+    if (state && state.code) { 
+      checkIn(state.code);
     } else {
       this.props.history.push('/');
     }

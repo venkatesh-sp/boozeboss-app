@@ -78,11 +78,10 @@ export class InviteCodeContainer extends React.PureComponent {
                 <p>Please scan this code in the venue entrance to check-in into the event.</p>
                 <QRSection>
                   {code ? (
-                    <QRCode value={`${process.env.APP_SCHEMA}://${process.env.APP_HOST}${process.env.APP_PORT && `:${process.env.APP_PORT}`}/check-in/${code}`}/>
+                    <QRCode value={JSON.stringify({code, type: 'check-in'})}/>
                   ) : (
                     <Loader />
                   )}
-                  {code && <p>{`${process.env.APP_SCHEMA}://${process.env.APP_HOST}${process.env.APP_PORT && `:${process.env.APP_PORT}`}/check-in/${code}`}</p>}
                 </QRSection>
               </React.Fragment>
             )}
@@ -91,11 +90,10 @@ export class InviteCodeContainer extends React.PureComponent {
                 <p>Scan this code at the venue exit to checkout and win some rewards.</p>
                 <QRSection>
                   {code ? (
-                    <QRCode value={`${process.env.APP_SCHEMA}://${process.env.APP_HOST}${process.env.APP_PORT && `:${process.env.APP_PORT}`}/check-out/${code}`}/>
+                    <QRCode value={JSON.stringify({code, type: 'check-out'})}/>
                   ) : (
                     <Loader />
                   )}
-                  {code && <p>{`${process.env.APP_SCHEMA}://${process.env.APP_HOST}${process.env.APP_PORT && `:${process.env.APP_PORT}`}/check-out/${code}`}</p>}
                 </QRSection>
               </React.Fragment>
             )}
