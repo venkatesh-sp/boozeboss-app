@@ -130,7 +130,7 @@ class EventCard extends Component {
                             {event_guest.checked_in ? (
                                 <React.Fragment>
                                     {event_guest.check_out_time ? (
-                                        <p>Successfully Checked-Out</p>
+                                        <Button color="green" block onClick={this.handleShowCheckIn}>Check-In</Button>
                                     ) : (
                                         <ButtonContainer>
                                             <Button color="green" block onClick={this.handleGoToEvent}>Menu</Button> 
