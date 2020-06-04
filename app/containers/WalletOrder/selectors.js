@@ -12,7 +12,13 @@ const makeSelectSuccess = () =>
     walletOrderState.get('success'),
   );
 
+const makeSelectOrderIdentifier = () =>
+  createSelector(selectWalletOrder, walletOrderState =>
+    walletOrderState.get('order_identifier'),
+  );
+
 export { 
   makeSelectError, 
-  makeSelectSuccess
+  makeSelectSuccess,
+  makeSelectOrderIdentifier
 };

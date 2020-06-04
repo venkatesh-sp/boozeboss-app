@@ -14,7 +14,7 @@ import { makeSelectUser } from '../App/selectors';
 
 
 function* createOrderSaga(params) {
-  const {transactions} = params;
+  const {transactions, history} = params;
 
   const user = yield select(makeSelectUser());
 
@@ -28,6 +28,9 @@ function* createOrderSaga(params) {
     const response = yield call(request, requestURL, options);
     yield put(createOrderSuccess(response));
     yield put(getUser())
+    history.push({
+      pathname: `/orders/${response}`
+    })
   } catch (error) {
     const jsonError = yield error.response ? error.response.json() : error;
     yield put(createOrderError(jsonError));

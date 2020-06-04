@@ -28,7 +28,7 @@ export default class EventCartCheckout extends Component {
     handleProccedToOrder = () => {
         const {history, cart, event} = this.props;
         history.push({
-            pathname: `/order`,
+            pathname: `/new-order`,
             state: {
                 cart,
                 event_id: event.id,

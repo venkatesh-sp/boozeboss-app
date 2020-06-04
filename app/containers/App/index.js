@@ -17,6 +17,7 @@ import InviteCodeContainer from 'containers/InviteCodeContainer/Loadable';
 import VerifyCheckin from 'containers/VerifyCheckIn/Loadable';
 import VerifyCheckOut from 'containers/VerifyCheckOut/Loadable';
 import WalletOrder from 'containers/WalletOrder/Loadable';
+import OrderPage from 'containers/OrderPage/Loadable';
 import QrScanner from 'containers/QrScanner/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import EventPage from 'containers/EventPage/Loadable';
@@ -115,10 +116,16 @@ class App extends React.Component {
               rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
             />
             <PrivateRoute
-              path="/order"
+              path="/new-order"
               component={WalletOrder}
               scopesRequired={['GUEST']}
               rolesRequired={['REGULAR', 'VIP', 'VIP']}
+            />
+            <PrivateRoute
+              path="/orders/:order_identifier"
+              component={OrderPage}
+              scopesRequired={['GUEST', 'AGENCY']}
+              rolesRequired={['REGULAR', 'VIP', 'VIP', 'OWNER', 'MANAGER', 'STAFF']}
             />
             <Route path="" component={NotFoundPage} />
           </Switch>

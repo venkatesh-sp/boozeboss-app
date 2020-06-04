@@ -6,17 +6,18 @@
 
 import { CREATE_PRODUCT_ORDER_REQUEST, CREATE_PRODUCT_ORDER_SUCCESS, CREATE_PRODUCT_ORDER_ERROR } from './constants';
 
-export function createOrder(transactions) {
+export function createOrder(transactions, history) {
   return {
     type: CREATE_PRODUCT_ORDER_REQUEST,
     transactions,
+    history
   };
 }
 
-export function createOrderSuccess(success) {
+export function createOrderSuccess(order_identifier) {
   return {
     type: CREATE_PRODUCT_ORDER_SUCCESS,
-    success,
+    order_identifier
   };
 }
 

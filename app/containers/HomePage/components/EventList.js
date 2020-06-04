@@ -193,7 +193,7 @@ export default class EventList extends Component {
                                 </InputGroup.Addon>
                                 <Input onChange={this.handleEventCodeChange} value={code}/>
                             </InputGroup>
-                            <Button block color="green" disabled={!code || code.length < 6} onClick={this.handleSubmitCode}>
+                            <Button block color="green" disabled={!code || code.length < 5} onClick={this.handleSubmitCode}>
                                 Submit
                             </Button>
                         </Panel>

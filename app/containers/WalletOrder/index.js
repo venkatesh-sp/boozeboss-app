@@ -14,7 +14,7 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { makeSelectError, makeSelectSuccess } from './selectors';
+import { makeSelectError, makeSelectSuccess, makeSelectOrderIdentifier } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
@@ -112,10 +112,10 @@ export class WalletOrder extends React.Component {
   }
 
   handleCreateOrder = () => {
-    const { createOrder } = this.props;
+    const { createOrder, history } = this.props;
     const {cart} = this.state;
     const transactions = cart.map(item => item.id);
-    createOrder(transactions);
+    createOrder(transactions, history);
   }
 
   render() {
@@ -182,11 +182,12 @@ const mapStateToProps = createStructuredSelector({
   user: makeSelectUser(), 
   error: makeSelectError(),
   success: makeSelectSuccess(),
+  order_identifier: makeSelectOrderIdentifier(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    createOrder: (transactions) => dispatch(createOrder(transactions))
+    createOrder: (transactions, history) => dispatch(createOrder(transactions, history))
   };
 }
 
