@@ -14,14 +14,16 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
+import { makeSelectScope, makeSelectRole } from '../App/selectors'
 import { makeSelectSuccess, makeSelectError, makeSelectOrder } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import styled from 'styled-components';
-import { getOrder, cancelOrder } from './actions';
+import { getOrder, cancelOrder, scanOrder, dismiss } from './actions';
 import { Message, Panel, Button, Divider, Icon } from 'rsuite';
 import QRCode from "react-qr-code";
+import RoleValidator from 'components/RoleValidator';
 
 const StyledOrderContainer = styled.div`
   display: flex;
@@ -81,12 +83,19 @@ const TotalRow = props => (
 export class OrderPage extends React.Component {
 
   componentDidMount = () => {
-    const {getOrder, history} = this.props;
+    const {getOrder, history, dismiss, scanOrder} = this.props;
+    const {state} = history.location;
     const path = window.location.pathname.split('/');
     const order_identifier = path[2];
-    
+    dismiss();
+
     if (order_identifier) {
       getOrder(order_identifier);
+
+      if (state && state.redeem) {
+        scanOrder(state.order_identifier);
+      }
+
     } else {
       history.push({pathname: '/'});
     }
@@ -120,43 +129,56 @@ export class OrderPage extends React.Component {
           <meta name="description" content="Description of OrderPage" />
         </Helmet>
         <StyledOrderContainer>
-          {order && order.status === 'CREATED' && <Message type="success" description="To redeem your order please scan it at the bar or with an agency staff."/>}
+          <RoleValidator
+            {...this.props}
+            scopes={['GUEST']}
+            roles={['REGULAR', 'VIP', 'VVIP']}
+          >
+            {order && order.status === 'CREATED' && <Message type="success" description="To redeem your order please scan it at the bar or with an agency staff."/>}
+            {order && order.status === 'RECEIVED' && <Message type="success" description={`Scanned by ${order.agency_collaborator.first_name} ${order.agency_collaborator.last_name}`}/>}
+          </RoleValidator>
           {success && <Message type="success" description={success}/>}
           {order && (
-            <StyledPanel shaded>
-              {order && order.status === 'CREATED' && (
-              <QRSection>
-                  <QRCode 
-                    value={JSON.stringify({
-                        order_identifier: order.order_identifier, 
-                        type: 'redeem-order'
-                      })
-                    }
-                  />
-                <Button 
-                  block 
-                  color="red"
-                  style={{margin: '1em 0 0 0'}}
-                  onClick={this.handleCancelOrder}
-                >
-                  Cancel
-                </Button>
+              <StyledPanel shaded>
+                {order && order.status === 'CREATED' && (
+                  <RoleValidator
+                    {...this.props}
+                    scopes={['GUEST']}
+                    roles={['REGULAR', 'VIP', 'VVIP']}
+                  >
+                  <QRSection>
+                      <QRCode 
+                        value={JSON.stringify({
+                            order_identifier: order.order_identifier, 
+                            type: 'redeem-order'
+                          })
+                        }
+                      />
+                    <Button 
+                      block 
+                      color="red"
+                      style={{margin: '1em 0 0 0'}}
+                      onClick={this.handleCancelOrder}
+                    >
+                      Cancel
+                    </Button>
+                    <Divider />
+                  </QRSection>
+                </RoleValidator>
+                )}
+                <b>Summary</b>
+                {order && order.transactions && (
+                  <React.Fragment>
+                    {order.transactions.map(tx => {
+                      return <ProductSummary item={tx.event_product}/>
+                    })}
+                  </React.Fragment>
+                )}
                 <Divider />
-              </QRSection>
-              )}
-              <b>Summary</b>
-              {order && order.transactions && (
-                <React.Fragment>
-                  {order.transactions.map(tx => {
-                    return <ProductSummary item={tx.event_product}/>
-                  })}
-                </React.Fragment>
-              )}
-              <Divider />
-              {order && (
-                <TotalRow total={this.calculateTotal()}/>
-              )}
-            </StyledPanel>
+                {order && (
+                  <TotalRow total={this.calculateTotal()}/>
+                )}
+              </StyledPanel>
           )}
         </StyledOrderContainer>
       </div>
@@ -172,12 +194,16 @@ const mapStateToProps = createStructuredSelector({
   success: makeSelectSuccess(),
   error: makeSelectError(),
   order: makeSelectOrder(),
+  scope: makeSelectScope(), 
+  role: makeSelectRole()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     getOrder: (order_identifier) => dispatch(getOrder(order_identifier)),
     cancelOrder: (order_id) => dispatch(cancelOrder(order_id)),
+    scanOrder: (order_identifier) => dispatch(scanOrder(order_identifier)),
+    dismiss: () => dispatch(dismiss())
   };
 }
 

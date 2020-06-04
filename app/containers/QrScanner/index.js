@@ -58,6 +58,17 @@ export class QrScanner extends React.Component {
           }
         })
       }
+      
+      // Validate for redeem-order
+      if (json_data.type === 'redeem-order') {
+        history.push({
+          pathname: `/orders/${json_data.order_identifier}`,
+          state: {
+            redeem: true,
+            order_identifier: json_data.order_identifier
+          }
+        })
+      }
     }
   }
   handleError = err => {
