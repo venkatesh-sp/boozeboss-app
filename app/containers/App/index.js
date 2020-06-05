@@ -23,6 +23,7 @@ import FeaturePage from 'containers/FeaturePage/Loadable';
 import EventPage from 'containers/EventPage/Loadable';
 import SignupPage from 'containers/SignupPage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
+import AddCredits from 'containers/AddCredits/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -93,6 +94,13 @@ class App extends React.Component {
               exact
               path="/verification"
               component={VerificationContainer}
+              scopesRequired={['GUEST']}
+              rolesRequired={['REGULAR', 'VIP', 'VIP']}
+            />
+            <PrivateRoute
+              exact
+              path="/add-credits"
+              component={AddCredits}
               scopesRequired={['GUEST']}
               rolesRequired={['REGULAR', 'VIP', 'VIP']}
             />

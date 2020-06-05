@@ -119,6 +119,7 @@ module.exports = options => ({
       API_SCHEMA: process.env.API_SCHEMA,
       API_HOST: process.env.API_HOST,
       API_PORT: process.env.API_PORT,
+      PAYPAL_CLIENT_ID: process.env.PAYPAL_CLIENT_ID,
     }),
   ]),
   resolve: {
