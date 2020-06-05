@@ -8,6 +8,7 @@ import { updateEventError } from '../actions';
 import EventHeaderContainer from './EventHeaderContainer';
 import EventMenu from './EventMenu';
 import EventCartCheckout from './EventCartCheckout';
+import EventAgencyDashboard from './EventAgencyDashboard';
 
 const Container = styled.div`
     display: flex;
@@ -47,6 +48,10 @@ export default class EventContainer extends Component {
                         scopes={['AGENCY']}
                         roles={['OWNER', 'MANAGER', 'STAFF']}
                     >   
+                        <EventHeaderContainer 
+                            {...this.props}
+                        />
+                        <EventAgencyDashboard {...this.props}/>
                          {new Date(event.started_at).getTime() >= new Date().getTime() && (
                              <Message type='info' description={`This event is scheduled to automatically start at ${moment(event.started_at).format('DD/MM/YYYY LT')}`} />
                          )}

@@ -5,7 +5,7 @@
  */
 
 import { fromJS } from 'immutable';
-import { GET_EVENT_REQUEST, GET_EVENT_SUCCESS, GET_EVENT_ERROR, ADD_ITEM_TO_CART, REMOVE_ITEM_FROM_CART} from './constants';
+import { GET_EVENT_REQUEST, GET_EVENT_SUCCESS, GET_EVENT_ERROR, ADD_ITEM_TO_CART, REMOVE_ITEM_FROM_CART, GET_EVENT_STATS_REQUEST, GET_EVENT_STATS_SUCCESS, GET_EVENT_STATS_ERROR} from './constants';
 
 
 const getNewCart = (cart, item) => {
@@ -18,6 +18,7 @@ const getNewCart = (cart, item) => {
 
 export const initialState = fromJS({
   event: null,
+  stats_data: null,
   cart: []
 });
 
@@ -28,6 +29,12 @@ function eventPageReducer(state = initialState, action) {
     case GET_EVENT_SUCCESS:
       return state.set('event', action.event);
     case GET_EVENT_ERROR:
+      return state.set('error', action.error);
+    case GET_EVENT_STATS_REQUEST:
+      return state;
+    case GET_EVENT_STATS_SUCCESS:
+      return state.set('stats_data', action.stats_data);
+    case GET_EVENT_STATS_ERROR:
       return state.set('error', action.error);
     case ADD_ITEM_TO_CART: 
       return state.set('cart', [...state.get('cart'), action.item])
