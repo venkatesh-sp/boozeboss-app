@@ -19,8 +19,9 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import styled from 'styled-components';
-import { Panel, IconButton, Icon, Divider, Button } from 'rsuite';
+import { Panel, IconButton, Icon, Divider, Button, Loader } from 'rsuite';
 import { PayPalButton } from "react-paypal-button-v2";
+import { addCreditsWithPaypal } from './actions';
 
 const CreditsContainer = styled.div`
     display: flex; 
@@ -69,11 +70,30 @@ const CreditsPayment = styled.div`
   margin: 1em 0 0 0; 
 `
 
+const PaymentMethods = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 1em 0 0 0; 
+  ${props => props.isLoading && 'filter: blur(5px);'};
+  ${props => props.isLoading && 'pointer-events: none;'};
+`
+
+const LoaderSection = styled.div`
+  display: flex; 
+  flex-direction: row; 
+  flex: 1; 
+  align-items: center;
+  justify-content: center;
+  margin: 1em 0 1em 0;
+  z-index:
+`
+
 /* eslint-disable react/prefer-stateless-function */
 export class AddCredits extends React.Component {
 
   state = {
-    credits: 20
+    credits: 20, 
+    isLoading: false,
   }
 
   handleChangeCredits = (action) => {
@@ -89,10 +109,20 @@ export class AddCredits extends React.Component {
       })
     }
   }
+
+  handleAddCreditsWithPaypal = (paypal_data, paypal_details) => {
+    const { addCreditsWithPaypal, history } = this.props;
+    const paypal_order_id = paypal_data.orderID;
+    const amount = Number(paypal_details.purchase_units[0].amount.value);
+    const payment_type = 'PAYPAL';
+    
+    addCreditsWithPaypal({paypal_order_id, amount, payment_type}, history);
+  } 
+
   
   
   render() {
-    const {credits} = this.state;
+    const {credits, isLoading} = this.state;
     return (
       <div>
         <Helmet>
@@ -111,7 +141,7 @@ export class AddCredits extends React.Component {
             <Divider />
             <StyledRow>
               <StyledColumn align='flex-start'> 
-                <IconButton circle color="red" icon={<Icon icon="minus"/>} onClick={() => this.handleChangeCredits('remove')}/>
+                {!isLoading && <IconButton circle color="red" icon={<Icon icon="minus"/>} onClick={() => this.handleChangeCredits('remove')}/>}
               </StyledColumn>
               <StyledColumn flex="3" align='center'> 
                   <CreditsSection>
@@ -120,7 +150,7 @@ export class AddCredits extends React.Component {
                   </CreditsSection>
               </StyledColumn>
               <StyledColumn align="flex-end"> 
-                <IconButton circle color="green" icon={<Icon icon="plus"/>} onClick={() => this.handleChangeCredits('add')}/>
+                {!isLoading && <IconButton circle color="green" icon={<Icon icon="plus"/>} onClick={() => this.handleChangeCredits('add')}/>} 
               </StyledColumn>
             </StyledRow>
             <Divider />
@@ -136,41 +166,40 @@ export class AddCredits extends React.Component {
               </SummaryColumn>
             </Summary>
           </Panel>
-          <CreditsPayment> 
-            <Button color="green" block><b>Pay with cash</b><Icon icon="qrcode" style={{marginLeft: '10px'}}/></Button>
-          </CreditsPayment>
-          <CreditsPayment> 
-          <PayPalButton
-            options={{
-              clientId: process.env.PAYPAL_CLIENT_ID
-            }}
-            createOrder={(data, actions) => {
-              return actions.order.create({
-                purchase_units: [{
-                  amount: {
-                    currency_code: "USD",
-                    value: credits
-                  }
-                }],
-              });
-            }}
-            onApprove={(data, actions) => {
-              // Capture the funds from the transaction
-              return actions.order.capture().then(function(details) {
-                // Show a success message to your buyer
-                alert("Transaction completed by " + details.payer.name.given_name);
-    
-                // OPTIONAL: Call your server to save the transaction
-                return fetch("/paypal-transaction-complete", {
-                  method: "post",
-                  body: JSON.stringify({
-                    orderID: data.orderID
-                  })
+          {isLoading && (
+              <LoaderSection>
+                <Loader content="Processing payment. Plase wait a few seconds." vertical />
+              </LoaderSection>
+          )}
+          <PaymentMethods isLoading={isLoading}>
+            <CreditsPayment> 
+              <Button color="green" block><b>Pay with cash</b><Icon icon="qrcode" style={{marginLeft: '10px'}}/></Button>
+            </CreditsPayment>
+            <CreditsPayment> 
+            <PayPalButton
+              
+              options={{
+                clientId: process.env.PAYPAL_CLIENT_ID
+              }}
+              createOrder={(data, actions) => {
+                return actions.order.create({
+                  purchase_units: [{
+                    amount: {
+                      currency_code: "USD",
+                      value: credits
+                    }
+                  }],
                 });
-              });
-            }}
-          />
-          </CreditsPayment>
+              }}
+              onApprove={async (data, actions) => {
+                // Capture the funds from the transaction
+                this.setState({isLoading: true});
+                const details = await actions.order.capture();
+                this.handleAddCreditsWithPaypal(data, details);     
+              }}
+            />
+            </CreditsPayment>
+          </PaymentMethods>
         </CreditsContainer>
       </div>
     );
@@ -186,7 +215,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    addCreditsWithPaypal: (purchase, history) => dispatch(addCreditsWithPaypal(purchase, history)),
   };
 }
 
