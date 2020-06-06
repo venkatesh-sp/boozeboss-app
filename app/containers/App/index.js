@@ -24,6 +24,7 @@ import EventPage from 'containers/EventPage/Loadable';
 import SignupPage from 'containers/SignupPage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
 import AddCredits from 'containers/AddCredits/Loadable';
+import ApproveCredits from 'containers/ApproveCredits/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -103,6 +104,13 @@ class App extends React.Component {
               component={AddCredits}
               scopesRequired={['GUEST']}
               rolesRequired={['REGULAR', 'VIP', 'VIP']}
+            />
+            <PrivateRoute
+              exact
+              path="/approve-credits"
+              component={ApproveCredits}
+              scopesRequired={['AGENCY']}
+              rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
             />
             <PrivateRoute
               exact

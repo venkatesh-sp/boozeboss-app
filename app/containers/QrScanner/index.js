@@ -69,6 +69,16 @@ export class QrScanner extends React.Component {
           }
         })
       }
+
+      // Validate for redeem-order
+      if (json_data.type === 'add-credits') {
+        history.push({
+          pathname: `/approve-credits`,
+          state: {
+            code: json_data.code
+          }
+        })
+      }
     }
   }
   handleError = err => {

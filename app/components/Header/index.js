@@ -90,10 +90,9 @@ class Header extends Component {
 
     validateScope = (scopes, roles) => {
         const {scope, role} = this.props;
-
+        if (!scope || !role || !scopes || !roles) return false;
         if (scopes.indexOf(scope) < 0) return false;
         if (roles.indexOf(role) < 0) return false;
-
         return true;
     }
 

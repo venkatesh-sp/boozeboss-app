@@ -177,7 +177,10 @@ export class AddCredits extends React.Component {
               <Divider />
               <QRSection>
                   <QRCode 
-                    value={code}
+                    value={JSON.stringify({
+                      code,
+                      type: 'add-credits'
+                    })}
                   />
                 {/* <Button 
                   block 
