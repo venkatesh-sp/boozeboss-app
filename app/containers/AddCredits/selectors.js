@@ -12,8 +12,15 @@ const makeSelectSuccess = () =>
     addCreditsState.get('success'),
   );
 
+const makeSelectCode = () =>
+  createSelector(selectAddCredits, addCreditsState =>
+    addCreditsState.get('code'),
+  );
+
+
 
 export { 
   makeSelectError, 
   makeSelectSuccess,
+  makeSelectCode
 };
