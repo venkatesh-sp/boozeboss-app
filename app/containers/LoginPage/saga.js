@@ -22,8 +22,8 @@ function* loginSaga(params) {
 
   try {
     const response = yield call(request, requestURL, options);
-    yield put(loginSuccess(response));
-    yield put(authenticate(response));
+    yield put(loginSuccess(response.token));
+    yield put(authenticate(response.token));
     yield put(getUser());
   } catch (error) {
     const jsonError = yield error.response ? error.response.json() : error;
