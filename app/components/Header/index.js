@@ -139,7 +139,7 @@ class Header extends Component {
                                     {this.validateScope(['AGENCY'], ['OWNER', 'MANAGER', 'STAFF']) && (
                                          <Link to="/scanner" ><Nav.Item onClick={() => this.handleMenuClick('/scanner')} eventKey="/scanner" icon={<Icon icon="qrcode" />} >Scanner</Nav.Item></Link>
                                     )}
-                                    {this.validateScope(['GUEST'], ['REGULAR', 'VIP', 'VVIP']) && (
+                                    {this.validateScope(['GUEST', 'BRAND'], ['OWNER', 'MANAGER', 'REGULAR', 'VIP', 'VVIP']) && (
                                          <Link to="/add-credits" ><Nav.Item onClick={() => this.handleMenuClick('/add-credits')} eventKey="/add-credits" icon={<Icon icon="circle" />} >Add Credits</Nav.Item></Link>
                                     )}
                                     <Nav.Item onClick={this.handleLogout}>Logout</Nav.Item>

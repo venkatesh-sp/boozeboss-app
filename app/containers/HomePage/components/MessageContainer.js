@@ -11,7 +11,7 @@ const MessageContainer = styled.div`
 `
 
 const StyledButton = styled(Button)`
-    margin: 1em 0 0 0;
+    margin: 0 0 0 0;
 `
 
 export default class MessageContainerComponent extends Component {

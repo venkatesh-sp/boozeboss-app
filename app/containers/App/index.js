@@ -74,7 +74,7 @@ class App extends React.Component {
               exact 
               path="/" 
               component={HomePage} 
-              scopesRequired={['GUEST', 'AGENCY']}
+              scopesRequired={['GUEST', 'AGENCY', 'BRAND']}
               rolesRequired={['OWNER', 'MANAGER', 'STAFF', 'REGULAR', 'VIP', 'VIP']}
             />
             <GuardedRoute path="/signup" component={SignupPage} />
@@ -82,7 +82,7 @@ class App extends React.Component {
             <PrivateRoute
               path="/event"
               component={EventPage}
-              scopesRequired={['GUEST', 'AGENCY']}
+              scopesRequired={['GUEST', 'AGENCY', 'BRAND']}
               rolesRequired={['OWNER', 'MANAGER', 'STAFF', 'REGULAR', 'VIP', 'VIP']}
             />
             <PrivateRoute
@@ -102,8 +102,8 @@ class App extends React.Component {
               exact
               path="/add-credits"
               component={AddCredits}
-              scopesRequired={['GUEST']}
-              rolesRequired={['REGULAR', 'VIP', 'VIP']}
+              scopesRequired={['GUEST', 'BRAND']}
+              rolesRequired={['REGULAR', 'VIP', 'VIP', 'OWNER', 'MANAGER']}
             />
             <PrivateRoute
               exact
@@ -116,8 +116,8 @@ class App extends React.Component {
               exact
               path="/qr-invite"
               component={InviteCodeContainer}
-              scopesRequired={['GUEST']}
-              rolesRequired={['REGULAR', 'VIP', 'VIP']}
+              scopesRequired={['GUEST', 'BRAND']}
+              rolesRequired={['OWNER', 'MANAGER', 'REGULAR', 'VIP', 'VIP']}
             />
             <PrivateRoute
               path="/check-in"
@@ -128,19 +128,19 @@ class App extends React.Component {
             <PrivateRoute
               path="/check-out"
               component={VerifyCheckOut}
-              scopesRequired={['AGENCY']}
-              rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
+              scopesRequired={['AGENCY', 'BRAND']}
+              rolesRequired={['OWNER', 'MANAGER', 'STAFF', 'OWNER', 'MANAGER']}
             />
             <PrivateRoute
               path="/new-order"
               component={WalletOrder}
-              scopesRequired={['GUEST']}
-              rolesRequired={['REGULAR', 'VIP', 'VIP']}
+              scopesRequired={['GUEST', 'BRAND']}
+              rolesRequired={['REGULAR', 'VIP', 'VIP', 'ONWER', 'AGENCY']}
             />
             <PrivateRoute
               path="/orders/:order_identifier"
               component={OrderPage}
-              scopesRequired={['GUEST', 'AGENCY']}
+              scopesRequired={['GUEST', 'AGENCY', 'BRAND']}
               rolesRequired={['REGULAR', 'VIP', 'VIP', 'OWNER', 'MANAGER', 'STAFF']}
             />
             <Route path="" component={NotFoundPage} />

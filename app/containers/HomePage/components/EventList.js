@@ -182,8 +182,8 @@ export default class EventList extends Component {
                     events.filter(event_guest => new Date(event_guest.event.ended_at).getTime() >= new Date().getTime()) &&
                     events.map(event_guest => <EventCard {...this.props} event_guest={event_guest}/>) 
                 } 
-                {events &&
-                    events.length < 1 && (
+                {(!events ||
+                    events.length < 1) && (
                         <Panel bordered>
                             <p>No upcoming events.</p>
                             <p>Do you have an event invite code?</p> 
