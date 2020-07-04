@@ -139,7 +139,7 @@ class Header extends Component {
                             <Sidenav.Body>
                             <Nav activeKey={pathname}>
                                 <Link to="/" ><Nav.Item onClick={() => this.handleMenuClick('/')} eventKey="/" icon={<Icon icon="home" />} >Home</Nav.Item></Link>
-                                {this.validateScope(['GUEST', 'BRAND'], ['OWNER', 'MANAGER', 'REGULAR', 'VIP', 'VVIP']) && (
+                                {isAuthenticated && this.validateScope(['GUEST', 'BRAND'], ['OWNER', 'MANAGER', 'REGULAR', 'VIP', 'VVIP']) && (
                                         <Link to="/" ><Nav.Item onClick={() => this.handleMenuClick('/add-credits')} eventKey="/add-credits" icon={<Icon icon="profile" />} >My wallet ({user && user.first_name} {user && user.last_name})</Nav.Item></Link>
                                 )}
                             </Nav>

@@ -79,6 +79,17 @@ export class QrScanner extends React.Component {
           }
         })
       }
+
+      // Scan Free Drink
+      if (json_data.type === 'free-drink') {
+        console.log(json_data.code)
+        history.push({
+          pathname: `/approve-free-drink`,
+          state: {
+            code: json_data.code
+          }
+        })
+      }
     }
   }
   handleError = err => {

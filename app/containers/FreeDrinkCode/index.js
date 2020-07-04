@@ -78,7 +78,7 @@ export class FreeDrinkCode extends React.Component {
               <Divider />
               {code && (
                 <React.Fragment>
-                  <p>Please scan this code in the venue entrance to check-in into the event.</p>
+                  <p>Please scan this code at the bar or with a staff to redeem this drink.</p>
                   <QRSection>
                     {code ? (
                       <QRCode value={JSON.stringify({code, type: 'free-drink'})}/>

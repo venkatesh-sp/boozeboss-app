@@ -26,6 +26,7 @@ import LoginPage from 'containers/LoginPage/Loadable';
 import AddCredits from 'containers/AddCredits/Loadable';
 import ApproveCredits from 'containers/ApproveCredits/Loadable';
 import FreeDrink from 'containers/FreeDrinkCode/Loadable';
+import ApproveFreeDrink from 'containers/ApproveFreeDrink/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -131,6 +132,12 @@ class App extends React.Component {
               component={VerifyCheckOut}
               scopesRequired={['AGENCY', 'BRAND']}
               rolesRequired={['OWNER', 'MANAGER', 'STAFF', 'OWNER', 'MANAGER']}
+            />
+            <PrivateRoute
+              path="/approve-free-drink"
+              component={ApproveFreeDrink}
+              scopesRequired={['AGENCY']}
+              rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
             />
             <PrivateRoute
               path="/free-drink"

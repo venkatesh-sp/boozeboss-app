@@ -102,6 +102,7 @@ class EventCard extends Component {
         const {user, event_guest} = this.props;
         const {condition} = event_guest.event;
 
+        if (!user || !event_guest) return false; 
         // Validate free drinks redeemed vs limit
         if (condition.limit && condition.limit <= event_guest.event.free_redemeed_drinks) return false;
 
