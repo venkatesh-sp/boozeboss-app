@@ -28,6 +28,7 @@ const EventRow = styled.div`
     justify-content: space-between;
     flex: 1;
     align-items: center;
+    margin: ${props => props.margin ? props.margin: ''};
 `
 
 const ButtonContainer = styled.div`
@@ -90,10 +91,54 @@ class EventCard extends Component {
         })
     }
 
+    calculate_age = (dob) => { 
+        var diff_ms = Date.now() - new Date(dob).getTime();
+        var age_dt = new Date(diff_ms); 
+      
+        return Math.abs(age_dt.getUTCFullYear() - 1970);
+    }
+
+    validateCondition = () => {
+        const {user, event_guest} = this.props;
+        const {condition} = event_guest.event;
+
+        // Validate free drinks redeemed vs limit
+        if (condition.limit && condition.limit <= event_guest.event.free_redemeed_drinks) return false;
+
+        // Validate min age
+        if (condition.min_age && condition.min_age > this.calculate_age(user.date_of_birth)) return false;
+
+        // Validate max age
+        if (condition.max_age && condition.max_age < this.calculate_age(user.date_of_birth)) return false;
+
+        // Validate gender
+        if (condition.gender && condition.gender !== user.gender) return false;
+
+        // Validate start time
+        if (condition.start_time && new Date(event_guest.event.started_at).getTime() >= new Date(condition.start_time).getTime()) return false;
+
+        // Validate end time
+        if (condition.end_time && new Date(event_guest.event.ended_at).getTime() <= new Date(condition.getTime).getTime()) return false;
+
+        return true;
+    
+    }
+
     render() {
         const {event_guest} = this.props;
         return (
             <StyledEvent bordered>
+                {event_guest.checked_in && this.validateCondition() && (
+                    <EventRow margin="-1.5em -1.60em 1.5em -1.5em" >
+                        <Panel shaded style={{width: '100%', backgroundColor: '#5c6ec4'}}>
+                            <EventRow>
+                                <Icon icon="gift" style={{ color: 'white' }}/>
+                                <b style={{color: 'white'}}>You have a free drink available</b>
+                                <b style={{color: 'white'}}>{'>'}</b>                                
+                            </EventRow>
+                        </Panel>
+                    </EventRow>
+                )}
                 <EventRow>
                     <p>{moment(event_guest.event.started_at).format('DD/MM/YYYY')}</p>
                     {/* If its an upcoming event */}
