@@ -124,13 +124,23 @@ class EventCard extends Component {
     
     }
 
+    goToFreeDrink = () => {
+        const {history, event_guest} = this.props;
+        history.push({
+            pathname: '/free-drink',
+            state: {
+                event_guest,
+            }
+        })
+    }
+
     render() {
         const {event_guest} = this.props;
         return (
             <StyledEvent bordered>
-                {event_guest.checked_in && this.validateCondition() && (
+                {event_guest.checked_in && !event_guest.free_drink_redemeed && this.validateCondition() && (
                     <EventRow margin="-1.5em -1.60em 1.5em -1.5em" >
-                        <Panel shaded style={{width: '100%', backgroundColor: '#5c6ec4'}}>
+                        <Panel shaded style={{width: '100%', backgroundColor: '#5c6ec4'}} onClick={this.goToFreeDrink}>
                             <EventRow>
                                 <Icon icon="gift" style={{ color: 'white' }}/>
                                 <b style={{color: 'white'}}>You have a free drink available</b>

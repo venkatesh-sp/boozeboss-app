@@ -1,26 +1,30 @@
 import { createSelector } from 'reselect';
-import { initialState } from './reducer';
 
-/**
- * Direct selector to the freeDrinkCode state domain
- */
+const selectFreeDrink = state => state.freeDrinkCode;
 
-const selectFreeDrinkCodeDomain = state =>
-  state.get('freeDrinkCode', initialState);
-
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by FreeDrinkCode
- */
-
-const makeSelectFreeDrinkCode = () =>
-  createSelector(
-    selectFreeDrinkCodeDomain,
-    substate => substate.toJS(),
+const makeSelectCode = () =>
+  createSelector(selectFreeDrink, freeDrinkState =>
+    freeDrinkState.get('code'),
   );
 
-export default makeSelectFreeDrinkCode;
-export { selectFreeDrinkCodeDomain };
+const makeSelectProduct = () =>
+  createSelector(selectFreeDrink, freeDrinkState =>
+    freeDrinkState.get('product'),
+  );
+
+const makeSelectError = () =>
+  createSelector(selectFreeDrink, freeDrinkState =>
+    freeDrinkState.get('error'),
+  );
+
+const makeSelectSuccess = () =>
+  createSelector(selectFreeDrink, freeDrinkState =>
+    freeDrinkState.get('success'),
+  );
+
+export { 
+  makeSelectCode,
+  makeSelectProduct,
+  makeSelectSuccess,
+  makeSelectError
+};
