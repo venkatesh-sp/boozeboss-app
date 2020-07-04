@@ -61,6 +61,12 @@ const WalletBalance = styled.div`
     flex: 1;
 `
 
+const StyledAccountData = styled.div`
+    bottom: 5px; 
+    display: flex;
+    flex-direction: row;
+`
+
 class Header extends Component {
 
     state = {
@@ -133,6 +139,9 @@ class Header extends Component {
                             <Sidenav.Body>
                             <Nav activeKey={pathname}>
                                 <Link to="/" ><Nav.Item onClick={() => this.handleMenuClick('/')} eventKey="/" icon={<Icon icon="home" />} >Home</Nav.Item></Link>
+                                {this.validateScope(['GUEST', 'BRAND'], ['OWNER', 'MANAGER', 'REGULAR', 'VIP', 'VVIP']) && (
+                                        <Link to="/" ><Nav.Item onClick={() => this.handleMenuClick('/add-credits')} eventKey="/add-credits" icon={<Icon icon="profile" />} >My wallet ({user.first_name} {user.last_name})</Nav.Item></Link>
+                                )}
                             </Nav>
                             { isAuthenticated ? (
                                 <Nav>
