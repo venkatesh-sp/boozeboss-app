@@ -294,7 +294,7 @@ export default class EventAgencyDashboard extends Component {
                 >
                     {this.getGuestSummary()}
                 </StyledPanel>
-                <Divider />
+                <Divider>Actions</Divider>
             </StyledStatsContainer>
         )
     }

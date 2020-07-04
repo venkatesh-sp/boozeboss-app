@@ -15,9 +15,8 @@ const Container = styled.div`
     flex-direction: column;
     margin: 1em;
 `
-
-const AgencyHeaderSection = `
-
+const StyledButtonLink = styled(Button)`
+    margin: 5px 0 5px 0;
 `
 
 export default class EventContainer extends Component {
@@ -36,6 +35,11 @@ export default class EventContainer extends Component {
         if (start) {
             updateEvent(event.id, {field: 'ended_at', value: new Date()});
         }
+    }
+
+    goToScanner = () => {
+        const {history} = this.props;
+        history.push({pathname: '/scanner'})
     }
 
     render() {
@@ -66,6 +70,10 @@ export default class EventContainer extends Component {
                             (new Date(event.ended_at).getTime() >= new Date().getTime()) && (
                              <Button onClick={this.endEvent} style={{marginTop: '0.5em'}} block color='green'>End of the day</Button>
                          )}
+                         <StyledButtonLink color="green" onClick={this.goToScanner}>Check-In</StyledButtonLink>
+                         <StyledButtonLink color="green" onClick={this.goToScanner}>Check-Out</StyledButtonLink>
+                         <StyledButtonLink color="green" onClick={this.goToScanner}>Take Order</StyledButtonLink>
+                         <StyledButtonLink color="green" onClick={this.goToScanner}>Scan free drink</StyledButtonLink>
                     </RoleValidator>
                 )}
                 {event && (
