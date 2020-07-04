@@ -59,7 +59,12 @@ export class TransferCredits extends React.Component {
     const {amount, target_email} = this.state;
     const {transfer} = this.props;
     if (amount < 1 || !target_email || target_email.length < 1) return alert('Invalid fields');
-    transfer(amount, target_email);
+
+    const should_transfer = confirm(`Are you sure you want to send ${amount} credits to ${target_email}?`);
+    if (should_transfer) {
+      transfer(amount, target_email);
+    }
+    
   }
   
   render() {
