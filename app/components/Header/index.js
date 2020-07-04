@@ -140,7 +140,7 @@ class Header extends Component {
                             <Nav activeKey={pathname}>
                                 <Link to="/" ><Nav.Item onClick={() => this.handleMenuClick('/')} eventKey="/" icon={<Icon icon="home" />} >Home</Nav.Item></Link>
                                 {isAuthenticated && this.validateScope(['GUEST', 'BRAND'], ['OWNER', 'MANAGER', 'REGULAR', 'VIP', 'VVIP']) && (
-                                        <Link to="/" ><Nav.Item onClick={() => this.handleMenuClick('/add-credits')} eventKey="/add-credits" icon={<Icon icon="profile" />} >My wallet ({user && user.first_name} {user && user.last_name})</Nav.Item></Link>
+                                        <Link to="/" ><Nav.Item onClick={() => this.handleMenuClick('/profile')} eventKey="/profile" icon={<Icon icon="profile" />} >My wallet ({user && user.first_name} {user && user.last_name})</Nav.Item></Link>
                                 )}
                             </Nav>
                             { isAuthenticated ? (
@@ -150,6 +150,9 @@ class Header extends Component {
                                     )}
                                     {this.validateScope(['GUEST', 'BRAND'], ['OWNER', 'MANAGER', 'REGULAR', 'VIP', 'VVIP']) && (
                                          <Link to="/add-credits" ><Nav.Item onClick={() => this.handleMenuClick('/add-credits')} eventKey="/add-credits" icon={<Icon icon="circle" />} >Add Credits</Nav.Item></Link>
+                                    )}
+                                    {this.validateScope(['GUEST', 'BRAND'], ['OWNER', 'MANAGER', 'REGULAR', 'VIP', 'VVIP']) && (
+                                         <Link to="/transfer-credits" ><Nav.Item onClick={() => this.handleMenuClick('/trasfer-credits')} eventKey="/transfer-credits" icon={<Icon icon="exchange" />} >Transfer Credits</Nav.Item></Link>
                                     )}
                                     <Nav.Item onClick={this.handleLogout}>Logout</Nav.Item>
                                 </Nav>

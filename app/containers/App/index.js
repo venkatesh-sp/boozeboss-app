@@ -25,6 +25,7 @@ import SignupPage from 'containers/SignupPage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
 import AddCredits from 'containers/AddCredits/Loadable';
 import ApproveCredits from 'containers/ApproveCredits/Loadable';
+import TransferCredits from 'containers/TransferCredits/Loadable';
 import FreeDrink from 'containers/FreeDrinkCode/Loadable';
 import ApproveFreeDrink from 'containers/ApproveFreeDrink/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
@@ -113,6 +114,13 @@ class App extends React.Component {
               component={ApproveCredits}
               scopesRequired={['AGENCY']}
               rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
+            />
+            <PrivateRoute
+              exact
+              path="/transfer-credits"
+              component={TransferCredits}
+              scopesRequired={['GUEST', 'BRAND']}
+              rolesRequired={['REGULAR', 'VIP', 'VIP', 'OWNER', 'MANAGER']}
             />
             <PrivateRoute
               exact
