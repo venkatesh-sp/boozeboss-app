@@ -228,10 +228,12 @@ export default class EventAgencyDashboard extends Component {
         const summary = [];
         roles.map(role => {
             let total_guests = 0;
-            stats_data.event.guests.map(guest => {
-                if (guest.role.name !== role) return;
-                total_guests++;
-            })
+            stats_data.event.guests
+                .filter(guest => guest.checked_in)
+                .map(guest => {
+                    if (guest.role.name !== role) return;
+                    total_guests++;
+                })
 
             summary.push(<RoleSummary role={role} amount={total_guests}/>)
         })

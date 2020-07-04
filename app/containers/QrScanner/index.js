@@ -97,6 +97,7 @@ export class QrScanner extends React.Component {
   }
 
   render() {
+    const {state} = this.props.history.location;
     return (
       <div>
         <Helmet>
@@ -104,7 +105,11 @@ export class QrScanner extends React.Component {
           <meta name="description" content="Description of QrScanner" />
         </Helmet>
         <div>
-          <Message type='info' description={'Scan for Check-In and Check-out codes.'}/>
+          {state && state.message ? (
+            <Message type='info' description={state.message}/>
+          ) : (
+            <Message type='info' description={'Place the code near the camera'}/>
+          )}
           <QrReader
             delay={300}
             onError={this.handleError}

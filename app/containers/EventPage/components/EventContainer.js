@@ -37,9 +37,14 @@ export default class EventContainer extends Component {
         }
     }
 
-    goToScanner = () => {
+    goToScanner = (message) => {
         const {history} = this.props;
-        history.push({pathname: '/scanner'})
+        history.push({
+            pathname: '/scanner',
+            state: {
+                message
+            }
+        })
     }
 
     render() {
@@ -70,10 +75,10 @@ export default class EventContainer extends Component {
                             (new Date(event.ended_at).getTime() >= new Date().getTime()) && (
                              <Button onClick={this.endEvent} style={{marginTop: '0.5em'}} block color='green'>End of the day</Button>
                          )}
-                         <StyledButtonLink color="green" onClick={this.goToScanner}>Check-In</StyledButtonLink>
-                         <StyledButtonLink color="green" onClick={this.goToScanner}>Check-Out</StyledButtonLink>
-                         <StyledButtonLink color="green" onClick={this.goToScanner}>Take Order</StyledButtonLink>
-                         <StyledButtonLink color="green" onClick={this.goToScanner}>Scan free drink</StyledButtonLink>
+                         <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to check-in the guest')}>Check-In</StyledButtonLink>
+                         <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to check-out the guest')}>Check-Out</StyledButtonLink>
+                         <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to redeem the guest order')}>Take Order</StyledButtonLink>
+                         <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to redeem the guest free drink')}>Scan free drink</StyledButtonLink>
                     </RoleValidator>
                 )}
                 {event && (
