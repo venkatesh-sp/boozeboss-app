@@ -72,10 +72,12 @@ export class QrScanner extends React.Component {
 
       // Validate for redeem-order
       if (json_data.type === 'add-credits') {
+        const {state} = this.props.history.location;
         history.push({
           pathname: `/approve-credits`,
           state: {
-            code: json_data.code
+            code: json_data.code,
+            event_id: state.event_id,
           }
         })
       }

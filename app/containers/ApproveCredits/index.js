@@ -46,6 +46,7 @@ const StyledColumn = styled.div`
 export class ApproveCredits extends React.Component {
 
   state = {
+    lock_event: false,
     event_id: null
   }
 
@@ -60,6 +61,9 @@ export class ApproveCredits extends React.Component {
       history.push('/');
     }
     
+    if (state && state.event_id) {
+      this.setState({lock_event: true, event_id: state.event_id});
+    }
   }
 
   getPickerData = () => {
@@ -94,7 +98,7 @@ export class ApproveCredits extends React.Component {
 
   render() {
     const {wallet_purchase} = this.props;
-    const {event_id} = this.state;
+    const {event_id, lock_event} = this.state;
     return (
       <div>
         <Helmet>
@@ -132,6 +136,8 @@ export class ApproveCredits extends React.Component {
             </StyledColumn>
             <StyledColumn align="flex-end">
               <SelectPicker 
+                disabled={lock_event}
+                value={event_id}
                 style={{width: '200px'}}
                 placement="bottomEnd"
                 searchable={false}

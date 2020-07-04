@@ -47,6 +47,17 @@ export default class EventContainer extends Component {
         })
     }
 
+    goToScannerWithEvent = (message) => {
+        const {history, event} = this.props;
+        history.push({
+            pathname: '/scanner',
+            state: {
+                message,
+                event_id: event.id
+            }
+        })
+    }
+
     render() {
         const {event, cart} = this.props;
         return (
@@ -79,6 +90,7 @@ export default class EventContainer extends Component {
                          <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to check-out the guest')}>Check-Out</StyledButtonLink>
                          <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to redeem the guest order')}>Take Order</StyledButtonLink>
                          <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to redeem the guest free drink')}>Scan free drink</StyledButtonLink>
+                         <StyledButtonLink color="green" onClick={() => this.goToScannerWithEvent('Scan the code to complete the payment')}>Sell Credits</StyledButtonLink>
                     </RoleValidator>
                 )}
                 {event && (
