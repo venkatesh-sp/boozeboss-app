@@ -86,11 +86,15 @@ export default class EventContainer extends Component {
                             (new Date(event.ended_at).getTime() >= new Date().getTime()) && (
                              <Button onClick={this.endEvent} style={{marginTop: '0.5em'}} block color='green'>End of the day</Button>
                          )}
-                         <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to check-in the guest')}>Check-In</StyledButtonLink>
-                         <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to check-out the guest')}>Check-Out</StyledButtonLink>
-                         <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to redeem the guest order')}>Take Order</StyledButtonLink>
-                         <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to redeem the guest free drink')}>Scan free drink</StyledButtonLink>
-                         <StyledButtonLink color="green" onClick={() => this.goToScannerWithEvent('Scan the code to complete the payment')}>Sell Credits</StyledButtonLink>
+                         {(new Date(event.ended_at).getTime() >= new Date().getTime()) && (
+                             <React.Fragment>
+                                 <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to check-in the guest')}>Check-In</StyledButtonLink>
+                                <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to check-out the guest')}>Check-Out</StyledButtonLink>
+                                <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to redeem the guest order')}>Take Order</StyledButtonLink>
+                                <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to redeem the guest free drink')}>Scan free drink</StyledButtonLink>
+                                <StyledButtonLink color="green" onClick={() => this.goToScannerWithEvent('Scan the code to complete the payment')}>Sell Credits</StyledButtonLink>
+                             </React.Fragment>
+                         )}
                     </RoleValidator>
                 )}
                 {event && (
