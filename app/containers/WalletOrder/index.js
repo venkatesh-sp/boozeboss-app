@@ -118,6 +118,11 @@ export class WalletOrder extends React.Component {
     createOrder(transactions, history);
   }
 
+  goToAddCredits = () => {
+    const {history} = this.props;
+    history.push({pathname: 'add-credits'});
+  }
+
   render() {
     const {user, error, success} = this.props;
     const {cart} = this.state;
@@ -141,7 +146,7 @@ export class WalletOrder extends React.Component {
             <Message 
               type="warning" 
               description={
-                <p>You have insufficient balance. <a>Add more credits to complete this order.</a></p>
+                <p>You have insufficient balance. <a onClick={this.goToAddCredits}>Add more credits to complete this order.</a></p>
               }/>
           )}
         <StyledPanel shaded>

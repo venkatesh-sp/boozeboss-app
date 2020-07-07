@@ -14,7 +14,8 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { makeSelectError, makeSelectSuccess, makeSelectWalletPurchase, makeSelectEvents} from './selectors';
+import { makeSelectUser } from '../App/selectors';
+import { makeSelectError, makeSelectSuccess, makeSelectWalletPurchase, makeSelectEvents,} from './selectors';
 import { getWalletPurchase, getEvents, approveCode } from './actions'
 import reducer from './reducer';
 import saga from './saga';
@@ -97,7 +98,7 @@ export class ApproveCredits extends React.Component {
 
 
   render() {
-    const {wallet_purchase} = this.props;
+    const {wallet_purchase, user} = this.props;
     const {event_id, lock_event} = this.state;
     return (
       <div>
@@ -125,7 +126,7 @@ export class ApproveCredits extends React.Component {
             </StyledColumn>
             <StyledColumn align="flex-end">
               <StyledRow>
-                <b>${wallet_purchase && wallet_purchase.amount} USD</b>
+                <b>${user && wallet_purchase && wallet_purchase.amount && Math.round(wallet_purchase.amount / user.location.currency_conversion * 100) / 100} {user.location.currency}</b>
               </StyledRow>
             </StyledColumn>
           </StyledRow>
@@ -162,7 +163,8 @@ ApproveCredits.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   wallet_purchase: makeSelectWalletPurchase(),
-  events: makeSelectEvents()
+  events: makeSelectEvents(),
+  user: makeSelectUser(),
 });
 
 function mapDispatchToProps(dispatch) {

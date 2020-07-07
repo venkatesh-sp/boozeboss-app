@@ -14,6 +14,7 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
+import { makeSelectUser } from '../App/selectors';
 import {makeSelectError, makeSelectSuccess, makeSelectCode} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -147,11 +148,12 @@ export class AddCredits extends React.Component {
 
   handleDismissCode = () => {
     const {dismissCode} = this.props;
+    this.setState({isLoading: false});
     dismissCode();
   }
   
   render() {
-    const {code, success} = this.props;
+    const {code, success, user} = this.props;
     const {credits, isLoading} = this.state;
     return (
       <div>
@@ -159,7 +161,6 @@ export class AddCredits extends React.Component {
           <title>AddCredits</title>
           <meta name="description" content="Description of AddCredits" />
         </Helmet>
-        {success && <Message type="success" description={success}/>}
         { code ? (
           <StyledPanel shaded>
               <StyledRow justify="space-between" >
@@ -170,7 +171,7 @@ export class AddCredits extends React.Component {
                   <StyledRow justify="flex-end">
                     <b>{credits}</b>
                     <Icon icon="circle"style={{color: '#c2b90a', margin: '0 0.5em 0 0.5em'}}/>
-                    <b>(${credits} USD)</b>
+                    <b>(${Math.round(credits / user.location.currency_conversion)}  {user.location.currency})</b>
                   </StyledRow>
                 </StyledColumn>
               </StyledRow>
@@ -182,14 +183,6 @@ export class AddCredits extends React.Component {
                       type: 'add-credits'
                     })}
                   />
-                {/* <Button 
-                  block 
-                  color="red"
-                  style={{margin: '1em 0 0 0'}}
-                  onClick={this.handleCancelOrder}
-                >
-                  Cancel
-                </Button> */}
                 <Divider />
               </QRSection>
           </StyledPanel>
@@ -220,14 +213,14 @@ export class AddCredits extends React.Component {
               </StyledRow>
               <Divider />
               <Summary>
-                <SummaryColumn flex="0.5">
+                <SummaryColumn flex="0.50">
                   <b>Total</b>
                 </SummaryColumn>
-                <SummaryColumn flex="2">
+                <SummaryColumn flex="1.5">
                   <p>({credits} BoozeBoss credits)</p>
                 </SummaryColumn>
                 <SummaryColumn justify='flex-end' flex="1">
-                  <b>${credits} USD</b>
+                  <b>(${Math.round(credits / user.location.currency_conversion)} {user.location.currency})</b>
                 </SummaryColumn>
               </Summary>
             </Panel>
@@ -240,9 +233,9 @@ export class AddCredits extends React.Component {
               <CreditsPayment> 
                 <Button color="green" block onClick={this.handlAddCreditsWithCode}><b>Pay with cash</b><Icon icon="qrcode" style={{marginLeft: '10px'}}/></Button>
               </CreditsPayment>
-              <CreditsPayment> 
+              <CreditsPayment>
+              {user && 
               <PayPalButton
-                
                 options={{
                   clientId: process.env.PAYPAL_CLIENT_ID
                 }}
@@ -250,7 +243,7 @@ export class AddCredits extends React.Component {
                   return actions.order.create({
                     purchase_units: [{
                       amount: {
-                        currency_code: "USD",
+                        currency_code: 'USD',
                         value: credits
                       }
                     }],
@@ -263,6 +256,7 @@ export class AddCredits extends React.Component {
                   this.handleAddCreditsWithPaypal(data, details);     
                 }}
               />
+              }
               </CreditsPayment>
             </PaymentMethods>
           </CreditsContainer>
@@ -281,6 +275,7 @@ const mapStateToProps = createStructuredSelector({
   success: makeSelectSuccess(),
   error: makeSelectError(),
   code: makeSelectCode(),
+  user: makeSelectUser(),
 });
 
 function mapDispatchToProps(dispatch) {
