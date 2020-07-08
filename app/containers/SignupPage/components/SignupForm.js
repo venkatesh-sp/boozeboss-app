@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Input, Message,  InputGroup, Icon, Dropdown } from 'rsuite';
+import { Button, Input, Message,  InputGroup, Icon, Dropdown, SelectPicker, DatePicker } from 'rsuite';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import PhoneInput from 'react-phone-input-2'
@@ -54,6 +54,8 @@ export default class SignupForm extends Component {
         email: null,   
         first_name: null,
         last_name: null,
+        gender: null,
+        date_of_birth: null,
         phone_number: null,
         password: null,
         confirm: null,
@@ -78,14 +80,14 @@ export default class SignupForm extends Component {
   
       handleSubmit = () => {
         const {signup} = this.props;
-        const {email, first_name, last_name, phone_number, password, confirm, code} = this.state;
+        const {email, first_name, last_name, phone_number, password, confirm, code, gender, date_of_birth} = this.state;
 
-        if (!email || !first_name || !last_name || !phone_number || !password || !confirm || !code) return alert('Missing fields');
+        if (!email || !first_name || !last_name || !phone_number || !password || !confirm || !code || !date_of_birth) return alert('Missing fields');
 
         if (password !== confirm) return alert("Passwords aren't matching");
         if (!phone_number.match(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)) return alert('Invalid phone number');
 
-        signup({email, first_name, phone_number, last_name, password, code});
+        signup({email, first_name, phone_number, last_name, password, code, gender, date_of_birth});
       }
   
       render() {
@@ -129,7 +131,7 @@ export default class SignupForm extends Component {
                     />
                   </InputGroup>
                   <PhoneInput
-                      style={{...styles, zIndex: 99}}
+                      style={{...styles, zIndex: 99 }}
                       country={'us'}
                       disableSearchIcon
                       inputProps={{
@@ -139,6 +141,32 @@ export default class SignupForm extends Component {
                       }}
                       onChange={(value) => this.handleChange(value, 'phone_number')}
                     />
+                  <InputGroup style={styles}>
+                    <InputGroup.Addon>
+                      <Icon icon="genderless" />
+                    </InputGroup.Addon>
+                    <SelectPicker 
+                      searchable={false}
+                      style={{width: '100%'}}
+                      placeholder="I identify as..."
+                      data={[
+                        {label: 'Female', value: 'FEMALE'},
+                        {label: 'Male', value: 'MALE'},
+                        {label: 'Other', value: 'OTHER'}
+                      ]}
+                      onChange={(value) => this.handleChange(value, 'gender')}
+                    />
+                  </InputGroup>
+                  <InputGroup style={styles}>
+                    <InputGroup.Addon>
+                      <Icon icon="calendar" />
+                    </InputGroup.Addon>
+                    <DatePicker 
+                      block
+                      oneTap
+                      onChange={(date) => this.handleChange(date, 'date_of_birth')}
+                    />
+                  </InputGroup>
                   <InputGroup style={styles}>
                     <InputGroup.Addon>
                       <Icon icon="key" />
