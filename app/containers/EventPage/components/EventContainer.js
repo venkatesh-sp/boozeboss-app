@@ -100,8 +100,8 @@ export default class EventContainer extends Component {
                 {event && (
                     <RoleValidator
                         {...this.props}
-                        scopes={['GUEST']}
-                        roles={['REGULAR', 'VIP', 'VVIP']}
+                        scopes={['GUEST', 'REGION']}
+                        roles={['OWNER', 'MANAGER', 'REGULAR', 'VIP', 'VVIP']}
                     >
                         <EventHeaderContainer 
                             {...this.props}

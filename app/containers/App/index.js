@@ -77,7 +77,7 @@ class App extends React.Component {
               exact 
               path="/" 
               component={HomePage} 
-              scopesRequired={['GUEST', 'AGENCY', 'BRAND']}
+              scopesRequired={['GUEST', 'AGENCY', 'BRAND', 'REGION']}
               rolesRequired={['OWNER', 'MANAGER', 'STAFF', 'REGULAR', 'VIP', 'VIP']}
             />
             <GuardedRoute path="/signup" component={SignupPage} />

@@ -30,8 +30,9 @@ function* signupSaga(params) {
   try {
     const response = yield call(request, requestURL, options);
     if (response.login) {
-      // yield put(authenticate(response.jwt_token));
       yield put(signupSuccess(response.jwt_token, 'Succesfull signup'));
+      yield put(getUser());
+      yield put(authenticate(response.jwt_token));
     } else {
       yield put(signupSuccess(null, response.message));
     }

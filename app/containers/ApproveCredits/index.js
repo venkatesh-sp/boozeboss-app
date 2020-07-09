@@ -126,7 +126,7 @@ export class ApproveCredits extends React.Component {
             </StyledColumn>
             <StyledColumn align="flex-end">
               <StyledRow>
-                <b>${user && wallet_purchase && wallet_purchase.amount && Math.round(wallet_purchase.amount / user.location.currency_conversion * 100) / 100} {user.location.currency}</b>
+                <b>{user.location.currency} {user && wallet_purchase && wallet_purchase.amount && Math.round(wallet_purchase.amount / user.location.currency_conversion * 100) / 100}</b>
               </StyledRow>
             </StyledColumn>
           </StyledRow>

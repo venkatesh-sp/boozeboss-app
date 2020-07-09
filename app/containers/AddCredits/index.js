@@ -171,7 +171,7 @@ export class AddCredits extends React.Component {
                   <StyledRow justify="flex-end">
                     <b>{credits}</b>
                     <Icon icon="circle"style={{color: '#c2b90a', margin: '0 0.5em 0 0.5em'}}/>
-                    <b>(${Math.round(credits / user.location.currency_conversion)}  {user.location.currency})</b>
+                    <b>(~ {user.location.currency} {Math.round(credits / user.location.currency_conversion)})</b>
                   </StyledRow>
                 </StyledColumn>
               </StyledRow>
@@ -220,7 +220,7 @@ export class AddCredits extends React.Component {
                   <p>({credits} BoozeBoss credits)</p>
                 </SummaryColumn>
                 <SummaryColumn justify='flex-end' flex="1">
-                  <b>(${Math.round(credits / user.location.currency_conversion)} {user.location.currency})</b>
+                  <b>(~ {user.location.currency} {Math.round(credits / user.location.currency_conversion)})</b>
                 </SummaryColumn>
               </Summary>
             </Panel>

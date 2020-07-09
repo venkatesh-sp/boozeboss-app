@@ -21,7 +21,7 @@ export default class HomePageContainer extends Component {
 
     componentWillMount = () => {
         const {getEvents, getAgencyEvents, scope} = this.props;
-        if (scope === 'GUEST' || scope === 'BRAND') {
+        if (scope === 'GUEST' || scope === 'BRAND' || scope === 'REGION') {
             getEvents();
         }
         if (scope === 'AGENCY') {
@@ -47,7 +47,7 @@ export default class HomePageContainer extends Component {
                 />
                 <RoleValidator
                     {...this.props}
-                    scopes={['GUEST', 'BRAND']}
+                    scopes={['GUEST', 'BRAND', 'REGION']}
                     roles={['REGULAR', 'VIP', 'VVIP', 'OWNER', 'MANAGER']}
                 >
                     {isAuthenticated && (
