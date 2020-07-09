@@ -67,7 +67,7 @@ export default class EventMenu extends Component {
     }
  
     render() {
-        const {event} = this.props;
+        const {event, user} = this.props;
         return (
             <StyledMenu>
                 <b>Menu</b>
@@ -78,23 +78,16 @@ export default class EventMenu extends Component {
                                 <ProductRow>
                                     <ProductColumn flex={3} align="flex-start">
                                         <PriceSection>
-                                            <p>{event_product.price}</p>
+                                            <p>{Math.round(event_product.price * user.location.currency_conversion * 100) / 100}</p>
                                             <Icon icon="circle" style={{color: '#c2b90a', margin: '0 0 0 0.5em'}}/>
                                         </PriceSection>
                                         <b>{event_product.product.name} ({event_product.product.metric_amount}{event_product.product.metric})</b>
                                     </ProductColumn>
                                     <ProductColumn flex={1} align="flex-end">
                                         <ProductRow>
-                                            <IconButton 
-                                                icon={<Icon icon="plus" />}
-                                                color="green" 
-                                                circle 
-                                                size="sm"
-                                                onClick={() => this.handleAddItemToCart(event_product)}
-                                            />
                                             {this.shouldShowMinusButton(event_product) && (
                                                 <IconButton 
-                                                    style={{margin: '0 0 0 5px'}}
+                                                    style={{margin: '0 5px 0 0'}}
                                                     icon={<Icon icon="minus" />}
                                                     color="red" 
                                                     circle 
@@ -102,7 +95,13 @@ export default class EventMenu extends Component {
                                                     onClick={() => this.handleRemoveItemFromCart(event_product)}
                                                 />
                                             )}
-                                            
+                                            <IconButton 
+                                                icon={<Icon icon="plus" />}
+                                                color="green" 
+                                                circle 
+                                                size="sm"
+                                                onClick={() => this.handleAddItemToCart(event_product)}
+                                            />                                          
                                         </ProductRow>
                                         
                                     </ProductColumn>

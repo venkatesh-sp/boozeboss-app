@@ -19,7 +19,7 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import { EventContainer } from './components';
-import { makeSelectRole, makeSelectScope } from '../App/selectors';
+import { makeSelectRole, makeSelectScope, makeSelectUser } from '../App/selectors';
 import { getEvent, getEventSuccess, updateEvent, addItemToCart, removeItemFromCart, getEventStats } from './actions';
 
 /* eslint-disable react/prefer-stateless-function */
@@ -68,6 +68,7 @@ const mapStateToProps = createStructuredSelector({
   event: makeSelectEvent(),
   cart: makeSelectCart(),
   stats_data: makeSelectStatsData(),
+  user: makeSelectUser()
 });
 
 function mapDispatchToProps(dispatch) {
