@@ -86,7 +86,7 @@ export default class EventContainer extends Component {
                             (new Date(event.ended_at).getTime() >= new Date().getTime()) && (
                              <Button onClick={this.endEvent} style={{marginTop: '0.5em'}} block color='green'>End of the day</Button>
                          )}
-                         {(new Date(event.ended_at).getTime() >= new Date().getTime()) && (
+                         {(new Date(event.started_at).getTime() <= new Date().getTime()) && new Date(event.ended_at).getTime() >= new Date().getTime() && (
                              <React.Fragment>
                                  <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to check-in the guest')}>Check-In</StyledButtonLink>
                                 <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to check-out the guest')}>Check-Out</StyledButtonLink>
