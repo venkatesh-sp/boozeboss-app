@@ -114,6 +114,9 @@ class EventCard extends Component {
 
         // Validate gender
         if (condition.gender && condition.gender !== user.gender) return false;
+        
+        // Validate role
+        if (condition.role_id && condition.role_id !== event_guest.role_id) return false;
 
         // Validate start time
         if (condition.start_time && new Date(event_guest.event.started_at).getTime() >= new Date(condition.start_time).getTime()) return false;
