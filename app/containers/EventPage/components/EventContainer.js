@@ -112,9 +112,16 @@ export default class EventContainer extends Component {
                     </RoleValidator>
                 )}
                 {cart && cart.length > 0 && (
-                    <EventCartCheckout 
+                    <RoleValidator
                         {...this.props}
-                    />
+                        scopes={['GUEST', 'BRAND', 'REGION']}
+                        roles={['OWNER', 'MANAGER', 'REGULAR', 'VIP', 'VVIP']}
+                    >
+                        <EventCartCheckout 
+                            {...this.props}
+                        />
+                    </RoleValidator>
+                    
                 )}
             </Container>
         )
