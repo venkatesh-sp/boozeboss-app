@@ -24,6 +24,7 @@ const StatContainer = styled.div`
     align-items: ${props => props.align || 'flex-start'};
     margin: ${props => props.margin || '0'};
     flex: 1; 
+    font-size: 0.85em;
 `
 
 const Summary = styled.div`
@@ -131,7 +132,7 @@ export default class EventAgencyDashboard extends Component {
     }
 
     getSalesSummary = () => {
-        const {stats_data} = this.props;
+        const {stats_data, user} = this.props;
 
         if (!stats_data) return;
 
@@ -148,7 +149,7 @@ export default class EventAgencyDashboard extends Component {
                 <ProductSummary 
                     name={event_product.product.name}
                     amount={event_products_sold.length}
-                    total_sold={total_sold}
+                    total_sold={Math.round(total_sold * user.location.currency_conversion * 100) / 100}
 
                 />
             )
@@ -242,7 +243,7 @@ export default class EventAgencyDashboard extends Component {
     }
 
     render() {
-        const {event} = this.props;
+        const {event, user} = this.props;
         return (
             <StyledStatsContainer>
                 <StyledPanel 
@@ -271,7 +272,7 @@ export default class EventAgencyDashboard extends Component {
                             </StatContainer>
                             <StatContainer align='flex-end' margin='0 1.5em 0 0'>
                                 <StyledRow>
-                                    <b>{this.getTotalBalanceSold()}</b>
+                                    <b style={{margin: '0 5px 0 0'}}>{Math.round(user.location.currency_conversion * this.getTotalBalanceSold() * 100) / 100}</b>
                                     <Icon icon="circle" style={{color: '#c2b90a', margin: '0 0 0 0.5em'}}/>
                                 </StyledRow>
                             </StatContainer>
