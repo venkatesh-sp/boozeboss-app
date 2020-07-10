@@ -44,18 +44,11 @@ export default class TransferAction extends React.Component {
 
         if (action.status === 'CANCELLED') {
             return;
-        } else if (action.status === 'CREATED') {
+        } else {
             history.push({
                 pathname: `orders/${action.order_identifier}`
             })
-        } else {
-            this.setState({
-                placement,
-                show: true
-            });
         }
-
-        
     }
 
     render() {
