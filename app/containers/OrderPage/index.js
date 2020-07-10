@@ -14,7 +14,7 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { makeSelectScope, makeSelectRole } from '../App/selectors'
+import { makeSelectScope, makeSelectRole, makeSelectUser } from '../App/selectors'
 import { makeSelectSuccess, makeSelectError, makeSelectOrder } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -61,7 +61,7 @@ const ProductSummary = props => (
       {props.item.product.name}
     </SummaryColumn>
     <SummaryColumn justify='flex-end'>
-        <p>{props.item.price}</p>
+        <p>{Math.round(props.item.price * props.user.location.currency_conversion * 100) / 100}</p>
         <Icon icon="circle" style={{color: '#c2b90a', margin: '0 1em 0 0.5em'}}/>
     </SummaryColumn>
   </Summary>
@@ -102,11 +102,11 @@ export class OrderPage extends React.Component {
   }
 
   calculateTotal = () => {
-    const {order} = this.props;
+    const {order, user} = this.props;
 
     if (order && order.transactions) {
       const total = order.transactions.reduce((acc, curr) => acc + curr.event_product.price, 0);
-      return total;
+      return Math.round(total * user.location.currency_conversion * 100) / 100;
     } else {
       return 0;
     }
@@ -170,7 +170,7 @@ export class OrderPage extends React.Component {
                 {order && order.transactions && (
                   <React.Fragment>
                     {order.transactions.map(tx => {
-                      return <ProductSummary item={tx.event_product}/>
+                      return <ProductSummary item={tx.event_product} {...this.props}/>
                     })}
                   </React.Fragment>
                 )}
@@ -195,7 +195,8 @@ const mapStateToProps = createStructuredSelector({
   error: makeSelectError(),
   order: makeSelectOrder(),
   scope: makeSelectScope(), 
-  role: makeSelectRole()
+  role: makeSelectRole(), 
+  user: makeSelectUser()
 });
 
 function mapDispatchToProps(dispatch) {
