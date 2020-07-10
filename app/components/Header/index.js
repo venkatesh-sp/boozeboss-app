@@ -139,12 +139,12 @@ class Header extends Component {
                             <Sidenav.Body>
                             <Nav activeKey={pathname}>
                                 <Link to="/" ><Nav.Item onClick={() => this.handleMenuClick('/')} eventKey="/" icon={<Icon icon="home" />} å>Home</Nav.Item></Link>
-                                {isAuthenticated && this.validateScope(['GUEST', 'BRAND', 'AGENCY'], ['OWNER', 'MANAGER', 'REGULAR', 'VIP', 'VVIP', 'STAFF']) && (
-                                        <Link to="/" ><Nav.Item onClick={() => this.handleMenuClick('/profile')} eventKey="/profile" icon={<Icon icon="profile" />} >My wallet ({user && user.first_name} {user && user.last_name})</Nav.Item></Link>
-                                )}
                             </Nav>
                             { isAuthenticated ? (
                                 <Nav>
+                                    {this.validateScope(['GUEST', 'BRAND', 'AGENCY'], ['OWNER', 'MANAGER', 'REGULAR', 'VIP', 'VVIP', 'STAFF'])  && (
+                                         <Link to="/wallet-history" ><Nav.Item onClick={() => this.handleMenuClick('/wallet-actions')} eventKey="/wallet-actions" icon={<Icon icon="profile" />} >My wallet ({user && user.first_name} {user && user.last_name})</Nav.Item></Link>
+                                    )}
                                     {this.validateScope(['AGENCY'], ['OWNER', 'MANAGER', 'STAFF']) && (
                                          <Link to="/scanner" ><Nav.Item onClick={() => this.handleMenuClick('/scanner')} eventKey="/scanner" icon={<Icon icon="qrcode" />} >Scanner</Nav.Item></Link>
                                     )}
