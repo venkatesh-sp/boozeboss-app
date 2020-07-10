@@ -113,13 +113,13 @@ export class AddCredits extends React.Component {
   handleChangeCredits = (action) => {
     if (action === 'add') {
       this.setState({
-        credits: this.state.credits + 10,
+        credits: this.state.credits + 5,
       })
     }
     if (action === 'remove') {
-      if ((this.state.credits - 10) < 1) return;
+      if ((this.state.credits - 5) < 1) return;
       this.setState({
-        credits: this.state.credits - 10,
+        credits: this.state.credits - 5,
       })
     }
   }

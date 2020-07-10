@@ -55,7 +55,7 @@ const ProductSummary = props => (
       {props.item.product.name}
     </SummaryColumn>
     <SummaryColumn justify='flex-end'>
-        <p>{props.item.price}</p>
+        <p>{Math.round(props.item.price * props.user.location.currency_conversion * 100) / 100}</p>
         <Icon icon="circle" style={{color: '#c2b90a', margin: '0 1em 0 0.5em'}}/>
     </SummaryColumn>
   </Summary>
@@ -92,12 +92,12 @@ export class WalletOrder extends React.Component {
   }
 
   calculateTotal = () => {
-    const {history} = this.props;
+    const {history, user} = this.props;
     const {state} = history.location;
 
     if (state && state.cart) {
       const total = state.cart.reduce((acc, curr) => acc + curr.price, 0);
-      return total;
+      return total * user.location.currency_conversion;
     } else {
       return 0;
     }
@@ -158,13 +158,13 @@ export class WalletOrder extends React.Component {
           {cart && (
             <React.Fragment>
               {cart.map(item => {
-                return <ProductSummary item={item}/>
+                return <ProductSummary item={item} {...this.props}/>
               })}
             </React.Fragment>
           )}
           <Divider />
           {cart && (
-            <TotalRow total={this.calculateTotal()}/>
+            <TotalRow total={this.calculateTotal()} {...this.props}/>
           )}
           <br />
           {!success && user && user.wallet && user.wallet.balance < this.calculateTotal() && (
