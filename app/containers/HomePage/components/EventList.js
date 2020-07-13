@@ -103,6 +103,13 @@ class EventCard extends Component {
         const {condition} = event_guest.event;
 
         if (!user || !event_guest || !condition) return false; 
+
+        // Validate that the event hasn't ended
+        if (new Date(event_guest.event.started_at).getTime() > new Date().getTime()) return false;
+        
+        // Validate that the event hasn't ended
+        if (new Date(event_guest.event.ended_at).getTime() <= new Date().getTime()) return false;
+
         // Validate free drinks redeemed vs limit
         if (condition.limit && condition.limit <= event_guest.event.free_redemeed_drinks) return false;
 
@@ -139,7 +146,7 @@ class EventCard extends Component {
     }
 
     render() {
-        const {event_guest} = this.props;
+        const {event_guest, is_on_event} = this.props;
         return (
             <StyledEvent bordered>
                 {event_guest.checked_in && !event_guest.free_drink_redemeed && this.validateCondition() && (
@@ -189,7 +196,7 @@ class EventCard extends Component {
                             {event_guest.checked_in ? (
                                 <React.Fragment>
                                     {event_guest.check_out_time ? (
-                                        <Button color="green" block onClick={this.handleShowCheckIn}>Check-In</Button>
+                                        <Button disabled={is_on_event} color="green" block onClick={this.handleShowCheckIn}>Check-In</Button>
                                     ) : (
                                         <ButtonContainer>
                                             <Button color="green" block onClick={this.handleGoToEvent}>Menu</Button> 
@@ -198,7 +205,7 @@ class EventCard extends Component {
                                     )}
                                 </React.Fragment>
                             ) : (
-                                <Button color="green" block onClick={this.handleShowCheckIn}>Check-In</Button>
+                                <Button color="green" disabled={is_on_event} block onClick={this.handleShowCheckIn}>Check-In</Button>
                             )}
                         </EventRow>
                 )}
@@ -230,16 +237,34 @@ export default class EventList extends Component {
         submitEventCode(code);
     }
 
+    isCheckedIn = () => {
+        const {events} = this.props;
+        
+        if (!events) return false;
+
+        const checked_in = 
+            events
+                .filter(event_guest => {
+                    // Filter inactive events 
+                    return new Date(event_guest.event.started_at).getTime() <= new Date().getTime() && new Date(event_guest.event.ended_at).getTime() >= new Date().getTime();
+                })
+                .find(event_guest => event_guest.checked_in && event_guest.check_in_time && !event_guest.check_out_time)
+
+        if (checked_in) return true;
+        return false;
+    }
+
     render() {
         const { events } = this.props;
         const {code} = this.state;
+        const is_on_event = this.isCheckedIn();
         return (
             <EventListContainer>
                 <EventTitle>My Events</EventTitle>
                 {events &&
                     events.length > 0 && 
                     events.filter(event_guest => new Date(event_guest.event.ended_at).getTime() >= new Date().getTime()) &&
-                    events.map(event_guest => <EventCard {...this.props} event_guest={event_guest}/>) 
+                    events.map(event_guest => <EventCard {...this.props} event_guest={event_guest} is_on_event={is_on_event}/>) 
                 } 
                 {(!events ||
                     events.length < 1) && (
