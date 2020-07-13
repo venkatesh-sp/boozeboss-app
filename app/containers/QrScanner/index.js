@@ -30,7 +30,8 @@ const StyledCameraContainer = styled.div`
 export class QrScanner extends React.Component {
 
   state = {
-    result: 'No result'
+    result: 'No result',
+    error: false,
   }
 
   handleScan = data => {
@@ -95,10 +96,11 @@ export class QrScanner extends React.Component {
     }
   }
   handleError = err => {
-    console.error(err)
+    this.setState({error: true})
   }
 
   render() {
+    const {error} = this.state;
     const {state} = this.props.history.location;
     return (
       <div>
@@ -118,6 +120,9 @@ export class QrScanner extends React.Component {
             onScan={this.handleScan}
             style={{ width: '100%'}}
           />
+          {error && (
+            <Message type="warning" description="If you are experiencing issues please try to change to Safari on iOS or your Native Web browser" />
+          )}
         </div>
       </div>
     );
