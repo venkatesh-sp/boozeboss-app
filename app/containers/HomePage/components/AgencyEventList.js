@@ -81,6 +81,17 @@ export default class EventList extends Component {
                     agencyEvents.length > 0 && 
                     agencyEvents.map(brief_event => <EventCard {...this.props} brief_event={brief_event}/>) 
                 } 
+                {agencyEvents &&
+                    agencyEvents.length < 1 && (
+                        <div>
+                            <Divider />
+                            <b>No upcoming events</b>
+                            <br />
+                            <br />
+                            <p>They will appear here after the agency had set it up on the desktop app.</p>
+                            <Divider />
+                        </div>
+                )}
             </EventListContainer>
         )
     }
