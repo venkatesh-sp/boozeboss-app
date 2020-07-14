@@ -66,7 +66,7 @@ export default class TransferAction extends React.Component {
               
             </TransferRow>  
             <TransferRow> 
-                {action.payment_type === 'QR' && <span>Purchase <b>{action.amount}</b><Icon icon="circle" style={{color: '#c2b90a', margin: '0 0.25em 0 0.5em'}}/> at <b>{action.event.brief_event.name}</b> using <b>Cash</b></span>}
+                {action.payment_type === 'QR' && <span>Purchase <b>{action.amount}</b><Icon icon="circle" style={{color: '#c2b90a', margin: '0 0.25em 0 0.5em'}}/> at <b>{action.event && action.event.brief_event && action.event.brief_event.name}</b> using <b>Cash</b></span>}
                 {action.payment_type === 'PAYPAL' && <span>Purchase <b>{action.amount}</b><Icon icon="circle" style={{color: '#c2b90a', margin: '0 0.25em 0 0.5em'}}/>using <b>Paypal</b></span>}
             </TransferRow>
           </TransferCard>
