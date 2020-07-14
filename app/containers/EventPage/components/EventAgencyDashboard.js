@@ -268,7 +268,7 @@ export default class EventAgencyDashboard extends Component {
                     header={
                         <StyledRow> 
                             <StatContainer>
-                                <p>Total Sales ($)</p>
+                                <p>Total Sales (<Icon icon="circle" style={{color: '#c2b90a', margin: '0 0.5em 0 0.5em'}}/>)</p>
                             </StatContainer>
                             <StatContainer align='flex-end' margin='0 1.5em 0 0'>
                                 <StyledRow>
@@ -280,6 +280,57 @@ export default class EventAgencyDashboard extends Component {
                     }
                 >
                     {this.getSalesSummary()}
+                </StyledPanel>
+                <StyledPanel
+                    shaded
+                    collapsible
+                    header={
+                        <StyledRow> 
+                            <StatContainer>
+                                <p>Credits On Escrow</p>
+                            </StatContainer>
+                            <StatContainer align='flex-end' margin='0 1.5em 0 0'>
+                                <StyledRow>
+                                    <b style={{margin: '0 5px 0 0'}}>({event.credits_left} / {event.total_credits_funded})</b>
+                                    <Icon icon="circle" style={{color: '#c2b90a', margin: '0 0 0 0.5em'}}/>
+                                </StyledRow>
+                            </StatContainer>
+                        </StyledRow>
+                    }
+                >
+                    <StyledRow>
+                        <StatContainer>
+                            <p>Total Funded</p>
+                        </StatContainer>
+                        <StatContainer align='flex-end' margin='0 1.5em 0 0'>
+                            <StyledRow>
+                                <b style={{margin: '0 5px 0 0'}}>({event.total_credits_funded})</b>
+                                <Icon icon="circle" style={{color: '#c2b90a', margin: '0 0 0 0.5em'}}/>
+                            </StyledRow>
+                        </StatContainer>
+                    </StyledRow>
+                    <StyledRow>
+                        <StatContainer>
+                            <p>Credits Left</p>
+                        </StatContainer>
+                        <StatContainer align='flex-end' margin='0 1.5em 0 0'>
+                            <StyledRow>
+                                <b style={{margin: '0 5px 0 0'}}>({event.credits_left})</b>
+                                <Icon icon="circle" style={{color: '#c2b90a', margin: '0 0 0 0.5em'}}/>
+                            </StyledRow>
+                        </StatContainer>
+                    </StyledRow>
+                    <StyledRow>
+                        <StatContainer>
+                            <p>Credits Sold</p>
+                        </StatContainer>
+                        <StatContainer align='flex-end' margin='0 1.5em 0 0'>
+                            <StyledRow>
+                                <b style={{margin: '0 5px 0 0'}}>({(event.total_credits_funded - event.credits_left)})</b>
+                                <Icon icon="circle" style={{color: '#c2b90a', margin: '0 0 0 0.5em'}}/>
+                            </StyledRow>
+                        </StatContainer>
+                    </StyledRow>
                 </StyledPanel>
                 <StyledPanel 
                     shaded
