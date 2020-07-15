@@ -30,9 +30,10 @@ export default class EventContainer extends Component {
     }
 
     endEvent = () => {
-        const {event, updateEvent} = this.props;
-        const start = confirm("Are you sure you want to end this event? Guests won't be able to check-out and the menu will be closed.");
+        const {event, updateEvent, refundCredits} = this.props;
+        const start = confirm("Are you sure you want to end this event? Guests won't be able to check-out, the menu will be closed and credits left on escrow will return to their owner");
         if (start) {
+            refundCredits(event.id);
             updateEvent(event.id, {field: 'ended_at', value: new Date()});
         }
     }

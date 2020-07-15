@@ -5,13 +5,15 @@ import request from 'utils/request';
 import { 
   GET_EVENT_REQUEST,
   UPDATE_EVENT_REQUEST,
-  GET_EVENT_STATS_REQUEST
+  GET_EVENT_STATS_REQUEST,
+  REFUND_CREDITS_REQUEST
 } from './constants';
 
 import {
   getEvent, getEventSuccess, 
   getEventError, updateEventSuccess,
-  getEventStatsSuccess, getEventStatsError
+  getEventStatsSuccess, getEventStatsError,
+  refundCreditsSuccess, refundCreditsError
 } from './actions';
 
 
@@ -65,6 +67,22 @@ function* getEventStatsSaga(params) {
   }
 }
 
+function* refundCreditsSaga(params) {
+  const {event_id} = params;
+  const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${process.env.API_PORT}/api/events/${event_id}/refund-credits`;
+  const options = {
+    method: 'POST',
+  };
+
+  try {
+    const response = yield call(request, requestURL, options);
+    yield put(refundCreditsSuccess(response));
+  } catch (error) {
+    const jsonError = yield error.response ? error.response.json() : error;
+    yield put(refundCreditsError(jsonError));
+  }
+}
+
 function* getEventRequest() {
   yield takeLatest(GET_EVENT_REQUEST, getEventSaga);
 }
@@ -77,10 +95,15 @@ function* getEventStatsRequest() {
   yield takeLatest(GET_EVENT_STATS_REQUEST, getEventStatsSaga);
 }
 
+function* refundCreditsRequest() {
+  yield takeLatest(REFUND_CREDITS_REQUEST, refundCreditsSaga);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(getEventRequest),
     fork(updateEventRequest),
-    fork(getEventStatsRequest)
+    fork(getEventStatsRequest),
+    fork(refundCreditsRequest),
   ]);
 }
