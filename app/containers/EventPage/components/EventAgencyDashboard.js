@@ -350,9 +350,6 @@ export default class EventAgencyDashboard extends Component {
                 >
                     {this.getGuestSummary()}
                 </StyledPanel>
-                {(new Date(event.ended_at).getTime() >= new Date().getTime()) && (  
-                    <Divider>Other</Divider>
-                )}
             </StyledStatsContainer>
         )
     }

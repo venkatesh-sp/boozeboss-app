@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import RoleValidator from 'components/RoleValidator';
 import Countdown from 'react-countdown';
 import moment from 'moment';
-import { Message, Button, Panel } from 'rsuite';
+import { Message, Button, Panel, Divider} from 'rsuite';
 import { updateEventError } from '../actions';
 import EventHeaderContainer from './EventHeaderContainer';
 import EventMenu from './EventMenu';
@@ -79,6 +79,7 @@ export default class EventContainer extends Component {
                             {...this.props}
                         />
                         <EventAgencyDashboard {...this.props}/>
+                        <Divider>Other</Divider>
                         <StyledPanel
                             shaded
                             collapsible
@@ -108,6 +109,9 @@ export default class EventContainer extends Component {
                                     <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to redeem the guest free drink')}>Scan free drink</StyledButtonLink>
                                     <StyledButtonLink color="green" onClick={() => this.goToScannerWithEvent('Scan the code to complete the payment')}>Sell Credits</StyledButtonLink>
                                 </div>
+                            )}
+                            {new Date(event.ended_at).getTime() <= new Date().getTime() && (
+                                <b>No Actions Available</b>
                             )}
                         </StyledPanel>
 
