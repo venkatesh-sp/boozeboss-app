@@ -11,12 +11,12 @@ const Header = styled.div`
 
 export default class EventHeaderContainer extends Component {
     render() {
-        const {event} = this.props;
+        const {event, scope} = this.props;
         return (
             <Header>
                 <p>{moment(event.started_at).format('DD/MM/YYYY LT')}</p>   
                 <h4>{event.brief_event.name}</h4>   
-                <Divider />        
+                <Divider>{scope === 'AGENCY' ? 'Dashboard' : 'Menu'}</Divider>     
             </Header>
         )
     }

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import RoleValidator from 'components/RoleValidator';
 import Countdown from 'react-countdown';
 import moment from 'moment';
-import { Message, Button } from 'rsuite';
+import { Message, Button, Panel } from 'rsuite';
 import { updateEventError } from '../actions';
 import EventHeaderContainer from './EventHeaderContainer';
 import EventMenu from './EventMenu';
@@ -17,6 +17,12 @@ const Container = styled.div`
 `
 const StyledButtonLink = styled(Button)`
     margin: 5px 0 5px 0;
+    flex: 1;
+`
+
+const StyledPanel = styled(Panel)`
+    display: flex;
+    flex-direction: column;
 `
 
 export default class EventContainer extends Component {
@@ -73,29 +79,38 @@ export default class EventContainer extends Component {
                             {...this.props}
                         />
                         <EventAgencyDashboard {...this.props}/>
-                         {new Date(event.started_at).getTime() >= new Date().getTime() && (
-                             <Message type='info' description={`This event is scheduled to automatically start at ${moment(event.started_at).format('DD/MM/YYYY LT')}`} />
-                         )}
-                         {new Date(event.started_at).getTime() >= new Date().getTime() && (
-                             <Button onClick={this.startEvent} style={{marginTop: '0.5em'}} block color='green'>Start now</Button>
-                         )}
-                         {(new Date(event.started_at).getTime() < new Date().getTime()) &&
+                        <StyledPanel
+                            shaded
+                            collapsible
+                            header="Show actions"
+                        >
+                            {new Date(event.started_at).getTime() >= new Date().getTime() && (
+                                <Message type='info' description={`This event is scheduled to automatically start at ${moment(event.started_at).format('DD/MM/YYYY LT')}`} />
+                            )}
+                            {new Date(event.started_at).getTime() >= new Date().getTime() && (
+                                <Button onClick={this.startEvent} style={{marginTop: '0.5em'}} block color='green'>Start now</Button>
+                            )}
+                            {(new Date(event.started_at).getTime() < new Date().getTime()) &&
                             (new Date(event.ended_at).getTime() >= new Date().getTime()) && (
-                             <Message type='info' description={`This event is scheduled to automatically end at ${moment(event.ended_at).format('DD/MM/YYYY LT')}`} />
-                         )}
-                         {(new Date(event.started_at).getTime() < new Date().getTime()) && 
+                                <Message type='info' description={`This event is scheduled to automatically end at ${moment(event.ended_at).format('DD/MM/YYYY LT')}`} />
+                            )}
+                            {(new Date(event.started_at).getTime() < new Date().getTime()) && 
                             (new Date(event.ended_at).getTime() >= new Date().getTime()) && (
-                             <Button onClick={this.endEvent} style={{marginTop: '0.5em'}} block color='green'>End of the day</Button>
-                         )}
-                         {(new Date(event.started_at).getTime() <= new Date().getTime()) && new Date(event.ended_at).getTime() >= new Date().getTime() && (
-                             <React.Fragment>
-                                 <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to check-in the guest')}>Check-In</StyledButtonLink>
-                                <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to check-out the guest')}>Check-Out</StyledButtonLink>
-                                <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to redeem the guest order')}>Take Order</StyledButtonLink>
-                                <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to redeem the guest free drink')}>Scan free drink</StyledButtonLink>
-                                <StyledButtonLink color="green" onClick={() => this.goToScannerWithEvent('Scan the code to complete the payment')}>Sell Credits</StyledButtonLink>
-                             </React.Fragment>
-                         )}
+                                <Button onClick={this.endEvent} style={{marginTop: '0.5em'}} block color='green'>End of the day</Button>
+                            )}
+                            {(new Date(event.started_at).getTime() <= new Date().getTime()) && new Date(event.ended_at).getTime() >= new Date().getTime() && (
+                                <div
+                                    style={{display: 'flex', flexDirection: 'column'}}
+                                >
+                                    <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to check-in the guest')}>Check-In</StyledButtonLink>
+                                    <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to check-out the guest')}>Check-Out</StyledButtonLink>
+                                    <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to redeem the guest order')}>Take Order</StyledButtonLink>
+                                    <StyledButtonLink color="green" onClick={() => this.goToScanner('Scan the code to redeem the guest free drink')}>Scan free drink</StyledButtonLink>
+                                    <StyledButtonLink color="green" onClick={() => this.goToScannerWithEvent('Scan the code to complete the payment')}>Sell Credits</StyledButtonLink>
+                                </div>
+                            )}
+                        </StyledPanel>
+
                     </RoleValidator>
                 )}
                 {event && (
