@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import FacebookButton from 'components/FacebookButton';
+import PasswordStrengthBar from 'react-password-strength-bar';
 
 import PropTypes from 'prop-types';
 import PhoneVerification from './PhoneVerification';
@@ -57,7 +58,7 @@ export default class SignupForm extends Component {
         gender: null,
         date_of_birth: null,
         phone_number: null,
-        password: null,
+        password: '',
         confirm: null,
         code: null,
       }
@@ -200,6 +201,7 @@ export default class SignupForm extends Component {
                       onChange={(value) => this.handleChange(value, 'confirm')}
                     />
                   </InputGroup>
+                  <PasswordStrengthBar password={password} style={{width: '300px', margin: '0 0 1em 0'}}/>
                   <StyledButton 
                     disabled={success}
                     color="green"

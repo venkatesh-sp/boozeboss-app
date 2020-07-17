@@ -91,6 +91,7 @@
     "react-helmet": "6.0.0-beta",
     "react-intl": "2.8.0",
     "react-ios-pwa-prompt": "^1.7.0",
+    "react-password-strength-bar": "^0.3.2",
     "react-paypal-button-v2": "^2.6.2",
     "react-phone-input-2": "^2.13.3",
     "react-qr-code": "^1.0.2",
