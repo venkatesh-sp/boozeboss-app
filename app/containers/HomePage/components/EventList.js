@@ -40,6 +40,13 @@ const StyledEvent = styled(Panel)`
     margin: 1em 0 1em 0;
 `
 
+const EventsRow = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+`
+
 /* const renderer = ({ days, hours, minutes, seconds, completed }) => {
     if (completed) {
       // Render a completed state
@@ -221,7 +228,8 @@ class EventCard extends Component {
 export default class EventList extends Component {
 
     state = {
-        code: null
+        code: null,
+        showcode: false
     }
     
     handleEventCodeChange = (code) => {
@@ -235,6 +243,12 @@ export default class EventList extends Component {
         const {code} = this.state;
         
         submitEventCode(code);
+    }
+
+    toggleAddCode = () => {
+        this.setState({
+            showcode: !this.state.showcode
+        })
     }
 
     isCheckedIn = () => {
@@ -256,21 +270,40 @@ export default class EventList extends Component {
 
     render() {
         const { events } = this.props;
-        const {code} = this.state;
+        const {code, showcode} = this.state;
         const is_on_event = this.isCheckedIn();
         return (
             <EventListContainer>
-                <EventTitle>My Events</EventTitle>
-                {events &&
-                    events.length > 0 && 
-                    events.filter(event_guest => new Date(event_guest.event.ended_at).getTime() >= new Date().getTime()) &&
-                    events.map(event_guest => <EventCard {...this.props} event_guest={event_guest} is_on_event={is_on_event}/>) 
-                } 
-                {(!events ||
-                    events.length < 1) && (
-                        <Panel bordered>
-                            <p>No upcoming events.</p>
-                            <p>Do you have an event invite code?</p> 
+                <EventsRow
+                    style={{
+                        marginBottom: showcode ? '1em' : 0
+                    }}
+                >
+                    <EventTitle style={{margin: 0}}>My Events</EventTitle>
+                    {!(!events ||
+                                events.length < 1) && (
+                        <a
+                            onClick={this.toggleAddCode} 
+                        >
+                            {showcode ? 'Hide ' : 'Add New Event'}
+                        </a>
+                    )}
+                    
+                </EventsRow>
+                {((!events ||
+                    events.length < 1) || showcode) && (
+                        <Panel bordered style={{marginTop: '0.5em'}}>
+                            {(!events ||
+                                events.length < 1) ? (
+                                    <React.Fragment>
+                                        <p>No upcoming events.</p>
+                                        <p>Do you have an event invite code?</p> 
+                                    </React.Fragment>
+                                ) : (
+                                    <React.Fragment>
+                                        <p>Add the event code</p>
+                                    </React.Fragment>
+                                )}
                             <InputGroup style={styles}>
                                 <InputGroup.Addon>
                                     <Icon icon="key" />
@@ -282,6 +315,11 @@ export default class EventList extends Component {
                             </Button>
                         </Panel>
                 )}
+                {events &&
+                    events.length > 0 && 
+                    events.filter(event_guest => new Date(event_guest.event.ended_at).getTime() >= new Date().getTime()) &&
+                    events.map(event_guest => <EventCard {...this.props} event_guest={event_guest} is_on_event={is_on_event}/>) 
+                } 
             </EventListContainer>
         )
     }
