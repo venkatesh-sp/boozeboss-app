@@ -116,8 +116,8 @@ module.exports = require('./webpack.base.babel')({
     }),
 
     new WebpackPwaManifest({
-      name: 'Booze Boss',
-      short_name: 'BoozeBoss',
+      name: 'LiquidIntel Wallet',
+      short_name: 'LiquidIntel',
       description: 'Buy drinks',
       background_color: '#fafafa',
       display: 'standalone',
@@ -126,11 +126,11 @@ module.exports = require('./webpack.base.babel')({
       ios: true,
       icons: [
         {
-          src: path.resolve('app/images/icon-512x512.png'),
+          src: path.resolve('app/images/liquidintel_icon.png'),
           sizes: [72, 96, 128, 144, 192, 384, 512],
         },
         {
-          src: path.resolve('app/images/icon-512x512.png'),
+          src: path.resolve('app/images/liquidintel_icon.png'),
           sizes: [120, 152, 167, 180],
           ios: true,
         },
