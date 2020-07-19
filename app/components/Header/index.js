@@ -11,6 +11,7 @@ import { logout, getUser } from '../../containers/App/actions'
 import { makeSelectIsAuthenticated, makeSelectScope, makeSelectRole, makeSelectUser } from '../../containers/App/selectors';
 
 import RoleValidator from 'components/RoleValidator';
+import VersioningMenu from 'components/VersioningMenu';
 
 const MobileHeaderContainer = styled.div`
     display: flex;
@@ -177,6 +178,7 @@ class Header extends Component {
                             )}
                             </Sidenav.Body>
                         </StyledSidenav>
+                        <VersioningMenu />
                     </Drawer.Body>
                 </StyledDrawer>
             </MobileHeaderContainer>
