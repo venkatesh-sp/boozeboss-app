@@ -50,8 +50,15 @@ const ActionsSection = styled.div`
 export class ActionsContainer extends React.Component {
 
   componentDidMount = () => {
-    const {getWalletActions} = this.props;
-    getWalletActions();
+    const {getWalletActions, user} = this.props;
+    if (user) {
+      getWalletActions();
+    } else {
+      setTimeout(() => {
+        getWalletActions();
+      }, 500)
+    }
+    
   }
 
   render() {
