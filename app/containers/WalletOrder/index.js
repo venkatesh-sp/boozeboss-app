@@ -97,7 +97,7 @@ export class WalletOrder extends React.Component {
 
     if (state && state.cart) {
       const total = state.cart.reduce((acc, curr) => acc + curr.price, 0);
-      return total * user.location.currency_conversion;
+      return Math.round(total * user.location.currency_conversion * 100) / 100;
     } else {
       return 0;
     }
