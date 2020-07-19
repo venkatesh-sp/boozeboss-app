@@ -25,13 +25,13 @@ const MobileHeaderContainer = styled.div`
 `
 
 const StyledImage = styled.img`
-    height: 12px;
+    height: 35px;
     width: auto;
     margin-left: -2em;
 `
 
 const StyledDrawerLogo = styled.img`
-    height: 15px;
+    height: 35px;
     width: auto;
 `
 

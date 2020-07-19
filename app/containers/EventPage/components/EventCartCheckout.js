@@ -12,7 +12,7 @@ const StyledCheckoutPanel = styled(Panel)`
     display: flex;
     flex-direction: row;
     margin: 0 1em 0 0;
-    background-color: #5ea83e;
+    background-color: #32C5F4;
     color: white;
 
     .rs-panel-body {

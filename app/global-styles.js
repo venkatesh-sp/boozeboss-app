@@ -26,6 +26,11 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Roboto', sans-serif;
     line-height: 1.5em;
   }
+
+
+  .rs-btn-green {
+    background-color: #32C5F4 !important;
+  }
 `;
 
 export default GlobalStyle;
