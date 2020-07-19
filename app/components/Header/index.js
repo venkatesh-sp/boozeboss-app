@@ -55,9 +55,9 @@ const HeaderSection = styled.div`
 
 const WalletBalance = styled.div`
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: centere;
     flex: 1;
 `
 
@@ -65,6 +65,12 @@ const StyledAccountData = styled.div`
     bottom: 5px; 
     display: flex;
     flex-direction: row;
+`
+
+const BalanceRow = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 `
 
 class Header extends Component {
@@ -118,8 +124,14 @@ class Header extends Component {
                 </HeaderSection>
                 {user && user.wallet ? (
                     <WalletBalance>
-                        <p>{user.wallet.balance}</p>
-                        <Icon icon="circle" style={{color: '#c2b90a', margin: '0 0 0 0.5em'}}/>
+                        <BalanceRow>
+                            <p>{user.wallet.balance}</p>
+                            <Icon icon="circle" style={{color: '#c2b90a', margin: '0 0 0 0.5em'}}/>
+                        </BalanceRow>
+                        <BalanceRow>
+                            <p>{user.wallet.loyalty_points}</p>
+                            <b style={{margin: '0 0 0 0.5em'}}>LP</b>
+                        </BalanceRow>
                     </WalletBalance>
                 ) : (
                     <HeaderSection />
@@ -138,7 +150,7 @@ class Header extends Component {
                         <StyledSidenav>
                             <Sidenav.Body>
                             <Nav activeKey={pathname}>
-                                <Link to="/" ><Nav.Item onClick={() => this.handleMenuClick('/')} eventKey="/" icon={<Icon icon="home" />} å>Home</Nav.Item></Link>
+                                <Link to="/" ><Nav.Item onClick={() => this.handleMenuClick('/')} eventKey="/" icon={<Icon icon="home" />} a>Home</Nav.Item></Link>
                             </Nav>
                             { isAuthenticated ? (
                                 <Nav>
