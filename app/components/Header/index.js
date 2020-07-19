@@ -178,7 +178,7 @@ class Header extends Component {
                             )}
                             </Sidenav.Body>
                         </StyledSidenav>
-                        <VersioningMenu />
+                        <VersioningMenu handleMenuClick={this.handleMenuClick} />
                     </Drawer.Body>
                 </StyledDrawer>
             </MobileHeaderContainer>

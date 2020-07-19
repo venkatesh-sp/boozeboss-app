@@ -30,6 +30,9 @@ import TransferCredits from 'containers/TransferCredits/Loadable';
 import FreeDrink from 'containers/FreeDrinkCode/Loadable';
 import ApproveFreeDrink from 'containers/ApproveFreeDrink/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
+import Help from 'containers/Help';
+import Terms from 'containers/Terms';
+import Privacy from 'containers/Privacy';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import PrivateRoute from 'components/PrivateRoute';
@@ -173,10 +176,13 @@ class App extends React.Component {
               scopesRequired={['GUEST', 'AGENCY', 'BRAND']}
               rolesRequired={['REGULAR', 'VIP', 'VIP', 'OWNER', 'MANAGER', 'STAFF']}
             />
+            <Route path="/terms" component={Terms} />
+            <Route path="/privacy" component={Privacy} />
+            <Route path="/help" component={Help} />
             <Route path="" component={NotFoundPage} />
           </Switch>
           <GlobalStyle />
-          <PWAPrompt promptOnVisit={1} timesToShow={999}/>
+          <PWAPrompt promptOnVisit={5} timesToShow={999}/>
         </AppWrapper>
       );
   }

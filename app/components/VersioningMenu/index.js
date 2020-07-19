@@ -31,13 +31,13 @@ export default class VersioningMenu extends Component {
                     <p>V{process.env.PACKAGE_VERSION.replace(`"`, '').replace(`"`, '')}</p>
                 </StyledField>
                 <StyledField>
-                    <Link to="/terms" style={{color: 'white'}}>Terms</Link>
+                    <Link to="/terms" style={{color: 'white'}} onClick={() => this.props.handleMenuClick('/terms')}>Terms</Link>
                 </StyledField>
                 <StyledField>
-                    <Link to="/privacy" style={{color: 'white'}}>Privacy</Link>
+                    <Link to="/privacy" style={{color: 'white'}} onClick={() => this.props.handleMenuClick('/privacy')}>Privacy</Link>
                 </StyledField>
                 <StyledField>
-                    <Link to="/help" style={{color: 'white'}}>Help</Link>
+                    <Link to="/help" style={{color: 'white'}} onClick={() => this.props.handleMenuClick('/help')}>Help</Link>
                 </StyledField>
             </StyledMenu>
         )
