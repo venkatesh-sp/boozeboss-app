@@ -241,6 +241,7 @@ export default class EventList extends Component {
     handleSubmitCode = () => {
         const {submitEventCode} = this.props;
         const {code} = this.state;
+        this.setState({showcode: false, code: null});
         
         submitEventCode(code);
     }
@@ -318,6 +319,7 @@ export default class EventList extends Component {
                 {events &&
                     events.length > 0 && 
                     events.filter(event_guest => new Date(event_guest.event.ended_at).getTime() >= new Date().getTime()) &&
+                    events.sort((a,b) => new Date(b.event.ended_at).getTime() - new Date(a.event.ended_at).getTime()) &&
                     events.map(event_guest => <EventCard {...this.props} event_guest={event_guest} is_on_event={is_on_event}/>) 
                 } 
             </EventListContainer>
