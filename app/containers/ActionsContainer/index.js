@@ -21,7 +21,7 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import { TransferAction, PurchaseAction, OrderAction } from './components';
-import {Divider} from 'rsuite';
+import {Divider, Message} from 'rsuite';
 import styled from 'styled-components';
 
 const StyledDiv = styled.div`
@@ -81,7 +81,7 @@ export class ActionsContainer extends React.Component {
               })}
             </ActionsSection>
           ) : (
-            <p>No actions available</p>
+            <Message type="info" description="All your purchases, orders and transfers will appear here." />
           )}
         </StyledDiv>
       </div>
