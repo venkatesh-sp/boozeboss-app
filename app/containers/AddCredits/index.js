@@ -158,7 +158,7 @@ export class AddCredits extends React.Component {
     return (
       <div>
         <Helmet>
-          <title>AddCredits</title>
+          <title>Add Coin</title>
           <meta name="description" content="Description of AddCredits" />
         </Helmet>
         { code ? (
@@ -192,7 +192,7 @@ export class AddCredits extends React.Component {
               <StyledRow>
                 <StyledColumn></StyledColumn>
                 <StyledColumn align="center" flex="2">
-                  <h4>Add Credits</h4>
+                  <h4>Buy Coins</h4>
                 </StyledColumn>
                 <StyledColumn></StyledColumn>
               </StyledRow>
@@ -217,7 +217,7 @@ export class AddCredits extends React.Component {
                   <b>Total</b>
                 </SummaryColumn>
                 <SummaryColumn flex="1.5">
-                  <p>({credits} BoozeBoss credits)</p>
+                  <p>({credits} LiquidIntel Coins)</p>
                 </SummaryColumn>
                 <SummaryColumn justify='flex-end' flex="1">
                   <b>(~ {user.location.currency} {Math.round(credits / user.location.currency_conversion)})</b>

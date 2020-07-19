@@ -72,7 +72,7 @@ export class ActionsContainer extends React.Component {
                 if (action.action === 'RECEIVED_TRANSFER' || action.action === 'SENT_TRANSFER') {
                   return <TransferAction {...this.props} action={action} />
                 }
-                if (action.action === 'PURCHASE') {
+                if (action.action === 'PURCHASE' && action.status === 'APPROVED') {
                   return <PurchaseAction {...this.props} action={action} />
                 }
                 if (action.action === 'ORDER') {
