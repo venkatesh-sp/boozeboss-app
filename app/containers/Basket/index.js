@@ -35,7 +35,7 @@ export default class Basket extends Component {
         <img
           alt="back"
           style={{ marginTop: '10px', marginBottom: '10px' }}
-          src="https://raw.githubusercontent.com/viratsp/image-assets/master/back-arrow.svg"
+          src="https://raw.githubusercontent.com/soulpage/image-assets/master/back-arrow.svg"
         />
         <StyledImage src="https://raw.githubusercontent.com/soulpage/image-assets/master/restaurant.svg" />
         <StyledFlexContainer>
