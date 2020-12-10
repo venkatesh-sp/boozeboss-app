@@ -8,27 +8,47 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { makeSelectIsAuthenticated, makeSelectScope, makeSelectRole } from '../../containers/App/selectors';
+import {
+  makeSelectIsAuthenticated,
+  makeSelectScope,
+  makeSelectRole,
+} from '../../containers/App/selectors';
 
-const PrivateRoute = ({ component: Component, isAuthenticated, scopesRequired, rolesRequired, scope, role, ...rest }) => (
+const PrivateRoute = ({
+  component: Component,
+  isAuthenticated,
+  scopesRequired,
+  rolesRequired,
+  scope,
+  role,
+  ...rest
+}) => (
   <Route
     {...rest}
-    render={props =>
-      isAuthenticated ? (
+    render={
+      props => (
         <React.Fragment>
-          {(scopesRequired && rolesRequired) && scopesRequired.indexOf(scope) > -1 && rolesRequired.indexOf(role) > -1 ? (
-            <Component {...props} />
-          ) : (
-            <Redirect
-              to={{ pathname: '/login', state: { from: props.location } }}
-            />
-          )}
+          <Component {...props} />
         </React.Fragment>
-      ) : (
-        <Redirect
-          to={{ pathname: '/login', state: { from: props.location } }}
-        />
       )
+      // isAuthenticated ? (
+      //   <React.Fragment>
+      //     {scopesRequired &&
+      //     rolesRequired &&
+      //     scopesRequired.indexOf(scope) > -1 &&
+      //     rolesRequired.indexOf(role) > -1 ? (
+      //       <Component {...props} />
+      //     ) : (
+      //       <Redirect
+      //         to={{ pathname: '/login', state: { from: props.location } }}
+      //       />
+      //     )}
+      //   </React.Fragment>
+      // ) : (
+      //   <Redirect
+      //     to={{ pathname: '/login', state: { from: props.location } }}
+      //   />
+      // )
     }
   />
 );
@@ -42,13 +62,11 @@ PrivateRoute.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-    isAuthenticated: makeSelectIsAuthenticated(),
-    scope: makeSelectScope(),
-    role: makeSelectRole()
+  isAuthenticated: makeSelectIsAuthenticated(),
+  scope: makeSelectScope(),
+  role: makeSelectRole(),
 });
 
-const withConnect = connect(
-    mapStateToProps,
-);
+const withConnect = connect(mapStateToProps);
 
 export default compose(withConnect)(PrivateRoute);
