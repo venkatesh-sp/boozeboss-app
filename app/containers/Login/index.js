@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Button, IconButton, ButtonGroup, ButtonToolbar, Input } from 'rsuite';
+import { Button, ButtonGroup, Input } from 'rsuite';
 import Signup from '../Signup';
 
 const StyledLoginDiv = styled.div`
@@ -17,12 +17,6 @@ const StyledText = styled.p`
   margin-top: 20px;
 `;
 
-const styles = {
-  marginBottom: 50,
-  display: 'flex',
-  justifyContent: 'space-between',
-};
-
 const InputStyles = {
   borderTop: 'none',
   borderLeft: 'none',
@@ -38,7 +32,7 @@ const ButtonStyles = {
   marginTop: '40px',
 };
 
-const CustomButtonGroup = ({ appearance, active, toggle }) => (
+const CustomButtonGroup = ({ active, toggle }) => (
   <ButtonGroup justified>
     <Button
       onClick={() => toggle('signin')}
@@ -55,22 +49,20 @@ const CustomButtonGroup = ({ appearance, active, toggle }) => (
   </ButtonGroup>
 );
 
-const SignIn = () => {
-  return (
-    <>
-      <StyledText size="17px" color="#363645" weight="bold">
-        Already registered with us
-      </StyledText>
-      <StyledText>
-        Please provide your registred email/phone, we will sent an OTP on it.
-      </StyledText>
-      <Input style={InputStyles} placeholder="Email/Phone" />
-      <Button style={ButtonStyles} appearance="primary">
-        Send OTP
-      </Button>
-    </>
-  );
-};
+const SignIn = () => (
+  <>
+    <StyledText size="17px" color="#363645" weight="bold">
+      Already registered with us
+    </StyledText>
+    <StyledText>
+      Please provide your registred email/phone, we will sent an OTP on it.
+    </StyledText>
+    <Input style={InputStyles} placeholder="Email/Phone" />
+    <Button style={ButtonStyles} appearance="primary">
+      Send OTP
+    </Button>
+  </>
+);
 
 export default class Login extends Component {
   constructor() {

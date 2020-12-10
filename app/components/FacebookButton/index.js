@@ -31,8 +31,8 @@ export default class FacebookButton extends React.Component {
     };
 
     (function(d, s, id) {
-      var js,
-        fjs = d.getElementsByTagName(s)[0];
+      let js;
+      const fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) {
         return;
       }
@@ -52,7 +52,7 @@ export default class FacebookButton extends React.Component {
     const { facebookAuth } = this.props;
     window.FB.api('/me?fields=name,email,age_range', function(response) {
       console.log('Me', response);
-      console.log('Successful login for: ' + response.name);
+      console.log(`Successful login for: ${response.name}`);
       facebookAuth({
         email: response.email,
         name: response.name,

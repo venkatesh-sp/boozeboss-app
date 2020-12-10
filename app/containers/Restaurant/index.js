@@ -107,29 +107,30 @@ const BackButtonStyles = {
   top: '20px',
   left: '30px',
 };
-const MenuCard = () => {
-  return (
-    <StyledMenuDiv>
-      <StyledFlexContainer>
-        <StyledText size="16px" color="#454651" weight="bold">
-          Margherita Veg Pizza
-        </StyledText>
-        <img src="https://raw.githubusercontent.com/soulpage/image-assets/master/indian-veg-mark.svg" />
-      </StyledFlexContainer>
-
-      <StyledText size="13px" color="#8C8C8C" weight="normal">
-        Single cheese topping with Ground paprika, onion, capsicum, tomato.
+const MenuCard = () => (
+  <StyledMenuDiv>
+    <StyledFlexContainer>
+      <StyledText size="16px" color="#454651" weight="bold">
+        Margherita Veg Pizza
       </StyledText>
+      <img
+        alt="veg"
+        src="https://raw.githubusercontent.com/soulpage/image-assets/master/indian-veg-mark.svg"
+      />
+    </StyledFlexContainer>
 
-      <StyledFlexContainer>
-        <StyledText size="16px" color="#454651" weight="normal">
-          159 rs
-        </StyledText>
-        <Button appearance="ghost">+ Add</Button>
-      </StyledFlexContainer>
-    </StyledMenuDiv>
-  );
-};
+    <StyledText size="13px" color="#8C8C8C" weight="normal">
+      Single cheese topping with Ground paprika, onion, capsicum, tomato.
+    </StyledText>
+
+    <StyledFlexContainer>
+      <StyledText size="16px" color="#454651" weight="normal">
+        159 rs
+      </StyledText>
+      <Button appearance="ghost">+ Add</Button>
+    </StyledFlexContainer>
+  </StyledMenuDiv>
+);
 
 export default class Restaurant extends Component {
   constructor(props) {

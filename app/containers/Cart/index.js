@@ -36,51 +36,52 @@ const ButtonStyles = {
   borderRadius: '8px',
   padding: '5px 10px',
 };
-const CartItem = () => {
-  return (
-    <StyledCartItemDiv>
-      <StyledFlexContainer>
-        <StyledText size="18px" weight="bold">
-          Margherita Veg Pizza{' '}
-        </StyledText>
-        <img src="https://raw.githubusercontent.com/soulpage/image-assets/master/indian-veg-mark.svg" />
-      </StyledFlexContainer>
-      <StyledFlexContainer>
-        <StyledText size="18px" weight="bold">
-          ₹99
-        </StyledText>
-        <div>
-          <Button
-            style={{
-              borderRight: 'none',
-              borderRadius: '0',
-              marginLeft: '20px',
-            }}
-            appearance="ghost"
-          >
-            +
-          </Button>
-          <Button
-            style={{
-              borderRight: 'none',
-              borderLeft: 'none',
-              borderRadius: '0',
-            }}
-            appearance="ghost"
-          >
-            67{' '}
-          </Button>
-          <Button
-            style={{ borderLeft: 'none', borderRadius: '0' }}
-            appearance="ghost"
-          >
-            +
-          </Button>
-        </div>
-      </StyledFlexContainer>
-    </StyledCartItemDiv>
-  );
-};
+const CartItem = () => (
+  <StyledCartItemDiv>
+    <StyledFlexContainer>
+      <StyledText size="18px" weight="bold">
+        Margherita Veg Pizza{' '}
+      </StyledText>
+      <img
+        alt="veg"
+        src="https://raw.githubusercontent.com/soulpage/image-assets/master/indian-veg-mark.svg"
+      />
+    </StyledFlexContainer>
+    <StyledFlexContainer>
+      <StyledText size="18px" weight="bold">
+        ₹99
+      </StyledText>
+      <div>
+        <Button
+          style={{
+            borderRight: 'none',
+            borderRadius: '0',
+            marginLeft: '20px',
+          }}
+          appearance="ghost"
+        >
+          +
+        </Button>
+        <Button
+          style={{
+            borderRight: 'none',
+            borderLeft: 'none',
+            borderRadius: '0',
+          }}
+          appearance="ghost"
+        >
+          67{' '}
+        </Button>
+        <Button
+          style={{ borderLeft: 'none', borderRadius: '0' }}
+          appearance="ghost"
+        >
+          +
+        </Button>
+      </div>
+    </StyledFlexContainer>
+  </StyledCartItemDiv>
+);
 
 export default class Cart extends Component {
   render() {

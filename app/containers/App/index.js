@@ -38,13 +38,13 @@ import Footer from 'components/Footer';
 import PrivateRoute from 'components/PrivateRoute';
 import GuardedRoute from 'components/GuardedRoute';
 
-import GlobalStyle from '../../global-styles';
 import PWAPrompt from 'react-ios-pwa-prompt';
 
 import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
-import saga from './saga';
 import Signup from 'containers/Signup';
+import saga from './saga';
+import GlobalStyle from '../../global-styles';
 
 import 'rsuite/dist/styles/rsuite-default.css';
 import Restaurant from '../Restaurant';

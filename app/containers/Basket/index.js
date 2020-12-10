@@ -33,6 +33,7 @@ export default class Basket extends Component {
     return (
       <StyledBasketDiv>
         <img
+          alt="back"
           style={{ marginTop: '10px', marginBottom: '10px' }}
           src="https://raw.githubusercontent.com/viratsp/image-assets/master/back-arrow.svg"
         />
@@ -89,6 +90,7 @@ export default class Basket extends Component {
         <StyledFlexContainer>
           <div>
             <img
+              alt="basket"
               style={BasketIconStyles}
               src="https://raw.githubusercontent.com/soulpage/image-assets/master/basket-icon.svg"
             />
