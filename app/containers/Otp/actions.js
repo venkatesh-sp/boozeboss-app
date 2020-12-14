@@ -4,13 +4,12 @@
  *
  */
 
+import status from 'utils/status';
 import {
   CHECK_SMS_VERIFICATION_REQUEST,
   CHECK_SMS_VERIFICATION_SUCCESS,
   CHECK_SMS_VERIFICATION_ERROR,
 } from './constants';
-
-import status from 'utils/status';
 
 // Check code
 export function checkSMSVerification(phone_number, code) {

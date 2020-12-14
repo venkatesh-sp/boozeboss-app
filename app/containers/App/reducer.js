@@ -8,6 +8,7 @@
  */
 
 import { fromJS } from 'immutable';
+import { decode } from 'utils/tokenUtils';
 import {
   AUTHENTICATE,
   LOGOUT,
@@ -15,8 +16,6 @@ import {
   GET_USER_SUCCESS,
   GET_USER_ERROR,
 } from './constants';
-
-import { decode } from 'utils/tokenUtils';
 
 const tokenIsExpired = () => {
   const getToken = localStorage.getItem('jwt');

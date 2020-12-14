@@ -1,7 +1,7 @@
 import { Alert } from 'rsuite';
 
 const alert_status = (message, type, duration) => {
-  let event_duration = duration || 2500;
+  const event_duration = duration || 2500;
   if (type === 'success') {
     Alert.success(message, event_duration);
   }

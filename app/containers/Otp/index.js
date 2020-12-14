@@ -69,6 +69,7 @@ class Otp extends Component {
       return Alert.error('Incorrect OTP', 2000);
     this.props.checkSMSVerification(this.state.phone_number, this.state.otp);
   };
+
   render() {
     console.log(this.props.location);
     return (

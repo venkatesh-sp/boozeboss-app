@@ -4,6 +4,7 @@
  *
  */
 
+import status from 'utils/status';
 import {
   SEND_MOBILE_OTP_REQUEST,
   SEND_MOBILE_OTP_SUCCESS,
@@ -18,8 +19,6 @@ import {
   VERIFY_EMAIL_PHONE_SUCESS,
   VERIFY_EMAIL_PHONE_ERROR,
 } from './constants';
-
-import status from 'utils/status';
 
 export function sendMobileOtp(phone_number) {
   return {

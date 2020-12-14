@@ -126,64 +126,62 @@ const SignIn = ({ handleChange, handleSubmit }) => (
   </>
 );
 
-const SignUp = ({ handleChange, handleSignup }) => {
-  return (
-    <StyledSignupContainer>
-      <StyledHeading>Signup</StyledHeading>
-      <Input
-        onChange={value => handleChange(value, 'first_name')}
-        style={inputStyles}
-        type="text"
-        placeholder="First Name"
-      />
-      <Input
-        onChange={value => handleChange(value, 'last_name')}
-        style={inputStyles}
-        type="text"
-        placeholder="Last Name"
-      />
-      <Input
-        onChange={value => handleChange(value, 'email')}
-        style={inputStyles}
-        type="text"
-        placeholder="Email"
-      />
-      <Input
-        onChange={value => handleChange(value, 'phone')}
-        style={inputStyles}
-        type="text"
-        placeholder="Phone (prefix with country code)"
-      />
-      <Input
-        onChange={value => handleChange(value, 'password')}
-        style={inputStyles}
-        type="text"
-        placeholder="Password"
-      />
-      <Input
-        onChange={value => handleChange(value, 'confirm_password')}
-        style={inputStyles}
-        type="text"
-        placeholder="Confirm Password"
-      />
-      <SelectPicker
-        onChange={value => handleChange(value, 'gender')}
-        style={inputStyles}
-        searchable={false}
-        data={[
-          { key: 'male', label: 'MALE' },
-          { key: 'female', label: 'FEMALE' },
-        ]}
-        valueKey="key"
-        type="text"
-        placeholder="Gender"
-      />
-      <Button style={ButtonStyles} appearance="primary" onClick={handleSignup}>
-        Sign Up
-      </Button>
-    </StyledSignupContainer>
-  );
-};
+const SignUp = ({ handleChange, handleSignup }) => (
+  <StyledSignupContainer>
+    <StyledHeading>Signup</StyledHeading>
+    <Input
+      onChange={value => handleChange(value, 'first_name')}
+      style={inputStyles}
+      type="text"
+      placeholder="First Name"
+    />
+    <Input
+      onChange={value => handleChange(value, 'last_name')}
+      style={inputStyles}
+      type="text"
+      placeholder="Last Name"
+    />
+    <Input
+      onChange={value => handleChange(value, 'email')}
+      style={inputStyles}
+      type="text"
+      placeholder="Email"
+    />
+    <Input
+      onChange={value => handleChange(value, 'phone')}
+      style={inputStyles}
+      type="text"
+      placeholder="Phone (prefix with country code)"
+    />
+    <Input
+      onChange={value => handleChange(value, 'password')}
+      style={inputStyles}
+      type="text"
+      placeholder="Password"
+    />
+    <Input
+      onChange={value => handleChange(value, 'confirm_password')}
+      style={inputStyles}
+      type="text"
+      placeholder="Confirm Password"
+    />
+    <SelectPicker
+      onChange={value => handleChange(value, 'gender')}
+      style={inputStyles}
+      searchable={false}
+      data={[
+        { key: 'male', label: 'MALE' },
+        { key: 'female', label: 'FEMALE' },
+      ]}
+      valueKey="key"
+      type="text"
+      placeholder="Gender"
+    />
+    <Button style={ButtonStyles} appearance="primary" onClick={handleSignup}>
+      Sign Up
+    </Button>
+  </StyledSignupContainer>
+);
 class AuthPage extends Component {
   constructor() {
     super();
