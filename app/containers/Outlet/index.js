@@ -27,14 +27,13 @@ import {
   Col,
 } from 'rsuite';
 import { Image } from '@styled-icons/feather';
+import _ from 'lodash';
 import { makeSelectOutletInfo } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 
 import { getOutletEvent, getOutletVenue } from './actions';
-
-import _ from 'lodash';
 
 const StyledRestuarantContainer = styled.div`
   padding: 16px;
@@ -218,8 +217,8 @@ export class OutletInfo extends React.Component {
               <img
                 alt={name}
                 style={{ maxWidth: '100%', height: 'auto' }}
-                // src={cover_image}
-                src={`https://s3.ap-south-1.amazonaws.com/libero-notes/public/cover_images/outletvenues/lagos.jpg`}
+                src={cover_image}
+                // src="https://s3.ap-south-1.amazonaws.com/libero-notes/public/cover_images/outletvenues/lagos.jpg"
               />
             ) : (
               <NoImage />
