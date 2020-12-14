@@ -15,10 +15,6 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { makeSelectOutletInfo } from './selectors';
-import reducer from './reducer';
-import saga from './saga';
-import messages from './messages';
 import QrReader from 'react-qr-reader';
 import styled from 'styled-components';
 import {
@@ -31,6 +27,10 @@ import {
   Col,
 } from 'rsuite';
 import { Image } from '@styled-icons/feather';
+import { makeSelectOutletInfo } from './selectors';
+import reducer from './reducer';
+import saga from './saga';
+import messages from './messages';
 
 import { getOutletEvent, getOutletVenue } from './actions';
 
@@ -219,17 +219,15 @@ export class OutletInfo extends React.Component {
               <>
                 <StyledTabsDiv>
                   <StyledTagGroup>
-                    {menu.map((item, index) => {
-                      return (
-                        <Button
-                          style={TabButtonStyles}
-                          appearance="default"
-                          key={index}
-                        >
-                          {item.menu_category}
-                        </Button>
-                      );
-                    })}
+                    {menu.map((item, index) => (
+                      <Button
+                        style={TabButtonStyles}
+                        appearance="default"
+                        key={index}
+                      >
+                        {item.menu_category}
+                      </Button>
+                    ))}
                   </StyledTagGroup>
                 </StyledTabsDiv>
                 {menu.map((item, index) => {
@@ -269,7 +267,7 @@ export class OutletInfo extends React.Component {
                                   -
                                 </InputGroup.Button>
                                 <InputNumber
-                                  className={'custom-input-number'}
+                                  className="custom-input-number"
                                   ref={inputRef}
                                   max={99}
                                   min={1}

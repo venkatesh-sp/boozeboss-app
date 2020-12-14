@@ -52,6 +52,7 @@ export default class Cart extends Component {
     outlet: '',
     currentoutlet: '',
   };
+
   componentDidMount() {
     const { state } = this.props.location;
     if (state) {
@@ -59,6 +60,7 @@ export default class Cart extends Component {
       this.setState({ currentoutlet, outlet, cartItems });
     }
   }
+
   render() {
     const { outlet, cartItems } = this.state;
 
@@ -93,7 +95,7 @@ export default class Cart extends Component {
                 <InputGroup style={{ width: '100%' }}>
                   <InputGroup.Button onClick={handleMinus}>-</InputGroup.Button>
                   <InputNumber
-                    className={'custom-input-number'}
+                    className="custom-input-number"
                     ref={inputRef}
                     max={99}
                     min={1}
