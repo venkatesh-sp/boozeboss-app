@@ -31,6 +31,16 @@ const GlobalStyle = createGlobalStyle`
   .rs-btn-green {
     background-color: #32C5F4 !important;
   }
+
+  .custom-input-number {
+    input {
+      text-align: center;
+    }
+  
+    .rs-input-number-btn-group-vertical {
+      display: none;
+    }
+  }
 `;
 
 export default GlobalStyle;

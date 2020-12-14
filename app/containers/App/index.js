@@ -39,12 +39,16 @@ import PrivateRoute from 'components/PrivateRoute';
 import GuardedRoute from 'components/GuardedRoute';
 
 import GlobalStyle from '../../global-styles';
-import PWAPrompt from 'react-ios-pwa-prompt'
+import PWAPrompt from 'react-ios-pwa-prompt';
 
 import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import saga from './saga';
 
+import AuthPage from 'containers/AuthPage/Loadable';
+import OutletInfo from '../Outlet';
+import Otp from 'containers/Otp';
+import Cart from 'containers/Cart';
 
 import 'rsuite/dist/styles/rsuite-default.css';
 
@@ -58,133 +62,160 @@ const AppWrapper = styled.div`
 `;
 
 class App extends React.Component {
-
   componentWillMount = () => {
     // Login with Facebook status
     /* window.FB.getLoginStatus(function(response) {
        console.log(response);
     }); */
-  }
+  };
 
-  render () {
+  render() {
     return (
-        <AppWrapper>
-          <Helmet
-            titleTemplate="%s - BoozeBoss"
-            defaultTitle="BoozeBoss"
-          >
-            <meta name="description" content="BoozeBoss" />
-          </Helmet>
-          <Header />
-          <Switch>
-            <PrivateRoute 
-              exact 
-              path="/" 
-              component={HomePage} 
-              scopesRequired={['GUEST', 'AGENCY', 'BRAND', 'REGION']}
-              rolesRequired={['OWNER', 'MANAGER', 'STAFF', 'REGULAR', 'VIP', 'VIP']}
-            />
-            <GuardedRoute path="/signup" component={SignupPage} />
-            <GuardedRoute path="/login" component={LoginPage} />
-            <PrivateRoute
-              path="/event"
-              component={EventPage}
-              scopesRequired={['GUEST', 'AGENCY', 'BRAND']}
-              rolesRequired={['OWNER', 'MANAGER', 'STAFF', 'REGULAR', 'VIP', 'VIP']}
-            />
-            <PrivateRoute
-              path="/scanner"
-              component={QrScanner}
-              scopesRequired={['AGENCY']}
-              rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
-            />
-            <PrivateRoute
-              exact
-              path="/verification"
-              component={VerificationContainer}
-              scopesRequired={['GUEST']}
-              rolesRequired={['REGULAR', 'VIP', 'VIP']}
-            />
-            <PrivateRoute
-              exact
-              path="/wallet-history"
-              component={ActionsContainer}
-              scopesRequired={['GUEST']}
-              rolesRequired={['REGULAR', 'VIP', 'VIP']}
-            />
-            <PrivateRoute
-              exact
-              path="/add-credits"
-              component={AddCredits}
-              scopesRequired={['GUEST', 'BRAND']}
-              rolesRequired={['REGULAR', 'VIP', 'VIP', 'OWNER', 'MANAGER']}
-            />
-            <PrivateRoute
-              exact
-              path="/approve-credits"
-              component={ApproveCredits}
-              scopesRequired={['AGENCY']}
-              rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
-            />
-            <PrivateRoute
-              exact
-              path="/transfer-credits"
-              component={TransferCredits}
-              scopesRequired={['GUEST', 'BRAND']}
-              rolesRequired={['REGULAR', 'VIP', 'VIP', 'OWNER', 'MANAGER']}
-            />
-            <PrivateRoute
-              exact
-              path="/qr-invite"
-              component={InviteCodeContainer}
-              scopesRequired={['GUEST', 'BRAND']}
-              rolesRequired={['OWNER', 'MANAGER', 'REGULAR', 'VIP', 'VIP']}
-            />
-            <PrivateRoute
-              path="/check-in"
-              component={VerifyCheckin}
-              scopesRequired={['AGENCY']}
-              rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
-            />
-            <PrivateRoute
-              path="/check-out"
-              component={VerifyCheckOut}
-              scopesRequired={['AGENCY', 'BRAND']}
-              rolesRequired={['OWNER', 'MANAGER', 'STAFF', 'OWNER', 'MANAGER']}
-            />
-            <PrivateRoute
-              path="/approve-free-drink"
-              component={ApproveFreeDrink}
-              scopesRequired={['AGENCY']}
-              rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
-            />
-            <PrivateRoute
-              path="/free-drink"
-              component={FreeDrink}
-              scopesRequired={['GUEST', 'BRAND']}
-              rolesRequired={['REGULAR', 'VIP', 'VIP', 'ONWER', 'AGENCY']}
-            />
-            <PrivateRoute
-              path="/new-order"
-              component={WalletOrder}
-              scopesRequired={['GUEST', 'BRAND']}
-              rolesRequired={['REGULAR', 'VIP', 'VIP', 'ONWER', 'AGENCY']}
-            />
-            <PrivateRoute
-              path="/orders/:order_identifier"
-              component={OrderPage}
-              scopesRequired={['GUEST', 'AGENCY', 'BRAND']}
-              rolesRequired={['REGULAR', 'VIP', 'VIP', 'OWNER', 'MANAGER', 'STAFF']}
-            />
-            <Route path="/terms" component={Terms} />
-            <Route path="/privacy" component={Privacy} />
-            <Route path="/help" component={Help} />
-            <Route path="" component={NotFoundPage} />
-          </Switch>
-          <GlobalStyle />
-          <PWAPrompt promptOnVisit={5} timesToShow={999}/>
-        </AppWrapper>
-      );
+      <AppWrapper>
+        <Helmet titleTemplate="%s - BoozeBoss" defaultTitle="BoozeBoss">
+          <meta name="description" content="BoozeBoss" />
+        </Helmet>
+        <Header />
+        <Switch>
+          <PrivateRoute
+            exact
+            path="/"
+            component={HomePage}
+            scopesRequired={['GUEST', 'AGENCY', 'BRAND', 'REGION']}
+            rolesRequired={[
+              'OWNER',
+              'MANAGER',
+              'STAFF',
+              'REGULAR',
+              'VIP',
+              'VIP',
+            ]}
+          />
+          <GuardedRoute path="/signup" component={SignupPage} />
+          <GuardedRoute path="/login" component={LoginPage} />
+          <PrivateRoute
+            path="/event"
+            component={EventPage}
+            scopesRequired={['GUEST', 'AGENCY', 'BRAND']}
+            rolesRequired={[
+              'OWNER',
+              'MANAGER',
+              'STAFF',
+              'REGULAR',
+              'VIP',
+              'VIP',
+            ]}
+          />
+          <PrivateRoute
+            path="/scanner"
+            component={QrScanner}
+            scopesRequired={['AGENCY']}
+            rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
+          />
+          <PrivateRoute
+            exact
+            path="/verification"
+            component={VerificationContainer}
+            scopesRequired={['GUEST']}
+            rolesRequired={['REGULAR', 'VIP', 'VIP']}
+          />
+          <PrivateRoute
+            exact
+            path="/wallet-history"
+            component={ActionsContainer}
+            scopesRequired={['GUEST']}
+            rolesRequired={['REGULAR', 'VIP', 'VIP']}
+          />
+          <PrivateRoute
+            exact
+            path="/add-credits"
+            component={AddCredits}
+            scopesRequired={['GUEST', 'BRAND']}
+            rolesRequired={['REGULAR', 'VIP', 'VIP', 'OWNER', 'MANAGER']}
+          />
+          <PrivateRoute
+            exact
+            path="/approve-credits"
+            component={ApproveCredits}
+            scopesRequired={['AGENCY']}
+            rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
+          />
+          <PrivateRoute
+            exact
+            path="/transfer-credits"
+            component={TransferCredits}
+            scopesRequired={['GUEST', 'BRAND']}
+            rolesRequired={['REGULAR', 'VIP', 'VIP', 'OWNER', 'MANAGER']}
+          />
+          <PrivateRoute
+            exact
+            path="/qr-invite"
+            component={InviteCodeContainer}
+            scopesRequired={['GUEST', 'BRAND']}
+            rolesRequired={['OWNER', 'MANAGER', 'REGULAR', 'VIP', 'VIP']}
+          />
+          <PrivateRoute
+            path="/check-in"
+            component={VerifyCheckin}
+            scopesRequired={['AGENCY']}
+            rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
+          />
+          <PrivateRoute
+            path="/check-out"
+            component={VerifyCheckOut}
+            scopesRequired={['AGENCY', 'BRAND']}
+            rolesRequired={['OWNER', 'MANAGER', 'STAFF', 'OWNER', 'MANAGER']}
+          />
+          <PrivateRoute
+            path="/approve-free-drink"
+            component={ApproveFreeDrink}
+            scopesRequired={['AGENCY']}
+            rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
+          />
+          <PrivateRoute
+            path="/free-drink"
+            component={FreeDrink}
+            scopesRequired={['GUEST', 'BRAND']}
+            rolesRequired={['REGULAR', 'VIP', 'VIP', 'ONWER', 'AGENCY']}
+          />
+          <PrivateRoute
+            path="/new-order"
+            component={WalletOrder}
+            scopesRequired={['GUEST', 'BRAND']}
+            rolesRequired={['REGULAR', 'VIP', 'VIP', 'ONWER', 'AGENCY']}
+          />
+          <PrivateRoute
+            path="/orders/:order_identifier"
+            component={OrderPage}
+            scopesRequired={['GUEST', 'AGENCY', 'BRAND']}
+            rolesRequired={[
+              'REGULAR',
+              'VIP',
+              'VIP',
+              'OWNER',
+              'MANAGER',
+              'STAFF',
+            ]}
+          />
+          <Route
+            exact
+            path="/outlet"
+            component={OutletInfo}
+            scopesRequired={[]}
+            rolesRequired={[]}
+          />
+          <Route path="/auth" component={AuthPage} />
+          <Route path="/otp" component={Otp} />
+          <Route path="/cart" component={Cart} />
+          <Route path="/terms" component={Terms} />
+          <Route path="/privacy" component={Privacy} />
+          <Route path="/help" component={Help} />
+          <Route path="" component={NotFoundPage} />
+        </Switch>
+        <GlobalStyle />
+        <PWAPrompt promptOnVisit={5} timesToShow={999} />
+      </AppWrapper>
+    );
   }
 }
 
