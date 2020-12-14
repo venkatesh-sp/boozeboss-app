@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Button, InputGroup, InputNumber } from 'rsuite';
+import { Button, InputGroup, InputNumber, Row, Col } from 'rsuite';
 
 const StyledCartDiv = styled.div`
   width: 100%;
@@ -11,7 +11,7 @@ const StyledCartDiv = styled.div`
 
 const StyledMenuDiv = styled.div`
   width: 100%;
-  background: #ffffff;
+  background: #1a1b1c;
   border-radius: 8px;
   padding: 12px;
   margin-top: 12px;
@@ -82,57 +82,69 @@ export default class Cart extends Component {
               <StyledText size="16px" color="#454651" weight="bold">
                 {item.name}
               </StyledText>
-              <img
-                alt="veg"
-                src="https://raw.githubusercontent.com/soulpage/image-assets/master/indian-veg-mark.svg"
-              />
             </StyledFlexContainer>
 
             <StyledText size="13px" color="#8C8C8C" weight="normal">
               {item.description}
             </StyledText>
-            <StyledText size="16px" color="#454651" weight="normal">
-              {item.price}
-            </StyledText>
-            <StyledFlexContainer>
-              <InputGroup>
-                <InputGroup.Button onClick={handleMinus}>-</InputGroup.Button>
-                <InputNumber
-                  className={'custom-input-number'}
-                  ref={inputRef}
-                  max={99}
-                  min={1}
-                  value={this.state.cartItems[item.id]}
-                  onChange={value => {
-                    this.setState({
-                      cartItems: {
-                        ...this.state.cartItems,
-                        [item.id]: value,
-                      },
-                    });
-                  }}
-                />
-                <InputGroup.Button onClick={handlePlus}>+</InputGroup.Button>
-              </InputGroup>
-            </StyledFlexContainer>
+
+            <Row>
+              <Col xs={12} xsPush={12}>
+                <InputGroup style={{ width: '100%' }}>
+                  <InputGroup.Button onClick={handleMinus}>-</InputGroup.Button>
+                  <InputNumber
+                    className={'custom-input-number'}
+                    ref={inputRef}
+                    max={99}
+                    min={1}
+                    value={this.state.cartItems[item.id]}
+                    onChange={value => {
+                      this.setState({
+                        cartItems: {
+                          ...this.state.cartItems,
+                          [item.id]: value,
+                        },
+                      });
+                    }}
+                  />
+                  <InputGroup.Button onClick={handlePlus}>+</InputGroup.Button>
+                </InputGroup>
+              </Col>
+              <Col
+                xs={12}
+                xsPull={12}
+                style={{ marginTop: '8px', color: 'white', textAlign: 'left' }}
+              >
+                {item.price}
+              </Col>
+            </Row>
           </StyledMenuDiv>
         );
       }
     });
 
     return (
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-        <div style={{ width: '100%' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          padding: '10px',
+        }}
+      >
+        <div style={{ textAlign: 'center' }}>
           {itemToRender}
           <Button
             style={{
-              position: 'sticky',
+              position: 'fixed',
               bottom: '0px',
-              width: '100%',
+              width: '95%',
               left: '0px',
               backgroundColor: '#3498ff',
               color: '#fff',
               zIndex: '9',
+              border: '0px',
+              marginLeft: '10px',
+              marginBottom: '10px',
             }}
             onClick={() => {
               const { currentoutlet, cartItems, outlet } = this.state;

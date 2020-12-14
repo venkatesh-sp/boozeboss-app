@@ -71,7 +71,12 @@ class App extends React.Component {
 
   render() {
     return (
-      <AppWrapper>
+      <AppWrapper
+        style={{
+          height: '100%',
+          backgroundColor: '#030303',
+        }}
+      >
         <Helmet titleTemplate="%s - BoozeBoss" defaultTitle="BoozeBoss">
           <meta name="description" content="BoozeBoss" />
         </Helmet>
