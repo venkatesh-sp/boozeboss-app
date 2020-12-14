@@ -17,7 +17,15 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import QrReader from 'react-qr-reader';
 import styled from 'styled-components';
-import { Message, Button, InputGroup, InputNumber } from 'rsuite';
+import {
+  Container,
+  Message,
+  Button,
+  InputGroup,
+  InputNumber,
+  Row,
+  Col,
+} from 'rsuite';
 import { Image } from '@styled-icons/feather';
 import { makeSelectOutletInfo } from './selectors';
 import reducer from './reducer';
@@ -25,6 +33,8 @@ import saga from './saga';
 import messages from './messages';
 
 import { getOutletEvent, getOutletVenue } from './actions';
+
+import _ from 'lodash';
 
 const StyledRestuarantContainer = styled.div`
   padding: 16px;
@@ -34,10 +44,13 @@ const StyledRestuarantContainer = styled.div`
 const StyledHeading = styled.p`
   font-weight: bold;
   font-size: 20px;
-  color: #363645;
+  color: white;
   letter-spacing: -0.02em;
 `;
 
+const PrimaryPara = styled.p`
+  color: white;
+`;
 const StyledImage = styled.img`
   height: 23%;
   width: 100%;
@@ -76,7 +89,7 @@ const StyledRestuarantDetails = styled.p`
 
 const StyledMenuDiv = styled.div`
   width: 100%;
-  background: #ffffff;
+  background: #1a1b1c;
   border-radius: 8px;
   padding: 12px;
   margin-top: 12px;
@@ -104,6 +117,7 @@ const StyledTagGroup = styled.div`
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
+  margin-top: 10px;
 `;
 
 const StyledBlurContainer = styled.div`
@@ -120,6 +134,7 @@ const ButtonStyles = { marginTop: '20px' };
 const TabButtonStyles = {
   borderRadius: '42px',
   marginRight: '10px',
+  fontWeight: 'bold',
 };
 const RestauratTitleStyle = {
   position: 'absolute',
@@ -145,6 +160,7 @@ export class OutletInfo extends React.Component {
     showMenu: false,
     cartItems: {},
     currentoutlet: '',
+    filterby: '',
   };
 
   componentDidMount = () => {
@@ -160,6 +176,10 @@ export class OutletInfo extends React.Component {
     }
   };
 
+  handleFilter = filterby => {
+    this.setState({ filterby });
+  };
+
   render() {
     const { outlet } = this.props;
     if (!outlet) {
@@ -167,153 +187,206 @@ export class OutletInfo extends React.Component {
     }
 
     const { name, description, menu, cover_image, address } = outlet;
+
+    let filtered_menu;
+    if (this.state.filterby !== '') {
+      filtered_menu = _.filter(menu, {
+        menu_category: this.state.filterby,
+      });
+    } else {
+      filtered_menu = menu;
+    }
+
     return (
-      <div>
+      <div style={{ backgroundColor: '#030303' }}>
         <Helmet>
           <title>OutletInfo</title>
           <meta name="description" content="Description of OutletInfo" />
         </Helmet>
 
         <div
-          style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
-        >
-          {cover_image ? (
-            <img
-              alt={name}
-              style={{ maxWidth: '100%', height: 'auto' }}
-              // src={cover_image}
-              src="https://s3.ap-south-1.amazonaws.com/libero-notes/public/cover_images/outletvenues/lagos.jpg"
-            />
-          ) : (
-            <NoImage />
-          )}
-        </div>
+          style={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        />
 
-        <div style={{ width: '100%' }}>
-          <StyledHeading>{name}</StyledHeading>
-          <p>{description}</p>
-          <p>{address}</p>
-          {this.state.showMenu === false ? (
-            <Button
-              onClick={() => this.setState({ showMenu: true })}
-              style={ButtonStyles}
-              appearance="primary"
-              block
-            >
-              View Menu
-            </Button>
-          ) : (
-            <>
-              <StyledTabsDiv>
-                <StyledTagGroup>
-                  {menu.map((item, index) => (
-                    <Button
-                      style={TabButtonStyles}
-                      appearance="ghost"
-                      key={index}
-                    >
-                      {item.menu_category}
-                    </Button>
-                  ))}
-                </StyledTagGroup>
-              </StyledTabsDiv>
-              {menu.map((item, index) => {
-                const inputRef = React.createRef();
+        <Container style={{ padding: '10px' }}>
+          <div>
+            {cover_image ? (
+              <img
+                alt={name}
+                style={{ maxWidth: '100%', height: 'auto' }}
+                // src={cover_image}
+                src={`https://s3.ap-south-1.amazonaws.com/libero-notes/public/cover_images/outletvenues/lagos.jpg`}
+              />
+            ) : (
+              <NoImage />
+            )}
+            <StyledHeading>{name}</StyledHeading>
 
-                const handleMinus = () => {
-                  inputRef.current.handleMinus();
-                };
-                const handlePlus = () => {
-                  inputRef.current.handlePlus();
-                };
-                return (
-                  <StyledMenuDiv key={index}>
-                    <StyledFlexContainer>
-                      <StyledText size="16px" color="#454651" weight="bold">
-                        {item.name}
+            {this.state.showMenu === false ? (
+              <>
+                <PrimaryPara>{description}</PrimaryPara>
+
+                <hr />
+                <PrimaryPara>{address}</PrimaryPara>
+
+                <Button
+                  onClick={() => this.setState({ showMenu: true })}
+                  style={ButtonStyles}
+                  appearance="primary"
+                  block
+                >
+                  View Menu
+                </Button>
+              </>
+            ) : (
+              <>
+                <StyledTabsDiv>
+                  <StyledTagGroup>
+                    {_.without(
+                      _(menu)
+                        .map('menu_category')
+                        .uniq()
+                        .value(),
+                      '',
+                    ).map((item, index) => (
+                      <Button
+                        style={
+                          item === this.state.filterby
+                            ? {
+                                backgroundColor: '#3498ff',
+                                color: '#fff',
+                                borderRadius: '42px',
+                                marginRight: '10px',
+                                fontWeight: 'bold',
+                              }
+                            : TabButtonStyles
+                        }
+                        appearance="default"
+                        key={index}
+                        onClick={() => this.handleFilter(item)}
+                      >
+                        {item}
+                      </Button>
+                    ))}
+                  </StyledTagGroup>
+                </StyledTabsDiv>
+
+                {filtered_menu.map((item, index) => {
+                  const inputRef = React.createRef();
+
+                  const handleMinus = () => {
+                    inputRef.current.handleMinus();
+                  };
+                  const handlePlus = () => {
+                    inputRef.current.handlePlus();
+                  };
+                  return (
+                    <StyledMenuDiv key={index}>
+                      <StyledFlexContainer>
+                        <StyledText size="16px" color="#ffffff" weight="bold">
+                          {item.name}
+                        </StyledText>
+                      </StyledFlexContainer>
+
+                      <StyledText size="13px" color="#ffffff" weight="normal">
+                        {item.description}
                       </StyledText>
-                      <img
-                        alt="veg"
-                        src="https://raw.githubusercontent.com/soulpage/image-assets/master/indian-veg-mark.svg"
-                      />
-                    </StyledFlexContainer>
 
-                    <StyledText size="13px" color="#8C8C8C" weight="normal">
-                      {item.description}
-                    </StyledText>
-                    <StyledText size="16px" color="#454651" weight="normal">
-                      {item.price}
-                    </StyledText>
-                    <StyledFlexContainer>
-                      {item.id in this.state.cartItems ? (
-                        <>
-                          <InputGroup>
-                            <InputGroup.Button onClick={handleMinus}>
-                              -
-                            </InputGroup.Button>
-                            <InputNumber
-                              className="custom-input-number"
-                              ref={inputRef}
-                              max={99}
-                              min={1}
-                              value={this.state.cartItems[item.id]}
-                              onChange={value => {
+                      <Row className="show-grid" style={{ marginTop: '20px' }}>
+                        <Col
+                          xs={12}
+                          xsPush={12}
+                          style={{
+                            color: 'white',
+                            textAlign: 'right',
+                          }}
+                        >
+                          {item.id in this.state.cartItems ? (
+                            <>
+                              <InputGroup style={{ width: '100%' }}>
+                                <InputGroup.Button onClick={handleMinus}>
+                                  -
+                                </InputGroup.Button>
+                                <InputNumber
+                                  className="custom-input-number"
+                                  ref={inputRef}
+                                  max={99}
+                                  min={1}
+                                  value={this.state.cartItems[item.id]}
+                                  onChange={value => {
+                                    this.setState({
+                                      cartItems: {
+                                        ...this.state.cartItems,
+                                        [item.id]: value,
+                                      },
+                                    });
+                                  }}
+                                />
+                                <InputGroup.Button onClick={handlePlus}>
+                                  +
+                                </InputGroup.Button>
+                              </InputGroup>
+                            </>
+                          ) : (
+                            <Button
+                              appearance="primary"
+                              onClick={() => {
                                 this.setState({
                                   cartItems: {
                                     ...this.state.cartItems,
-                                    [item.id]: value,
+                                    [item.id]: 1,
                                   },
                                 });
                               }}
-                            />
-                            <InputGroup.Button onClick={handlePlus}>
-                              +
-                            </InputGroup.Button>
-                          </InputGroup>
-                        </>
-                      ) : (
-                        <Button
-                          appearance="ghost"
-                          onClick={() => {
-                            this.setState({
-                              cartItems: {
-                                ...this.state.cartItems,
-                                [item.id]: 1,
-                              },
-                            });
-                          }}
+                            >
+                              + Add
+                            </Button>
+                          )}
+                        </Col>
+                        <Col
+                          xs={12}
+                          xsPull={12}
+                          style={{ marginTop: '10px', color: 'white' }}
                         >
-                          + Add
-                        </Button>
-                      )}
-                    </StyledFlexContainer>
-                  </StyledMenuDiv>
-                );
-              })}
-              <Button
-                appearance="ghost"
-                style={{
-                  position: 'sticky',
-                  bottom: '0',
-                  left: '0',
-                  width: '100%',
-                  background: 'aliceblue',
-                }}
-                onClick={() => {
-                  const { currentoutlet, cartItems } = this.state;
-                  const { outlet } = this.props;
-                  this.props.history.push('/cart', {
-                    currentoutlet,
-                    cartItems,
-                    outlet,
-                  });
-                }}
-              >
-                View Cart
-              </Button>
-            </>
-          )}
-        </div>
+                          {item.price}
+                        </Col>
+                      </Row>
+
+                      <StyledText size="16px" color="#ffffff" weight="normal" />
+                      <StyledFlexContainer />
+                    </StyledMenuDiv>
+                  );
+                })}
+                <Button
+                  appearance="ghost"
+                  style={{
+                    position: 'sticky',
+                    bottom: '0',
+                    left: '0',
+                    width: '100%',
+                    background: 'aliceblue',
+                  }}
+                  onClick={() => {
+                    const { currentoutlet, cartItems } = this.state;
+                    const { outlet } = this.props;
+                    if (!_.isEmpty(cartItems))
+                      this.props.history.push('/cart', {
+                        currentoutlet,
+                        cartItems,
+                        outlet,
+                      });
+                  }}
+                >
+                  View Cart
+                </Button>
+              </>
+            )}
+          </div>
+        </Container>
       </div>
     );
   }
