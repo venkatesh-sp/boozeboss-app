@@ -38,17 +38,17 @@ import Footer from 'components/Footer';
 import PrivateRoute from 'components/PrivateRoute';
 import GuardedRoute from 'components/GuardedRoute';
 
-import GlobalStyle from '../../global-styles';
 import PWAPrompt from 'react-ios-pwa-prompt';
 
 import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
-import saga from './saga';
 
 import AuthPage from 'containers/AuthPage/Loadable';
-import OutletInfo from '../Outlet';
 import Otp from 'containers/Otp';
 import Cart from 'containers/Cart';
+import OutletInfo from '../Outlet';
+import saga from './saga';
+import GlobalStyle from '../../global-styles';
 
 import 'rsuite/dist/styles/rsuite-default.css';
 
@@ -71,7 +71,12 @@ class App extends React.Component {
 
   render() {
     return (
-      <AppWrapper>
+      <AppWrapper
+        style={{
+          height: '100%',
+          backgroundColor: '#030303',
+        }}
+      >
         <Helmet titleTemplate="%s - BoozeBoss" defaultTitle="BoozeBoss">
           <meta name="description" content="BoozeBoss" />
         </Helmet>
