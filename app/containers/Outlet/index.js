@@ -246,10 +246,7 @@ export class OutletInfo extends React.Component {
                 <StyledTabsDiv>
                   <StyledTagGroup>
                     {_.without(
-                      _(menu)
-                        .map('menu_category')
-                        .uniq()
-                        .value(),
+                      _.map(_.uniqBy(menu, 'menu_category'), 'menu_category'),
                       '',
                     ).map((item, index) => (
                       <Button
