@@ -25,6 +25,7 @@ import {
   InputNumber,
   Row,
   Col,
+  Alert,
 } from 'rsuite';
 import { Image } from '@styled-icons/feather';
 import _ from 'lodash';
@@ -117,6 +118,11 @@ const StyledTagGroup = styled.div`
   overflow-y: hidden;
   white-space: nowrap;
   margin-top: 10px;
+
+  ::-webkit-scrollbar {
+    width: 0px; /* Remove scrollbar space */
+    background: transparent; /* Optional: just make scrollbar invisible */
+  }
 `;
 
 const StyledBlurContainer = styled.div`
@@ -370,6 +376,7 @@ export class OutletInfo extends React.Component {
                         cartItems,
                         outlet,
                       });
+                    else Alert.warning('Add Items to cart', 2500);
                   }}
                 >
                   View Cart

@@ -138,10 +138,6 @@ export default class Cart extends Component {
     return (
       <div
         style={{
-          // display: 'flex',
-          // justifyContent: 'center',
-          // padding: '10px',
-          // minHeight: '100vh',
           overflowY: 'scroll',
           backgroundColor: '#030303',
           height: '100%',
@@ -171,7 +167,7 @@ export default class Cart extends Component {
               });
             }}
           >
-            {Object.keys(this.state.cartItems).length} items Place Order
+            {_.size(this.state.cartItems)} items Place Order
           </Button>
         </div>
       </div>
