@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Button, InputGroup, InputNumber, Row, Col } from 'rsuite';
 
-const StyledCartDiv = styled.div`
-  width: 100%;
-  padding: 0px 20px;
-  height: 90vh;
-  position: relative;
+const CartItems = styled.div`
+  overflow: scroll;
+  height: 97%;
 `;
 
 const StyledMenuDiv = styled.div`
@@ -28,6 +26,8 @@ const StyledText = styled.p`
   font-size: ${props => props.size};
   font-weight: ${props => props.weight};
   color: ${props => props.color};
+  text-align: center;
+  margin: 0px;
 `;
 const StyledFlexContainer = styled.div`
   display: flex;
@@ -85,41 +85,51 @@ export default class Cart extends Component {
                 {item.name}
               </StyledText>
             </StyledFlexContainer>
-
-            <StyledText size="13px" color="#8C8C8C" weight="normal">
-              {item.description}
-            </StyledText>
-
-            <Row>
-              <Col xs={12} xsPush={12}>
-                <InputGroup style={{ width: '100%' }}>
-                  <InputGroup.Button onClick={handleMinus}>-</InputGroup.Button>
-                  <InputNumber
-                    className="custom-input-number"
-                    ref={inputRef}
-                    max={99}
-                    min={1}
-                    value={this.state.cartItems[item.id]}
-                    onChange={value => {
-                      this.setState({
-                        cartItems: {
-                          ...this.state.cartItems,
-                          [item.id]: value,
-                        },
-                      });
-                    }}
-                  />
-                  <InputGroup.Button onClick={handlePlus}>+</InputGroup.Button>
-                </InputGroup>
-              </Col>
-              <Col
-                xs={12}
-                xsPull={12}
-                style={{ marginTop: '8px', color: 'white', textAlign: 'left' }}
-              >
-                {item.price}
-              </Col>
-            </Row>
+            <StyledFlexContainer>
+              <StyledText size="13px" color="#ffffff" weight="normal">
+                This is some random description about the alcohol
+              </StyledText>
+            </StyledFlexContainer>
+            <div style={{ marginTop: '16px' }}>
+              <Row>
+                <Col xs={12} xsPush={12}>
+                  <InputGroup style={{ width: '100%' }}>
+                    <InputGroup.Button onClick={handleMinus}>
+                      -
+                    </InputGroup.Button>
+                    <InputNumber
+                      className="custom-input-number"
+                      ref={inputRef}
+                      max={99}
+                      min={1}
+                      value={this.state.cartItems[item.id]}
+                      onChange={value => {
+                        this.setState({
+                          cartItems: {
+                            ...this.state.cartItems,
+                            [item.id]: value,
+                          },
+                        });
+                      }}
+                    />
+                    <InputGroup.Button onClick={handlePlus}>
+                      +
+                    </InputGroup.Button>
+                  </InputGroup>
+                </Col>
+                <Col
+                  xs={12}
+                  xsPull={12}
+                  style={{
+                    marginTop: '8px',
+                    color: 'white',
+                    textAlign: 'left',
+                  }}
+                >
+                  {item.price}
+                </Col>
+              </Row>
+            </div>
           </StyledMenuDiv>
         );
       }
@@ -131,10 +141,12 @@ export default class Cart extends Component {
           display: 'flex',
           justifyContent: 'center',
           padding: '10px',
+          backgroundColor: '#030303',
+          minHeight: '100vh',
         }}
       >
         <div style={{ textAlign: 'center' }}>
-          {itemToRender}
+          <CartItems>{itemToRender}</CartItems>
           <Button
             style={{
               position: 'fixed',
@@ -157,8 +169,7 @@ export default class Cart extends Component {
               });
             }}
           >
-            {Object.keys(this.state.cartItems).length} items <br />
-            Place Order
+            {Object.keys(this.state.cartItems).length}000 items Place Order
           </Button>
         </div>
       </div>
