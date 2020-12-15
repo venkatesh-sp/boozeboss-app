@@ -76,8 +76,11 @@ class App extends React.Component {
           height: '100%',
         }}
       >
-        <Helmet titleTemplate="%s - BoozeBoss" defaultTitle="BoozeBoss">
-          <meta name="description" content="BoozeBoss" />
+        <Helmet
+          titleTemplate="%s - LiquidIntel.io"
+          defaultTitle="LiquidIntel.io"
+        >
+          <meta name="description" content="LiquidIntel.io" />
         </Helmet>
         <Header />
         <Switch>

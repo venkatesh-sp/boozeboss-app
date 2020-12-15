@@ -7,6 +7,8 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import RoleValidator from 'components/RoleValidator';
+import VersioningMenu from 'components/VersioningMenu';
 import { logout, getUser } from '../../containers/App/actions';
 import {
   makeSelectIsAuthenticated,
@@ -14,9 +16,6 @@ import {
   makeSelectRole,
   makeSelectUser,
 } from '../../containers/App/selectors';
-
-import RoleValidator from 'components/RoleValidator';
-import VersioningMenu from 'components/VersioningMenu';
 
 const MobileHeaderContainer = styled.div`
   display: flex;
@@ -29,7 +28,6 @@ const MobileHeaderContainer = styled.div`
   padding: 0.5em 1em 0 1em;
   background-color: ${props =>
     props.darkTheme ? '#2b2b2c' : '#F5F5F5'} !important;
-  z-index: 999999;
 `;
 
 const StyledImage = styled.img`

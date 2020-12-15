@@ -141,6 +141,7 @@ export default class Cart extends Component {
           overflowY: 'scroll',
           backgroundColor: '#030303',
           height: '100%',
+          overflowY: 'scroll',
         }}
       >
         <div style={{ textAlign: 'center', height: '100%' }}>
@@ -167,7 +168,7 @@ export default class Cart extends Component {
               });
             }}
           >
-            {_.size(this.state.cartItems)} items Place Order
+            Confirm Order
           </Button>
         </div>
       </div>

@@ -8,11 +8,14 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    font-family: 'Roboto', sans-serif;
+    // font-family: 'Roboto', sans-serif;
+    font-family: 'Metropolis', sans-serif;
+                                                
   }
 
   body.fontLoaded {
-    font-family: 'Roboto', sans-serif;
+    // font-family: 'Roboto', sans-serif;
+    font-family: 'Metropolis', sans-serif;
   }
 
   #app {
@@ -23,7 +26,8 @@ const GlobalStyle = createGlobalStyle`
 
   p,
   label {
-    font-family: 'Roboto', sans-serif;
+    // font-family: 'Roboto', sans-serif;
+    font-family: 'Metropolis', sans-serif;
     line-height: 1.5em;
   }
 
@@ -41,9 +45,7 @@ const GlobalStyle = createGlobalStyle`
       display: none;
     }
   }
-  .rs-alert-container {
-    top: 50px !important;
-  }
+ 
 `;
 
 export default GlobalStyle;

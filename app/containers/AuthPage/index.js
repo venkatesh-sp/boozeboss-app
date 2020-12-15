@@ -62,7 +62,7 @@ const StyledSignupContainer = styled.div`
 `;
 const StyledHeading = styled.p`
   font-weight: bold;
-  font-size: 36px;
+  font-size: 32px;
   color: #363645;
 `;
 
@@ -99,11 +99,9 @@ const CustomButtonGroup = ({ active, toggle }) => (
 const SignIn = ({ handleChange, handleSubmit }) => (
   <>
     <StyledText size="17px" color="#363645" weight="bold">
-      Already registered with us
+      Already have an account?
     </StyledText>
-    <StyledText>
-      Please provide your registred email/phone, we will sent an OTP on it.
-    </StyledText>
+    <StyledText>Log in with your registered email or phone number</StyledText>
     <Input
       style={InputStyles}
       placeholder="Email/Phone"
