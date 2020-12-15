@@ -142,7 +142,8 @@ export default class Cart extends Component {
           justifyContent: 'center',
           padding: '10px',
           backgroundColor: '#030303',
-          minHeight: '100vh',
+          height: '100%',
+          overflowY: 'scroll',
         }}
       >
         <div style={{ textAlign: 'center' }}>
