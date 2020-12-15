@@ -154,7 +154,7 @@ export default class Cart extends Component {
               left: '0px',
               backgroundColor: '#3498ff',
               color: '#fff',
-              zIndex: '9',
+              zIndex: '99999',
               border: '0px',
               borderRadius: '0px',
             }}

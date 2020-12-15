@@ -120,6 +120,7 @@ const BackButtonStyles = {
   color: 'white',
   top: '20px',
   left: '30px',
+  zIndex: '9999',
 };
 
 const NoImage = styled(Image)`
@@ -352,6 +353,7 @@ export class OutletInfo extends React.Component {
                     left: '0',
                     width: '100%',
                     borderRadius: '0px',
+                    zIndex: '9999',
                   }}
                   onClick={() => {
                     const { currentoutlet, cartItems } = this.state;
