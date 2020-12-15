@@ -87,7 +87,7 @@ export default class Cart extends Component {
             </StyledFlexContainer>
             <StyledFlexContainer>
               <StyledText size="13px" color="#ffffff" weight="normal">
-                This is some random description about the alcohol
+                {item.description}
               </StyledText>
             </StyledFlexContainer>
             <div style={{ marginTop: '16px' }}>
@@ -169,7 +169,7 @@ export default class Cart extends Component {
               });
             }}
           >
-            {Object.keys(this.state.cartItems).length}000 items Place Order
+            {Object.keys(this.state.cartItems).length} items Place Order
           </Button>
         </div>
       </div>
