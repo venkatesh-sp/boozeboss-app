@@ -181,8 +181,8 @@ export class OutletInfo extends React.Component {
             <img
               alt={name}
               style={{ maxWidth: '100%', height: 'auto' }}
-              // src={cover_image}
-              src="https://s3.ap-south-1.amazonaws.com/libero-notes/public/cover_images/outletvenues/lagos.jpg"
+              src={cover_image}
+              // src="https://s3.ap-south-1.amazonaws.com/libero-notes/public/cover_images/outletvenues/lagos.jpg"
             />
           ) : (
             <NoImage />
@@ -236,7 +236,9 @@ export class OutletInfo extends React.Component {
                   </StyledTagGroup>
                 </StyledTabsDiv>
 
-                <div style={{ backgroundColor: '#030303' }}>
+                <div
+                  style={{ backgroundColor: '#030303', paddingBottom: '30px' }}
+                >
                   {filtered_menu.map((item, index) => {
                     const inputRef = React.createRef();
 

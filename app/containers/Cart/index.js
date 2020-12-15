@@ -81,7 +81,7 @@ export default class Cart extends Component {
         return (
           <StyledMenuDiv key={index}>
             <StyledFlexContainer>
-              <StyledText size="16px" color="#454651" weight="bold">
+              <StyledText size="16px" color="#ffffff" weight="bold">
                 {item.name}
               </StyledText>
             </StyledFlexContainer>
@@ -150,14 +150,13 @@ export default class Cart extends Component {
             style={{
               position: 'fixed',
               bottom: '0px',
-              width: '95%',
+              width: '100%',
               left: '0px',
               backgroundColor: '#3498ff',
               color: '#fff',
               zIndex: '9',
               border: '0px',
-              marginLeft: '10px',
-              marginBottom: '10px',
+              borderRadius: '0px',
             }}
             onClick={() => {
               const { currentoutlet, cartItems, outlet } = this.state;
