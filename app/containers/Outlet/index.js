@@ -159,7 +159,7 @@ export class OutletInfo extends React.Component {
       return <>Loading...</>;
     }
 
-    const { name, description, menu, cover_image, address } = outlet;
+    const { name, description, menu, cover_image, address, location } = outlet;
 
     let filtered_menu;
     if (this.state.filterby !== '') {
@@ -181,9 +181,9 @@ export class OutletInfo extends React.Component {
           {cover_image ? (
             <img
               alt={name}
-              style={{ maxWidth: '100%', height: 'auto' }}
+              style={{ maxWidth: '100%', height: 'auto', width: '100%' }}
               src={cover_image}
-              // src="https://s3.ap-south-1.amazonaws.com/libero-notes/public/cover_images/outletvenues/lagos.jpg"
+              // src="https://s3.amazonaws.com/bucketeer-e6878da7-c05d-4c40-a450-231af9d5299a/public/cover_images/outletvenues/restaurant.jpg"
             />
           ) : (
             <NoImage />
@@ -193,10 +193,10 @@ export class OutletInfo extends React.Component {
 
             {this.state.showMenu === false ? (
               <>
-                <PrimaryPara>{description}</PrimaryPara>
+                <PrimaryPara>{location.name}</PrimaryPara>
 
                 <hr />
-                <PrimaryPara>{address}</PrimaryPara>
+                <PrimaryPara>{description}</PrimaryPara>
 
                 <Button
                   onClick={() => this.setState({ showMenu: true })}
