@@ -167,7 +167,15 @@ const SignUp = ({ handleChange, handleSignup }) => (
     />
     <SelectPicker
       onChange={value => handleChange(value, 'gender')}
-      style={inputStyles}
+      style={{
+        width: '100%',
+        marginTop: '20px',
+        fontSize: '15px',
+        backgroundColor: '#fafafa',
+        color: '#a4a8b7',
+        borderRadius: '0px',
+        border: 'none',
+      }}
       searchable={false}
       data={[
         { key: 'male', label: 'MALE' },

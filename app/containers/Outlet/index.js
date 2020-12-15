@@ -204,7 +204,9 @@ export class OutletInfo extends React.Component {
     }
 
     return (
-      <div style={{ backgroundColor: '#030303' }}>
+      <div
+        style={{ backgroundColor: '#030303', overflowY: 'scroll !important' }}
+      >
         <Helmet>
           <title>OutletInfo</title>
           <meta name="description" content="Description of OutletInfo" />

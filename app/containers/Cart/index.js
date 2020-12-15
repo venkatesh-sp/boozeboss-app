@@ -4,7 +4,7 @@ import { Button, InputGroup, InputNumber, Row, Col } from 'rsuite';
 
 const CartItems = styled.div`
   overflow: scroll;
-  height: 97%;
+  height: 94%;
 `;
 
 const StyledMenuDiv = styled.div`
@@ -138,14 +138,16 @@ export default class Cart extends Component {
     return (
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'center',
-          padding: '10px',
+          // display: 'flex',
+          // justifyContent: 'center',
+          // padding: '10px',
+          // minHeight: '100vh',
+          overflowY: 'scroll',
           backgroundColor: '#030303',
-          minHeight: '100vh',
+          height: '100%',
         }}
       >
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', height: '100%' }}>
           <CartItems>{itemToRender}</CartItems>
           <Button
             style={{
