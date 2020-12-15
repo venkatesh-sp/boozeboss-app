@@ -181,7 +181,7 @@ export class OutletInfo extends React.Component {
           {cover_image ? (
             <img
               alt={name}
-              style={{ maxWidth: '100%', height: 'auto', width: '100%' }}
+              style={{ maxWidth: '100%', height: '250px', width: '100%' }}
               src={cover_image}
               // src="https://s3.amazonaws.com/bucketeer-e6878da7-c05d-4c40-a450-231af9d5299a/public/cover_images/outletvenues/restaurant.jpg"
             />
@@ -196,7 +196,7 @@ export class OutletInfo extends React.Component {
                 <PrimaryPara>{location.name}</PrimaryPara>
 
                 <hr />
-                <PrimaryPara>{description}</PrimaryPara>
+                <p style={{ marginBottom: '30px' }}>{description}</p>
 
                 <Button
                   onClick={() => this.setState({ showMenu: true })}
