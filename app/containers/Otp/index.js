@@ -89,7 +89,6 @@ class Otp extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <StyledOtpDiv>
         <StyledText size="15px" color="#A4A8B7">

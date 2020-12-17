@@ -47,7 +47,7 @@ function* sendEmailOtpSaga(params) {
 }
 
 function* signupSaga(params) {
-  const { user, history } = params;
+  const { user } = params;
   const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
     process.env.API_PORT
   }/api/auth/guest-signup`;
@@ -62,7 +62,7 @@ function* signupSaga(params) {
       yield put(authSignupSuccess(response.jwt_token, 'Succesfull signup'));
       yield put(getUser());
       yield put(authenticate(response.jwt_token));
-      const { email, phone_number } = user;
+      const { email, phone_number, history } = user;
       if (email && phone_number) {
         // sendEmailOtp(email);
         yield put(sendMobileOtp({ phone_number, history }));
@@ -81,7 +81,6 @@ function* signupSaga(params) {
 }
 
 function* getSMSVerificationSaga(params) {
-  console.log(params);
   const { phone_number, history } = params.phone_number;
   const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
     process.env.API_PORT

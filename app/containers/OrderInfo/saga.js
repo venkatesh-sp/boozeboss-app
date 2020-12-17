@@ -24,7 +24,6 @@ function* getCartItemsSaga() {
     const response = yield call(request, requestURL, options);
     yield put(getCartItemsSuccess(response));
   } catch (error) {
-    console.log(error);
     const jsonError = yield error.response ? error.response.json() : error;
     yield put(getCartItemsError(jsonError));
   }

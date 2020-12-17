@@ -20,7 +20,6 @@ import {
 import { ADD_CART_ITEM } from '../Cart/constants';
 
 function* checkSMSVerificationSaga(params) {
-  console.log(params);
   const { phone_number, code, props } = params;
   const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
     process.env.API_PORT
@@ -43,7 +42,6 @@ function* checkSMSVerificationSaga(params) {
 
     yield put(addCartItems({ items, history: props.history }));
   } catch (error) {
-    console.log(error);
     const jsonError = yield error.response ? error.response.json() : error;
     yield put(checkSMSVerificationError(jsonError));
   }
@@ -63,7 +61,6 @@ function* checkEmailVerificationSaga(params) {
     const response = yield call(request, requestURL, options);
     yield put(checkEmailVerificationSuccess(response));
   } catch (error) {
-    console.log(error);
     const jsonError = yield error.response ? error.response.json() : error;
     yield put(checkEmailVerificationError(jsonError));
   }
@@ -83,7 +80,6 @@ function* addCartItemsSaga(params) {
     const response = yield call(request, requestURL, options);
     history.push('/orders');
   } catch (error) {
-    console.log(error);
     const jsonError = yield error.response ? error.response.json() : error;
     yield put(checkEmailVerificationError(jsonError));
   }

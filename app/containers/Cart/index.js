@@ -3,20 +3,19 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Button, InputGroup, InputNumber, Row, Col } from 'rsuite';
 
-import {
-  makeSelectOutletInfo,
-  makeSelectCartItems,
-  makeSelectCurrentOutlet,
-} from './selectors';
-import reducer from './reducer';
-
-import { addCartItem, removeCartItem } from './actions';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import _ from 'lodash';
+import { addCartItem, removeCartItem } from './actions';
+import reducer from './reducer';
+import {
+  makeSelectOutletInfo,
+  makeSelectCartItems,
+  makeSelectCurrentOutlet,
+} from './selectors';
 
 const CartItems = styled.div`
   overflow: scroll;

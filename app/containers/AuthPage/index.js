@@ -192,7 +192,7 @@ const SignUp = ({ handleChange, handleSignup }) => (
       placeholder="Gender"
     />
 
-    <Checkbox>
+    <Checkbox onClick={value => handleChange(value, 'privacy')}>
       <p style={{ fontSize: '10px', textAlign: 'left' }}>
         We do not like spam and will keep your email safe. Please confirm that
         we can send you important notifications and deals relating to your
@@ -218,6 +218,7 @@ class AuthPage extends Component {
       gender: '',
       password: '',
       confirm_password: '',
+      privacy: '',
     };
   }
 
@@ -249,7 +250,9 @@ class AuthPage extends Component {
       password,
       confirm_password,
       gender,
+      privacy,
     } = this.state;
+    if (!privacy) return Alert.error('please check privacy policy', 2500);
     if (password !== confirm_password)
       return Alert.error('Password not match', 2500);
     if (!phone && !email) return Alert.error('Missing Fields', 2500);

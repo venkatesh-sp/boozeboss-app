@@ -19,7 +19,6 @@ export const initialState = fromJS({
 });
 
 function otpReducer(state = initialState, action) {
-  console.log(action);
   switch (action.type) {
     case GET_CART_ITEMS_REQUEST:
       return state.set('isLoading', true);
