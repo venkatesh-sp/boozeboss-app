@@ -2,29 +2,35 @@ import { call, put, select, takeLatest, fork, all } from 'redux-saga/effects';
 
 import request from 'utils/request';
 
-import { 
+import {
   SIGNUP_GUEST_REQUEST,
   FACEBOOK_LOGIN_REQUEST,
   GET_SMS_VERIFICATION_REQUEST,
-  CHECK_SMS_VERIFICATION_REQUEST
+  CHECK_SMS_VERIFICATION_REQUEST,
 } from './constants';
 
 import {
-  signupSuccess, signupError,
-  facebookAuthSuccess, facebookAuthError, 
-  getSMSVerificationSuccess, getSMSVerificationError,
-  checkSMSVerificationSuccess, checkSMSVerificationError
+  signupSuccess,
+  signupError,
+  facebookAuthSuccess,
+  facebookAuthError,
+  getSMSVerificationSuccess,
+  getSMSVerificationError,
+  checkSMSVerificationSuccess,
+  checkSMSVerificationError,
 } from './actions';
 
-import { authenticate, getUser } from '../App/actions'
+import { authenticate, getUser } from '../App/actions';
 import { makeSelectToken } from './selectors';
 
 function* signupSaga(params) {
-  const {guest} = params;
-  const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${process.env.API_PORT}/api/auth/guest-signup`;
+  const { guest } = params;
+  const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
+    process.env.API_PORT
+  }/api/auth/guest-signup`;
   const options = {
     method: 'POST',
-    body: JSON.stringify(guest)
+    body: JSON.stringify(guest),
   };
 
   try {
@@ -36,7 +42,6 @@ function* signupSaga(params) {
     } else {
       yield put(signupSuccess(null, response.message));
     }
-
   } catch (error) {
     const jsonError = yield error.response ? error.response.json() : error;
     yield put(signupError(jsonError));
@@ -44,11 +49,13 @@ function* signupSaga(params) {
 }
 
 function* facebookLoginSaga(params) {
-  const {auth} = params;
-  const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${process.env.API_PORT}/api/auth/facebook-oauth`;
+  const { auth } = params;
+  const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
+    process.env.API_PORT
+  }/api/auth/facebook-oauth`;
   const options = {
     method: 'POST',
-    body: JSON.stringify(auth)
+    body: JSON.stringify(auth),
   };
 
   try {
@@ -62,17 +69,18 @@ function* facebookLoginSaga(params) {
 }
 
 function* getSMSVerificationSaga(params) {
-  const {phone_number} = params;
-  const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${process.env.API_PORT}/api/verifications/sms/get-code`;
+  const { phone_number } = params;
+  const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
+    process.env.API_PORT
+  }/api/verifications/sms/get-code`;
   const options = {
     method: 'POST',
-    body: JSON.stringify({phone_number})
+    body: JSON.stringify({ phone_number }),
   };
 
   try {
     const response = yield call(request, requestURL, options);
     yield put(getSMSVerificationSuccess(response));
-
   } catch (error) {
     const jsonError = yield error.response ? error.response.json() : error;
     yield put(getSMSVerificationError(jsonError));
@@ -80,11 +88,13 @@ function* getSMSVerificationSaga(params) {
 }
 
 function* checkSMSVerificationSaga(params) {
-  const {phone_number, code} = params;
-  const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${process.env.API_PORT}/api/verifications/sms/check-code`;
+  const { phone_number, code } = params;
+  const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
+    process.env.API_PORT
+  }/api/verifications/sms/check-code`;
   const options = {
     method: 'POST',
-    body: JSON.stringify({phone_number, code})
+    body: JSON.stringify({ phone_number, code }),
   };
 
   const token = yield select(makeSelectToken());
@@ -95,7 +105,6 @@ function* checkSMSVerificationSaga(params) {
     yield put(authenticate(token));
     yield put(getUser());
   } catch (error) {
-    console.log(error);
     const jsonError = yield error.response ? error.response.json() : error;
     yield put(checkSMSVerificationError(jsonError));
   }
@@ -122,6 +131,6 @@ export default function* rootSaga() {
     fork(signupRequest),
     fork(facebookLoginRequest),
     fork(getVerificationSMSRequest),
-    fork(checkVerificationSMSRequest)
+    fork(checkVerificationSMSRequest),
   ]);
 }

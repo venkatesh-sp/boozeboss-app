@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Message, Button } from 'rsuite';
+import RoleValidator from 'components/RoleValidator';
 import EventList from './EventList';
 import AgencyEventList from './AgencyEventList';
-import RoleValidator from 'components/RoleValidator';
 import MessageContainer from './MessageContainer';
 
 const Container = styled.div`

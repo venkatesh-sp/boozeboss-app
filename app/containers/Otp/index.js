@@ -9,11 +9,17 @@ import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 
-import { makeSelectError, makeSelectSuccess } from './selectors';
+import {
+  makeSelectError,
+  makeSelectSuccess,
+  makeSelectCartItems,
+  makeSelectOutletInfo,
+  makeSelectCurrentOutlet,
+} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
-import { checkSMSVerification } from './actions';
+import { checkSMSVerification, checkEmailVerification } from './actions';
 
 const StyledOtpDiv = styled.div`
   padding: 30px;
@@ -45,14 +51,15 @@ class Otp extends Component {
   state = {
     otp: '',
     phone_number: '',
+    email: '',
   };
 
   componentDidMount() {
     const { state } = this.props.location;
 
     if (state) {
-      const { phone_number } = state;
-      this.setState({ phone_number });
+      const { phone_number, email } = state;
+      this.setState({ phone_number, email });
     }
   }
 
@@ -67,10 +74,21 @@ class Otp extends Component {
       this.state.otp.length > 6
     )
       return Alert.error('Incorrect OTP', 2000);
-    this.props.checkSMSVerification(this.state.phone_number, this.state.otp);
+    if (this.state.phone_number)
+      this.props.checkSMSVerification(
+        this.state.phone_number,
+        this.state.otp,
+        this.props,
+      );
+    else if (this.state.email)
+      this.props.checkEmailVerification(
+        this.state.email,
+        this.state.otp,
+        this.props,
+      );
   };
+
   render() {
-    console.log(this.props.location);
     return (
       <StyledOtpDiv>
         <StyledText size="15px" color="#A4A8B7">
@@ -102,12 +120,17 @@ Otp.propTypes = {
 const mapStateToProps = createStructuredSelector({
   error: makeSelectError(),
   success: makeSelectSuccess(),
+  outlet: makeSelectOutletInfo(),
+  cartItems: makeSelectCartItems(),
+  currentoutlet: makeSelectCurrentOutlet(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    checkSMSVerification: (phone_number, code) =>
-      dispatch(checkSMSVerification(phone_number, code)),
+    checkSMSVerification: (phone_number, code, props) =>
+      dispatch(checkSMSVerification(phone_number, code, props)),
+    checkEmailVerification: (email, code, props) =>
+      dispatch(checkEmailVerification(email, code, props)),
   };
 }
 
@@ -116,8 +139,8 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-const withReducer = injectReducer({ key: 'otp', reducer });
-const withSaga = injectSaga({ key: 'otp', saga });
+const withReducer = injectReducer({ key: 'outlet', reducer });
+const withSaga = injectSaga({ key: 'outlet', saga });
 
 export default compose(
   withReducer,

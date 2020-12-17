@@ -47,6 +47,7 @@ import AuthPage from 'containers/AuthPage/Loadable';
 import Otp from 'containers/Otp';
 import Cart from 'containers/Cart';
 import OutletInfo from '../Outlet';
+import OrderInfo from '../OrderInfo';
 import saga from './saga';
 import GlobalStyle from '../../global-styles';
 
@@ -74,11 +75,13 @@ class App extends React.Component {
       <AppWrapper
         style={{
           height: '100%',
-          backgroundColor: '#030303',
         }}
       >
-        <Helmet titleTemplate="%s - BoozeBoss" defaultTitle="BoozeBoss">
-          <meta name="description" content="BoozeBoss" />
+        <Helmet
+          titleTemplate="%s - LiquidIntel.io"
+          defaultTitle="LiquidIntel.io"
+        >
+          <meta name="description" content="LiquidIntel.io" />
         </Helmet>
         <Header />
         <Switch>
@@ -111,11 +114,11 @@ class App extends React.Component {
               'VIP',
             ]}
           />
-          <PrivateRoute
+          <Route
             path="/scanner"
             component={QrScanner}
-            scopesRequired={['AGENCY']}
-            rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
+            // scopesRequired={['AGENCY', 'OUTLET']}
+            // rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
           />
           <PrivateRoute
             exact
@@ -206,6 +209,13 @@ class App extends React.Component {
             exact
             path="/outlet"
             component={OutletInfo}
+            scopesRequired={[]}
+            rolesRequired={[]}
+          />
+          <Route
+            exact
+            path="/orders"
+            component={OrderInfo}
             scopesRequired={[]}
             rolesRequired={[]}
           />

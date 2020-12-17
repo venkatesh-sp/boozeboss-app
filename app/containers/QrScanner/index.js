@@ -22,86 +22,94 @@ import QrReader from 'react-qr-reader';
 import styled from 'styled-components';
 import { Message } from 'rsuite';
 
-const StyledCameraContainer = styled.div`
-`
-
+const StyledCameraContainer = styled.div``;
 
 /* eslint-disable react/prefer-stateless-function */
 export class QrScanner extends React.Component {
-
   state = {
     result: 'No result',
     error: false,
-  }
+  };
 
   handleScan = data => {
+    console.log(data);
     if (data) {
-
-      const {history} = this.props;
+      const { history } = this.props;
       const json_data = JSON.parse(data);
+      console.log(data);
 
       // Validate for check in
       if (json_data.type == 'check-in') {
         history.push({
           pathname: '/check-in',
           state: {
-            code: json_data.code
-          }
-        })
+            code: json_data.code,
+          },
+        });
       }
 
-      // Validate for check-out 
+      // Validate for check-out
       if (json_data.type === 'check-out') {
         history.push({
           pathname: '/check-out',
           state: {
-            code: json_data.code
-          }
-        })
+            code: json_data.code,
+          },
+        });
       }
-      
+
       // Validate for redeem-order
       if (json_data.type === 'redeem-order') {
         history.push({
           pathname: `/orders/${json_data.order_identifier}`,
           state: {
             redeem: true,
-            order_identifier: json_data.order_identifier
-          }
-        })
+            order_identifier: json_data.order_identifier,
+          },
+        });
       }
 
       // Validate for redeem-order
       if (json_data.type === 'add-credits') {
-        const {state} = this.props.history.location;
+        const { state } = this.props.history.location;
         history.push({
           pathname: `/approve-credits`,
           state: {
             code: json_data.code,
             event_id: state.event_id,
-          }
-        })
+          },
+        });
       }
 
       // Scan Free Drink
       if (json_data.type === 'free-drink') {
-        console.log(json_data.code)
+        console.log(json_data.code);
         history.push({
           pathname: `/approve-free-drink`,
           state: {
-            code: json_data.code
-          }
-        })
+            code: json_data.code,
+          },
+        });
+      }
+
+      if (json_data.type === 'orders') {
+        history.push({
+          pathname: `/orders`,
+          state: {
+            items: json_data.items,
+            view: 'menu',
+          },
+        });
       }
     }
-  }
+  };
   handleError = err => {
-    this.setState({error: true})
-  }
+    this.setState({ error: true });
+  };
 
   render() {
-    const {error} = this.state;
-    const {state} = this.props.history.location;
+    const { error } = this.state;
+    const { state } = this.props.history.location;
     return (
       <div>
         <Helmet>
@@ -110,18 +118,24 @@ export class QrScanner extends React.Component {
         </Helmet>
         <div>
           {state && state.message ? (
-            <Message type='info' description={state.message}/>
+            <Message type="info" description={state.message} />
           ) : (
-            <Message type='info' description={'Place the code near the camera'}/>
+            <Message
+              type="info"
+              description={'Place the code near the camera'}
+            />
           )}
           <QrReader
             delay={300}
             onError={this.handleError}
             onScan={this.handleScan}
-            style={{ width: '100%'}}
+            style={{ width: '100%' }}
           />
           {error && (
-            <Message type="warning" description="If you are experiencing issues please try to change to Safari on iOS or your Native Web browser" />
+            <Message
+              type="warning"
+              description="If you are experiencing issues please try to change to Safari on iOS or your Native Web browser"
+            />
           )}
         </div>
       </div>
@@ -133,8 +147,7 @@ QrScanner.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({
-});
+const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
   return {
