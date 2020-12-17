@@ -16,6 +16,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
+import _ from 'lodash';
 
 const CartItems = styled.div`
   overflow: scroll;
