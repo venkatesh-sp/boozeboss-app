@@ -134,7 +134,7 @@ const SignIn = ({ handleChange, handleSubmit }) => (
 
 const SignUp = ({ handleChange, handleSignup }) => (
   <StyledSignupContainer>
-    <StyledHeading>Signup</StyledHeading>
+    <StyledHeading>Sign Up</StyledHeading>
     <Input
       onChange={value => handleChange(value, 'first_name')}
       style={inputStyles}
@@ -194,7 +194,7 @@ const SignUp = ({ handleChange, handleSignup }) => (
 
     <Checkbox onClick={value => handleChange(value, 'privacy')}>
       <p style={{ fontSize: '10px', textAlign: 'left' }}>
-        We do not like spam and will keep your email safe. Please confirm that
+        We do not like spam and will keep your details safe. Please confirm that
         we can send you important notifications and deals relating to your
         account.
         <a href="https://www.liquidintel.io/privacy-policy">Privacy Policy</a>
