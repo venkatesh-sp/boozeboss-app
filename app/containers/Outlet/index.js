@@ -29,12 +29,21 @@ import {
 } from 'rsuite';
 import { Image } from '@styled-icons/feather';
 import _ from 'lodash';
-import { makeSelectOutletInfo } from './selectors';
+import {
+  makeSelectOutletInfo,
+  makeSelectCartItems,
+  makeSelectCurrentOutlet,
+} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 
-import { getOutletEvent, getOutletVenue } from './actions';
+import {
+  getOutletEvent,
+  getOutletVenue,
+  addCartItem,
+  removeCartItem,
+} from './actions';
 
 const StyledRestuarantContainer = styled.div`
   padding: 16px;
@@ -131,21 +140,16 @@ const NoImage = styled(Image)`
 export class OutletInfo extends React.Component {
   state = {
     showMenu: false,
-    cartItems: {},
-    currentoutlet: '',
-    filterby: '',
+    filterby: null,
   };
 
   componentDidMount = () => {
     const value = queryString.parse(this.props.location.search);
-    console.log(value);
 
     if ('outlet_event' in value) {
       this.props.getOutletEvent(value.outlet_event);
-      this.setState({ currentoutlet: 'outletevent' });
     } else if ('outlet_venue' in value) {
       this.props.getOutletVenue(value.outlet_venue);
-      this.setState({ currentoutlet: 'outletvenue' });
     }
   };
 
@@ -154,18 +158,17 @@ export class OutletInfo extends React.Component {
   };
 
   render() {
-    const { outlet } = this.props;
+    const { outlet, cartItems } = this.props;
     if (!outlet) {
       return <>Loading...</>;
     }
 
-    const { name, description, menu, cover_image, address, location } = outlet;
+    const { name, description, menu, cover_image, location } = outlet;
+    const { showMenu, filterby } = this.state;
 
     let filtered_menu;
-    if (this.state.filterby !== '') {
-      filtered_menu = _.filter(menu, {
-        menu_category: this.state.filterby,
-      });
+    if (filterby) {
+      filtered_menu = _.filter(menu, { menu_category: filterby });
     } else {
       filtered_menu = menu;
     }
@@ -181,22 +184,30 @@ export class OutletInfo extends React.Component {
           {cover_image ? (
             <img
               alt={name}
-              style={{ maxWidth: '100%', height: '250px', width: '100%' }}
+              style={{ maxWidth: '100%', minHeight: '250px', width: '100%' }}
               src={cover_image}
               // src="https://s3.amazonaws.com/bucketeer-e6878da7-c05d-4c40-a450-231af9d5299a/public/cover_images/outletvenues/restaurant.jpg"
             />
           ) : (
-            <NoImage />
+            <NoImage style={{ width: '75%' }} />
           )}
           <div style={{ padding: '10px', backgroundColor: '#030303' }}>
             <StyledHeading>{name}</StyledHeading>
 
-            {this.state.showMenu === false ? (
+            {!showMenu && _.size(cartItems || {}) == 0 ? (
               <>
                 <PrimaryPara>{location.name}</PrimaryPara>
 
                 <hr />
-                <p style={{ marginBottom: '30px' }}>{description}</p>
+                <p
+                  style={{
+                    marginBottom: '30px',
+                    color: '#fff',
+                    fontWeight: '500',
+                  }}
+                >
+                  {description}
+                </p>
 
                 <Button
                   onClick={() => this.setState({ showMenu: true })}
@@ -218,7 +229,7 @@ export class OutletInfo extends React.Component {
                       <Button
                         key={index}
                         style={
-                          item === this.state.filterby
+                          item === filterby
                             ? {
                                 backgroundColor: '#3498ff',
                                 color: '#fff',
@@ -229,7 +240,11 @@ export class OutletInfo extends React.Component {
                             : TabButtonStyles
                         }
                         appearance="default"
-                        onClick={() => this.handleFilter(item)}
+                        onClick={() =>
+                          item !== filterby
+                            ? this.handleFilter(item)
+                            : this.handleFilter(null)
+                        }
                       >
                         {item}
                       </Button>
@@ -282,7 +297,7 @@ export class OutletInfo extends React.Component {
                                 textAlign: 'right',
                               }}
                             >
-                              {item.id in this.state.cartItems ? (
+                              {cartItems && item.id in cartItems ? (
                                 <>
                                   <InputGroup style={{ width: '100%' }}>
                                     <InputGroup.Button onClick={handleMinus}>
@@ -291,16 +306,18 @@ export class OutletInfo extends React.Component {
                                     <InputNumber
                                       className="custom-input-number"
                                       ref={inputRef}
-                                      max={99}
-                                      min={1}
-                                      value={this.state.cartItems[item.id]}
+                                      value={cartItems[item.id]}
                                       onChange={value => {
-                                        this.setState({
-                                          cartItems: {
-                                            ...this.state.cartItems,
-                                            [item.id]: value,
-                                          },
-                                        });
+                                        if (parseInt(value) > 0) {
+                                          this.props.addCartItem({
+                                            product: item.id,
+                                            quantity: value,
+                                          });
+                                        } else {
+                                          this.props.removeCartItem({
+                                            product: item.id,
+                                          });
+                                        }
                                       }}
                                     />
                                     <InputGroup.Button onClick={handlePlus}>
@@ -312,11 +329,9 @@ export class OutletInfo extends React.Component {
                                 <Button
                                   appearance="primary"
                                   onClick={() => {
-                                    this.setState({
-                                      cartItems: {
-                                        ...this.state.cartItems,
-                                        [item.id]: 1,
-                                      },
+                                    this.props.addCartItem({
+                                      product: item.id,
+                                      quantity: 1,
                                     });
                                   }}
                                 >
@@ -356,18 +371,16 @@ export class OutletInfo extends React.Component {
                     zIndex: '9999',
                   }}
                   onClick={() => {
-                    const { currentoutlet, cartItems } = this.state;
-                    const { outlet } = this.props;
-                    if (!_.isEmpty(cartItems))
-                      this.props.history.push('/cart', {
-                        currentoutlet,
-                        cartItems,
-                        outlet,
-                      });
+                    const { outlet, cartItems, currentoutlet } = this.props;
+                    if (!_.isEmpty(cartItems)) this.props.history.push('/cart');
                     else Alert.warning('Add Items to cart', 2500);
                   }}
                 >
-                  Place Order
+                  {_.size(cartItems || {}) > 0
+                    ? `Place Order-${_.size(cartItems || {})} Item${
+                        _.size(cartItems || {}) > 1 ? 's' : ''
+                      }`
+                    : 'Add Items'}
                 </Button>
               </>
             )}
@@ -384,12 +397,16 @@ OutletInfo.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   outlet: makeSelectOutletInfo(),
+  cartItems: makeSelectCartItems(),
+  currentoutlet: makeSelectCurrentOutlet(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     getOutletEvent: eventId => dispatch(getOutletEvent(eventId)),
     getOutletVenue: venueId => dispatch(getOutletVenue(venueId)),
+    addCartItem: item => dispatch(addCartItem(item)),
+    removeCartItem: item => dispatch(removeCartItem(item)),
   };
 }
 

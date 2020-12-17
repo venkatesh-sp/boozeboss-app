@@ -18,13 +18,15 @@ import {
   authSignupError,
   verifyEmailPhoneSuccess,
   verifyEmailPhoneError,
+  sendEmailOtp,
+  sendMobileOtp,
 } from './actions';
 
 import { authenticate, getUser } from '../App/actions';
 import { makeSelectToken } from './selectors';
 
 function* sendEmailOtpSaga(params) {
-  const { email } = params;
+  const { email, history } = params.email;
 
   const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
     process.env.API_PORT
@@ -37,6 +39,7 @@ function* sendEmailOtpSaga(params) {
   try {
     const response = yield call(request, requestURL, options);
     yield put(sendEmailOtpSuccess(response));
+    history.push('/otp', { email });
   } catch (error) {
     const jsonError = yield error.response ? error.response.json() : error;
     yield put(sendEmailOtpError(jsonError));
@@ -44,7 +47,7 @@ function* sendEmailOtpSaga(params) {
 }
 
 function* signupSaga(params) {
-  const { user } = params;
+  const { user, history } = params;
   const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
     process.env.API_PORT
   }/api/auth/guest-signup`;
@@ -56,9 +59,18 @@ function* signupSaga(params) {
   try {
     const response = yield call(request, requestURL, options);
     if (response.login) {
-      yield put(signupSuccess(response.jwt_token, 'Succesfull signup'));
+      yield put(authSignupSuccess(response.jwt_token, 'Succesfull signup'));
       yield put(getUser());
       yield put(authenticate(response.jwt_token));
+      const { email, phone_number } = user;
+      if (email && phone_number) {
+        // sendEmailOtp(email);
+        yield put(sendMobileOtp({ phone_number, history }));
+      } else if (email) {
+        // yield put(sendEmailOtp(email));
+      } else if (phone_number) {
+        yield put(sendMobileOtp({ phone_number, history }));
+      }
     } else {
       yield put(authSignupSuccess(null, response.message));
     }
@@ -69,7 +81,8 @@ function* signupSaga(params) {
 }
 
 function* getSMSVerificationSaga(params) {
-  const { phone_number } = params;
+  console.log(params);
+  const { phone_number, history } = params.phone_number;
   const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
     process.env.API_PORT
   }/api/verifications/sms/get-code`;
@@ -81,6 +94,7 @@ function* getSMSVerificationSaga(params) {
   try {
     const response = yield call(request, requestURL, options);
     yield put(sendMobileOtpSuccess(response));
+    history.push('/otp', { phone_number });
   } catch (error) {
     const jsonError = yield error.response ? error.response.json() : error;
     yield put(sendMobileOtpError(jsonError));
@@ -88,8 +102,7 @@ function* getSMSVerificationSaga(params) {
 }
 
 function* verifyEmailPhoneSaga(params) {
-  console.log(params, 'params');
-  const { email, phone_number } = params.email_phone;
+  const { email, phone_number, history } = params.email_phone;
   const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
     process.env.API_PORT
   }/api/auth/verify`;
@@ -104,6 +117,12 @@ function* verifyEmailPhoneSaga(params) {
     yield put(verifyEmailPhoneSuccess(response.jwt_token, 'verified'));
     yield put(getUser());
     yield put(authenticate(response.jwt_token));
+
+    if (email) {
+      // yield put(sendEmailOtp({email, history}));
+    } else if (phone_number) {
+      yield put(sendMobileOtp({ phone_number, history }));
+    }
   } catch (error) {
     const jsonError = yield error.response ? error.response.json() : error;
     yield put(verifyEmailPhoneError(jsonError));

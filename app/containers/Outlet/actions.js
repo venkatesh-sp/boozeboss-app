@@ -11,6 +11,8 @@ import {
   GET_OUTLET_VENUE_REQUEST,
   GET_OUTLET_VENUE_SUCCESS,
   GET_OUTLET_VENUE_ERROR,
+  ADD_CART_ITEM,
+  REMOVE_CART_ITEM,
 } from './constants';
 
 export function getOutletEvent(eventId) {
@@ -52,5 +54,19 @@ export function getOutletVenueError(error) {
   return {
     type: GET_OUTLET_VENUE_ERROR,
     error,
+  };
+}
+
+export function addCartItem(item) {
+  return {
+    type: ADD_CART_ITEM,
+    item,
+  };
+}
+
+export function removeCartItem(item) {
+  return {
+    type: REMOVE_CART_ITEM,
+    item,
   };
 }

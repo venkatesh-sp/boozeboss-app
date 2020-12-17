@@ -7,6 +7,11 @@ const makeSelectOutletInfo = () =>
     selectOutletInfo,
     outletState => outletState.get('outlet'),
   );
+const makeSelectCartItems = () =>
+  createSelector(
+    selectOutletInfo,
+    outletState => outletState.get('cartitems'),
+  );
 
 const makeSelectError = () =>
   createSelector(
@@ -20,4 +25,16 @@ const makeSelectSuccess = () =>
     outletState => outletState.get('success'),
   );
 
-export { makeSelectError, makeSelectSuccess, makeSelectOutletInfo };
+const makeSelectCurrentOutlet = () =>
+  createSelector(
+    selectOutletInfo,
+    outletState => outletState.get('currentOutlet'),
+  );
+
+export {
+  makeSelectError,
+  makeSelectSuccess,
+  makeSelectOutletInfo,
+  makeSelectCartItems,
+  makeSelectCurrentOutlet,
+};

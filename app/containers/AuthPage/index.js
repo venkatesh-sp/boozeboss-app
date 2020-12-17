@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Button, ButtonGroup, Input, SelectPicker, Alert } from 'rsuite';
+import {
+  Button,
+  ButtonGroup,
+  Input,
+  SelectPicker,
+  Alert,
+  Checkbox,
+} from 'rsuite';
 // import Signup from '../Signup';
 
 import PropTypes from 'prop-types';
@@ -28,9 +35,10 @@ import {
 
 const StyledLoginDiv = styled.div`
   width: 100%;
-  padding: 30px 20px;
-  height: 90vh;
+  padding: 15px;
+  height: 780px;
   text-align: center;
+  overflow-y: 'scroll';
 `;
 
 const StyledText = styled.p`
@@ -52,13 +60,13 @@ const InputStyles = {
 
 const ButtonStyles = {
   width: '100%',
-  marginTop: '40px',
+  marginTop: '10px',
 };
 
 const StyledSignupContainer = styled.div`
-  padding: 20px;
-  position: relative;
-  height: 75vh;
+  // padding: 20px;
+  // position: relative;
+  // height: 75vh;
 `;
 const StyledHeading = styled.p`
   font-weight: bold;
@@ -154,13 +162,13 @@ const SignUp = ({ handleChange, handleSignup }) => (
     <Input
       onChange={value => handleChange(value, 'password')}
       style={inputStyles}
-      type="text"
+      type="password"
       placeholder="Password"
     />
     <Input
       onChange={value => handleChange(value, 'confirm_password')}
       style={inputStyles}
-      type="text"
+      type="password"
       placeholder="Confirm Password"
     />
     <SelectPicker
@@ -183,6 +191,16 @@ const SignUp = ({ handleChange, handleSignup }) => (
       type="text"
       placeholder="Gender"
     />
+
+    <Checkbox>
+      <p style={{ fontSize: '10px', textAlign: 'left' }}>
+        We do not like spam and will keep your email safe. Please confirm that
+        we can send you important notifications and deals relating to your
+        account.
+        <a href="https://www.liquidintel.io/privacy-policy">Privacy Policy</a>
+      </p>
+    </Checkbox>
+
     <Button style={ButtonStyles} appearance="primary" onClick={handleSignup}>
       Sign Up
     </Button>
@@ -212,11 +230,11 @@ class AuthPage extends Component {
   };
 
   handleSubmit = () => {
-    const { verifyEmailPhone } = this.props;
+    const { verifyEmailPhone, history } = this.props;
     if (this.state.email) {
-      verifyEmailPhone({ email: this.state.email });
+      verifyEmailPhone({ email: this.state.email, history });
     } else if (this.state.phone) {
-      verifyEmailPhone({ phone_number: this.state.phone });
+      verifyEmailPhone({ phone_number: this.state.phone, history });
     } else {
       Alert.error('Missing Fields', 2500);
     }
@@ -243,26 +261,12 @@ class AuthPage extends Component {
       email,
       phone_number: phone,
       gender,
+      history: this.props.history,
     });
   };
 
   render() {
-    console.log(this.props);
     const { token, sendEmailOtp, sendMobileOtp } = this.props;
-    if (token) {
-      if (this.state.email) {
-        console.log('entered');
-        sendEmailOtp(this.state.email);
-      } else if (this.state.phone) {
-        sendMobileOtp(this.state.phone);
-      }
-      if (this.props.success) {
-        this.props.history.push('/otp', {
-          phone_number: this.state.phone,
-          state: this.props.location.state,
-        });
-      }
-    }
 
     let AccountsComponent;
     if (this.state.active === 'signin') {

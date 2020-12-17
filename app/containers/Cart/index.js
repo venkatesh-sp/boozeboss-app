@@ -1,6 +1,21 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { Button, InputGroup, InputNumber, Row, Col } from 'rsuite';
+
+import {
+  makeSelectOutletInfo,
+  makeSelectCartItems,
+  makeSelectCurrentOutlet,
+} from './selectors';
+import reducer from './reducer';
+
+import { addCartItem, removeCartItem } from './actions';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import injectSaga from 'utils/injectSaga';
+import injectReducer from 'utils/injectReducer';
 
 const CartItems = styled.div`
   overflow: scroll;
@@ -45,26 +60,11 @@ const ButtonStyles = {
   padding: '5px 10px',
   text: 'center',
 };
-
-export default class Cart extends Component {
-  state = {
-    cartItems: '',
-    outlet: '',
-    currentoutlet: '',
-  };
-
-  componentDidMount() {
-    const { state } = this.props.location;
-    if (state) {
-      const { currentoutlet, outlet, cartItems } = state;
-      this.setState({ currentoutlet, outlet, cartItems });
-    }
-  }
-
+class Cart extends Component {
   render() {
-    const { outlet, cartItems } = this.state;
+    const { cartItems, outlet } = this.props;
 
-    if (!outlet && !cartItems) {
+    if (!outlet) {
       return <>Loading...</>;
     }
 
@@ -77,7 +77,7 @@ export default class Cart extends Component {
       const handlePlus = () => {
         inputRef.current.handlePlus();
       };
-      if (item.id in cartItems) {
+      if (cartItems && item.id in cartItems) {
         return (
           <StyledMenuDiv key={index}>
             <StyledFlexContainer>
@@ -100,16 +100,18 @@ export default class Cart extends Component {
                     <InputNumber
                       className="custom-input-number"
                       ref={inputRef}
-                      max={99}
-                      min={1}
-                      value={this.state.cartItems[item.id]}
+                      value={cartItems[item.id]}
                       onChange={value => {
-                        this.setState({
-                          cartItems: {
-                            ...this.state.cartItems,
-                            [item.id]: value,
-                          },
-                        });
+                        if (parseInt(value) > 0) {
+                          this.props.addCartItem({
+                            product: item.id,
+                            quantity: value,
+                          });
+                        } else {
+                          this.props.removeCartItem({
+                            product: item.id,
+                          });
+                        }
                       }}
                     />
                     <InputGroup.Button onClick={handlePlus}>
@@ -159,18 +161,45 @@ export default class Cart extends Component {
               borderRadius: '0px',
             }}
             onClick={() => {
-              const { currentoutlet, cartItems, outlet } = this.state;
-              this.props.history.push('/auth', {
-                outlet,
-                currentoutlet,
-                cartItems,
-              });
+              this.props.history.push('/auth');
             }}
           >
-            Confirm Order
+            Confirm Order -{' '}
+            {`${_.size(cartItems || {})} Item${
+              _.size(cartItems || {}) > 1 ? 's' : ''
+            }`}
           </Button>
         </div>
       </div>
     );
   }
 }
+
+Cart.propTypes = {
+  dispatch: PropTypes.func,
+};
+
+const mapStateToProps = createStructuredSelector({
+  outlet: makeSelectOutletInfo(),
+  cartItems: makeSelectCartItems(),
+  currentoutlet: makeSelectCurrentOutlet(),
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    addCartItem: item => dispatch(addCartItem(item)),
+    removeCartItem: item => dispatch(removeCartItem(item)),
+  };
+}
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+const withReducer = injectReducer({ key: 'outlet', reducer });
+
+export default compose(
+  withReducer,
+  withConnect,
+)(Cart);

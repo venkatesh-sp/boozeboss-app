@@ -1,7 +1,5 @@
 import { createSelector } from 'reselect';
 
-const selectOtp = state => state.outlet;
-
 const selectOutletInfo = state => state.outlet;
 
 const makeSelectCartItems = () =>
@@ -24,19 +22,19 @@ const makeSelectCurrentOutlet = () =>
 
 const makeSelectError = () =>
   createSelector(
-    selectOtp,
-    otpState => otpState.get('error'),
+    selectOutletInfo,
+    cartState => cartState.get('error'),
   );
 
 const makeSelectSuccess = () =>
   createSelector(
-    selectOtp,
-    otpState => otpState.get('success'),
+    selectOutletInfo,
+    cartState => cartState.get('success'),
   );
 
 export {
-  makeSelectSuccess,
   makeSelectError,
+  makeSelectSuccess,
   makeSelectCartItems,
   makeSelectOutletInfo,
   makeSelectCurrentOutlet,
