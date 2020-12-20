@@ -94,7 +94,7 @@ export class QrScanner extends React.Component {
 
       if (json_data.type === 'orders') {
         history.push({
-          pathname: `/orders`,
+          pathname: `/waiter-orders`,
           state: {
             user: json_data.user,
           },
