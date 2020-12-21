@@ -115,11 +115,11 @@ class App extends React.Component {
               'VIP',
             ]}
           />
-          <Route
+          <PrivateRoute
             path="/scanner"
             component={QrScanner}
-            // scopesRequired={['AGENCY', 'OUTLET']}
-            // rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
+            scopesRequired={['AGENCY', 'OUTLET']}
+            rolesRequired={['OWNER', 'MANAGER', 'STAFF', 'WAITER']}
           />
           <PrivateRoute
             exact
