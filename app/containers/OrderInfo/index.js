@@ -12,24 +12,37 @@ import {
   makeSelectCartItems,
   makeSelectCurrentOutlet,
   makeSelectOutletInfo,
+  makeSelectUser,
 } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
-import { getCartItems } from './actions';
+import { getCartItems, addCartItems } from './actions';
 import QRCode from 'react-qr-code';
 import _ from 'lodash';
 import { Button, ButtonGroup } from 'rsuite';
 
 class OrderInfo extends React.Component {
   componentDidMount() {
-    this.props.getCartItems();
+    console.log(this.props);
+    const items = _.map(_.toPairs(this.props.cartItems), data => {
+      const key = `${this.props.currentoutlet}menu_id`;
+      return {
+        [key]: parseInt(data[0]),
+        quantity: parseInt(data[1]),
+      };
+    });
+
+    console.log(items);
+
+    this.props.addCartItems(items);
   }
   render() {
     console.log(this.props);
     if (!this.props.cartItems) {
       return <>Loading..</>;
     }
+
     return (
       <>
         <div
@@ -41,13 +54,13 @@ class OrderInfo extends React.Component {
         >
           <QRCode
             value={JSON.stringify({
-              user: this.props.cartItems.account_id,
+              user: this.props.user.id,
               type: 'orders',
             })}
           />
         </div>
         <p style={{ textAlign: 'center', marginTop: '10px', fontSize: '18px' }}>
-          {_.size(this.props.cartItems.items)} Items Ordered
+          {_.size(this.props.cartItems)} Items Ordered
         </p>
         <ButtonGroup justified style={{ padding: '15px' }}>
           <Button
@@ -81,11 +94,13 @@ const mapStateToProps = createStructuredSelector({
   cartItems: makeSelectCartItems(),
   outlet: makeSelectOutletInfo(),
   currentoutlet: makeSelectCurrentOutlet(),
+  user: makeSelectUser(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     getCartItems: () => dispatch(getCartItems()),
+    addCartItems: items => dispatch(addCartItems(items)),
   };
 }
 

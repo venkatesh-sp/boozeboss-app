@@ -4,9 +4,11 @@ const selectCart = state => state.cart;
 
 const selectOutletInfo = state => state.outlet;
 
+const selectGlobal = state => state.global;
+
 const makeSelectCartItems = () =>
   createSelector(
-    selectCart,
+    selectOutletInfo,
     cartState => cartState.get('cartitems'),
   );
 
@@ -34,10 +36,10 @@ const makeSelectCurrentOutlet = () =>
     cartState => cartState.get('currentOutlet'),
   );
 
-const makeSetCartItems = () =>
+const makeSelectUser = () =>
   createSelector(
-    selectCart,
-    cartState => cartState.set('cartitems', null),
+    selectGlobal,
+    globalState => globalState.get('user'),
   );
 
 export {
@@ -46,5 +48,5 @@ export {
   makeSelectCartItems,
   makeSelectOutletInfo,
   makeSelectCurrentOutlet,
-  makeSetCartItems,
+  makeSelectUser,
 };

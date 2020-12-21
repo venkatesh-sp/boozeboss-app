@@ -85,15 +85,8 @@ class Otp extends Component {
   };
 
   render() {
-    if (this.props.success === true) {
-      const items = _.map(_.toPairs(this.props.cartItems), data => {
-        const key = `${this.props.currentoutlet}menu_id`;
-        return {
-          [key]: parseInt(data[0]),
-          quantity: parseInt(data[1]),
-        };
-      });
-      this.props.addCartItems({ items, history: this.props.history });
+    if (this.props.success) {
+      this.props.history.push('/orders');
     }
     return (
       <StyledOtpDiv>
@@ -126,9 +119,6 @@ Otp.propTypes = {
 const mapStateToProps = createStructuredSelector({
   error: makeSelectError(),
   success: makeSelectSuccess(),
-  outlet: makeSelectOutletInfo(),
-  cartItems: makeSelectCartItems(),
-  currentoutlet: makeSelectCurrentOutlet(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -137,7 +127,6 @@ function mapDispatchToProps(dispatch) {
       dispatch(checkSMSVerification(phone_number, code)),
     checkEmailVerification: (email, code) =>
       dispatch(checkEmailVerification(email, code)),
-    addCartItems: items => dispatch(addCartItems(items)),
   };
 }
 

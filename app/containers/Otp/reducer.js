@@ -10,6 +10,8 @@ import {
   CHECK_EMAIL_VERIFICATION_ERROR,
   CHECK_EMAIL_VERIFICATION_SUCCESS,
   CHECK_SMS_VERIFICATION_SUCCESS,
+  CHECK_SMS_VERIFICATION_REQUEST,
+  CHECK_EMAIL_VERIFICATION_REQUEST,
 } from './constants';
 
 export const initialState = fromJS({
@@ -20,16 +22,14 @@ export const initialState = fromJS({
 
 function otpReducer(state = initialState, action) {
   switch (action.type) {
+    case CHECK_EMAIL_VERIFICATION_REQUEST:
+      return state;
+    case CHECK_SMS_VERIFICATION_REQUEST:
+      return state;
     case CHECK_SMS_VERIFICATION_SUCCESS:
-      return state
-        .set('error', null)
-        .set('isLoading', null)
-        .set('success', true);
+      return state.set('isLoading', false).set('success', true);
     case CHECK_EMAIL_VERIFICATION_SUCCESS:
-      return state
-        .set('error', null)
-        .set('isLoading', null)
-        .set('success', true);
+      return state.set('isLoading', false).set('success', true);
     case CHECK_SMS_VERIFICATION_ERROR:
       return state.set('error', action.error).set('isLoading', false);
     case CHECK_EMAIL_VERIFICATION_ERROR:

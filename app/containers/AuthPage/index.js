@@ -227,7 +227,7 @@ class AuthPage extends Component {
     const { user, history, verifyEmailPhone } = this.props;
 
     if (user) {
-      verifyEmailPhone({ phone_number: user.phone_number, history });
+      // verifyEmailPhone({ phone_number: user.phone_number, history });
     }
   }
 
@@ -312,8 +312,6 @@ AuthPage.propTypes = {
 const mapStateToProps = createStructuredSelector({
   error: makeSelectError(),
   success: makeSelectSuccess(),
-  token: makeSelectToken(),
-  user: makeSelectUser(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -321,8 +319,6 @@ function mapDispatchToProps(dispatch) {
     sendMobileOtp: phone_number => dispatch(sendMobileOtp(phone_number)),
     sendEmailOtp: email => dispatch(sendEmailOtp(email)),
     authSignup: user => dispatch(authSignup(user)),
-    authenticate: token => dispatch(authenticate(token)),
-    getUser: () => dispatch(getUser()),
     verifyEmailPhone: email_phone => dispatch(verifyEmailPhone(email_phone)),
   };
 }

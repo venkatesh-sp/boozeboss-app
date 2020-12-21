@@ -261,7 +261,17 @@ class WaiterOrders extends React.Component {
           </Modal>
           <Button
             appearance="primary"
-            style={{ width: '100%', borderRadius: '0px', marginTop: '10px' }}
+            style={{
+              position: 'fixed',
+              bottom: '0px',
+              width: '100%',
+              left: '0px',
+              backgroundColor: '#3498ff',
+              color: '#fff',
+              zIndex: '99999',
+              border: '0px',
+              borderRadius: '0px',
+            }}
             onClick={() => {
               this.props.history.push('/scanner');
             }}
