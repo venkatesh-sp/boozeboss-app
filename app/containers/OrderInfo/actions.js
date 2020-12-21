@@ -6,20 +6,20 @@
 
 import status from 'utils/status';
 import {
-  GET_ITEMS_REQUEST,
-  GET_ITEMS_SUCCESS,
-  GET_ITEMS_ERROR,
+  GET_CART_ITEMS_REQUEST,
+  GET_CART_ITEMS_SUCCESS,
+  GET_CART_ITEMS_ERROR,
 } from './constants';
 
 export function getCartItems() {
   return {
-    type: GET_ITEMS_REQUEST,
+    type: GET_CART_ITEMS_REQUEST,
   };
 }
 
 export function getCartItemsSuccess(items) {
   return {
-    type: GET_ITEMS_SUCCESS,
+    type: GET_CART_ITEMS_SUCCESS,
     items,
   };
 }
@@ -27,7 +27,7 @@ export function getCartItemsSuccess(items) {
 export function getCartItemsError(error) {
   status(error, 'error');
   return {
-    type: GET_ITEMS_ERROR,
+    type: GET_CART_ITEMS_ERROR,
     error,
   };
 }

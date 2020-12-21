@@ -3,7 +3,15 @@ import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Row, Col, Button, Modal, Paragraph } from 'rsuite';
+import {
+  Row,
+  Col,
+  Button,
+  Modal,
+  Paragraph,
+  InputGroup,
+  InputNumber,
+} from 'rsuite';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
@@ -102,6 +110,7 @@ class WaiterOrders extends React.Component {
     if (!items) {
       return <>Loading...</>;
     }
+
     // console.log(items.items, 'ITEMS ARRAY FROM RESPONSE IN RENDER PREETHAM');
     return (
       <>
@@ -110,151 +119,102 @@ class WaiterOrders extends React.Component {
             <title>Waiter Orders</title>
             <meta name="description" content="Description of Waiter Orders" />
           </Helmet>
-          {items.items.map((item, index) => (
-            <div
-              style={{ backgroundColor: '#030303', paddingBottom: '30px' }}
-              key={index}
-            >
-              <StyledMenuDiv>
-                <StyledFlexContainer>
-                  <StyledText size="16px" color="#ffffff" weight="bold">
-                    {item.venueproduct[0].name}
-                  </StyledText>
-                  <StyledText size="13px" color="#ffffff" weight="normal">
-                    Rs:{item.venueproduct[0].price}
-                  </StyledText>
-                </StyledFlexContainer>
-                <StyledFlexContainer>
-                  <StyledText size="16px" color="#ffffff" weight="bold">
-                    Portfolio: {item.venueproduct[0].portfolio}
-                  </StyledText>
-                  <Button
-                    appearance="primary"
-                    onClick={() => {
-                      this.setState({ id: item.venueproduct[0].id });
-                      this.setState({ show: true });
-                    }}
-                  >
-                    Book
-                  </Button>
-                </StyledFlexContainer>
-              </StyledMenuDiv>
-            </div>
-          ))}
-        </div>
-        <Modal
-          show={this.state.show}
-          onHide={() => {
-            this.setState({ id: '' });
-            this.setState({ show: false });
-          }}
-        >
-          <Modal.Header>
-            <Modal.Title>Modal Title</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div>
-              <label
-                htmlFor="mencount"
-                style={{ width: '100px', display: 'inline-block' }}
-              >
-                Men-Count:
-              </label>
-              <input
-                type="number"
-                id="mencount"
-                name="mencount"
-                value={this.state.menCount}
-                onChange={event =>
-                  this.setState({ menCount: event.target.value })
-                }
-                // onChange={handleChange('menCount')}
-              />
-              <label htmlFor="menagegrp" style={{ marginLeft: '10px' }}>
-                Men age group:
-              </label>
-              <select
-                name="menagegrp"
-                id="menagegrp"
-                style={{ marginLeft: '33px' }}
-                value={this.state.menAgeGroup}
-                onChange={event =>
-                  this.setState({ menAgeGroup: event.target.value })
-                }
-                // onChange={handleChange('menAgeGroup')}
-              >
-                <option value="22">22</option>
-                <option value="23">23</option>
-                <option value="24">24</option>
-                <option value="25">25</option>
-                <option value="26">26</option>
-                <option value="27">27</option>
-                <option value="28">28</option>
-                <option value="29">29</option>
-                <option value="30">30</option>
-              </select>
-            </div>
-            <div>
-              <label
-                htmlFor="womencount"
-                style={{ width: '100px', display: 'inline-block' }}
-              >
-                Women-Count:
-              </label>
-              <input
-                type="number"
-                id="womencount"
-                name="womencount"
-                value={this.state.womenCount}
-                onChange={event =>
-                  this.setState({ womenCount: event.target.value })
-                }
-              />
+          {items.items.map((item, index) => {
+            // const [showModal, setShowModal] = React.useState(false);
 
-              <label htmlFor="womenagegrp" style={{ marginLeft: '10px' }}>
-                Women age group:
-              </label>
-              <select
-                name="womenagegrp"
-                id="womenagegrp"
-                style={{ marginLeft: '10px' }}
-                value={this.state.womenAgeGroup}
-                onChange={event =>
-                  this.setState({ womenAgeGroup: event.target.value })
-                }
+            // const [itemInfo, setItemInfo] = React.useState({});
+
+            const handleChange = (value, name) => {
+              setItemInfo({ [name]: value });
+            };
+
+            const { venueproduct, eventproduct } = item;
+            console.log(item);
+            const product =
+              venueproduct && venueproduct.length > 0
+                ? venueproduct[0]
+                : eventproduct && eventproduct.length > 0
+                ? eventproduct[0]
+                : null;
+
+            return (
+              <div
+                style={{ backgroundColor: '#030303', paddingBottom: '30px' }}
+                key={index}
               >
-                <option value="26">26</option>
-                <option value="27">27</option>
-                <option value="28">28</option>
-                <option value="29">29</option>
-                <option value="30">30</option>
-              </select>
-            </div>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button
-              onClick={() => {
-                this.setState({ show: false });
-              }}
-              appearance="primary"
-            >
-              Order
-            </Button>
-            <Button
-              onClick={() => {
-                this.setState({ id: '' });
-                this.setState({ menCount: '' });
-                this.setState({ womenCount: '' });
-                this.setState({ menAgeGroup: '' });
-                this.setState({ womenAgeGroup: '' });
-                this.setState({ show: false });
-              }}
-              appearance="subtle"
-            >
-              Cancel
-            </Button>
-          </Modal.Footer>
-        </Modal>
+                <StyledMenuDiv>
+                  <StyledFlexContainer>
+                    <StyledText size="16px" color="#ffffff" weight="bold">
+                      {product.name}
+                    </StyledText>
+                    <StyledText size="13px" color="#ffffff" weight="normal">
+                      Rs:{product.price}
+                    </StyledText>
+                  </StyledFlexContainer>
+                  <StyledFlexContainer>
+                    <StyledText size="16px" color="#ffffff" weight="bold">
+                      Portfolio: {product.portfolio}
+                    </StyledText>
+                    <Button
+                      appearance="primary"
+                      onClick={() => {
+                        this.setState({ id: product.id, show: true });
+                      }}
+                    >
+                      Book
+                    </Button>
+                  </StyledFlexContainer>
+                </StyledMenuDiv>
+              </div>
+            );
+          })}
+          <Modal
+            show={this.state.show}
+            size="xs"
+            onHide={() => {
+              this.setState({ id: '', show: false });
+            }}
+          >
+            <Modal.Header>
+              <Modal.Title>Modal Title</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <div>
+                <label>Men Count:</label>
+                <InputNumber defaultValue={1} max={100} min={1} />
+                <label>Men Age Group:</label>
+                <InputNumber defaultValue={20} max={100} min={20} step={10} />
+                <label>Women Count:</label>
+                <InputNumber defaultValue={1} max={100} min={1} />
+                <label>Women Age Group:</label>
+                <InputNumber defaultValue={20} max={100} min={20} step={10} />
+              </div>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                onClick={() => {
+                  this.setState({ show: false });
+                }}
+                appearance="primary"
+              >
+                Order
+              </Button>
+              <Button
+                onClick={() => {
+                  this.setState({ id: '' });
+                  this.setState({ menCount: '' });
+                  this.setState({ womenCount: '' });
+                  this.setState({ menAgeGroup: '' });
+                  this.setState({ womenAgeGroup: '' });
+                  this.setState({ show: false });
+                }}
+                appearance="subtle"
+              >
+                Cancel
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
       </>
     );
   }

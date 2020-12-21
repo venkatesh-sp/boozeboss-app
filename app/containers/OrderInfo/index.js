@@ -8,7 +8,11 @@ import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 
-import { makeSelectCartItems } from './selectors';
+import {
+  makeSelectCartItems,
+  makeSelectCurrentOutlet,
+  makeSelectOutletInfo,
+} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
@@ -22,9 +26,7 @@ class OrderInfo extends React.Component {
     this.props.getCartItems();
   }
   render() {
-    console.log(this.props, 'PROPS IN ORDERINFO PAGE');
-    // const { user } = this.props.history.location.state;
-    // console.log(user, 'USER ID IN ORDERPAGE INFO');
+    console.log(this.props);
     if (!this.props.cartItems) {
       return <>Loading..</>;
     }
@@ -51,10 +53,14 @@ class OrderInfo extends React.Component {
           <Button
             appearance="ghost"
             onClick={() => {
-              const { history } = this.props;
+              const { history, currentoutlet, outlet } = this.props;
+
               history.push({
                 pathname: '/outlet',
-                search: `outlet_venue=${1}`,
+                search:
+                  currentoutlet === 'outletevent'
+                    ? `outlet_event=${outlet.id}`
+                    : `outlet_venue=${outlet.id}`,
               });
             }}
           >
@@ -73,6 +79,8 @@ OrderInfo.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   cartItems: makeSelectCartItems(),
+  outlet: makeSelectOutletInfo(),
+  currentoutlet: makeSelectCurrentOutlet(),
 });
 
 function mapDispatchToProps(dispatch) {

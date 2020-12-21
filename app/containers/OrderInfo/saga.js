@@ -6,11 +6,7 @@ import _ from 'lodash';
 
 import { GET_CART_ITEMS_REQUEST } from './constants';
 
-import {
-  getCartItems,
-  getCartItemsSuccess,
-  getCartItemsError,
-} from './actions';
+import { getCartItemsSuccess, getCartItemsError } from './actions';
 
 function* getCartItemsSaga() {
   const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${

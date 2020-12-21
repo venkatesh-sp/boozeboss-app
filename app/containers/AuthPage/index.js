@@ -24,6 +24,7 @@ import {
   makeSelectError,
   makeSelectSuccess,
   makeSelectToken,
+  makeSelectUser,
 } from './selectors';
 
 import {
@@ -222,6 +223,14 @@ class AuthPage extends Component {
     };
   }
 
+  componentDidMount() {
+    const { user, history, verifyEmailPhone } = this.props;
+
+    if (user) {
+      verifyEmailPhone({ phone_number: user.phone_number, history });
+    }
+  }
+
   toggle = value => {
     this.setState({ active: value });
   };
@@ -304,6 +313,7 @@ const mapStateToProps = createStructuredSelector({
   error: makeSelectError(),
   success: makeSelectSuccess(),
   token: makeSelectToken(),
+  user: makeSelectUser(),
 });
 
 function mapDispatchToProps(dispatch) {

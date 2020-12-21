@@ -90,7 +90,7 @@ class App extends React.Component {
             exact
             path="/"
             component={HomePage}
-            scopesRequired={['GUEST', 'AGENCY', 'BRAND', 'REGION']}
+            scopesRequired={['GUEST', 'AGENCY', 'BRAND', 'REGION', 'OUTLET']}
             rolesRequired={[
               'OWNER',
               'MANAGER',
@@ -98,6 +98,7 @@ class App extends React.Component {
               'REGULAR',
               'VIP',
               'VIP',
+              'WAITER',
             ]}
           />
           <GuardedRoute path="/signup" component={SignupPage} />
@@ -223,7 +224,7 @@ class App extends React.Component {
           <Route path="/auth" component={AuthPage} />
           <Route path="/otp" component={Otp} />
           <Route path="/cart" component={Cart} />
-          <Route path="/waiter-orders" component={WaiterOrders} />
+          <PrivateRoute path="/waiter-orders" component={WaiterOrders} />
           <Route path="/terms" component={Terms} />
           <Route path="/privacy" component={Privacy} />
           <Route path="/help" component={Help} />

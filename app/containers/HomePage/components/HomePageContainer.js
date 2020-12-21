@@ -18,12 +18,18 @@ const StyledButton = styled(Button)`
 
 export default class HomePageContainer extends Component {
   componentWillMount = () => {
-    const { getEvents, getAgencyEvents, scope } = this.props;
+    const { getEvents, getAgencyEvents, scope, role } = this.props;
     if (scope === 'GUEST' || scope === 'BRAND' || scope === 'REGION') {
       getEvents();
     }
     if (scope === 'AGENCY') {
       getAgencyEvents();
+    }
+    if (scope === 'OUTLET' && role === 'WAITER') {
+      const { history } = this.props;
+      history.push({
+        pathname: '/scanner',
+      });
     }
   };
 

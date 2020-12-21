@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 
 const selectAuth = state => state.auth;
+const selectGlobal = state => state.global;
 
 const makeSelectToken = () =>
   createSelector(
@@ -19,5 +20,9 @@ const makeSelectSuccess = () =>
     selectAuth,
     authState => authState.get('success'),
   );
-
-export { makeSelectError, makeSelectSuccess, makeSelectToken };
+const makeSelectUser = () =>
+  createSelector(
+    selectGlobal,
+    globalState => globalState.get('user'),
+  );
+export { makeSelectError, makeSelectSuccess, makeSelectToken, makeSelectUser };
