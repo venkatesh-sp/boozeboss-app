@@ -16,6 +16,7 @@ import {
 
 // Check code
 export function checkSMSVerification(phone_number, code) {
+  console.log(code, phone_number);
   return {
     type: CHECK_SMS_VERIFICATION_REQUEST,
     phone_number,
