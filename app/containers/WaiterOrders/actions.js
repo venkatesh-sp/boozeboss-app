@@ -9,6 +9,7 @@ import {
   GET_ITEMS_REQUEST,
   GET_ITEMS_SUCCESS,
   GET_ITEMS_ERROR,
+  ORDER_ITEMS_REQUEST,
 } from './constants';
 
 export function getCartItems(ID) {
@@ -31,5 +32,12 @@ export function getCartItemsError(error) {
   return {
     type: GET_ITEMS_ERROR,
     error,
+  };
+}
+
+export function postOrder(details) {
+  return {
+    type: ORDER_ITEMS_REQUEST,
+    details,
   };
 }
