@@ -70,6 +70,11 @@ const ButtonStyles = {
 class WaiterOrders extends React.Component {
   state = {
     show: false,
+    id: '',
+    menCount: '',
+    menAgeGroup: '',
+    womenCount: '',
+    womenAgeGroup: '',
   };
 
   componentDidMount() {
@@ -82,15 +87,16 @@ class WaiterOrders extends React.Component {
     this.setState({ show: false });
     // console.log(this.state.show, 'SHOW VARIABLE AFTE CLOSING');
   }
+
   open() {
     this.setState({ show: true });
     // console.log(this.state.show, 'SHOW VARIABLE AFTE Opening');
   }
+  // handleChange = name => event => {
+  //   this.setState({ [name]: event.target.value });
+  // };
+
   render() {
-    // console.log(this.state.show,"SHOW VARIABLE")
-    // const { items } = this.props;
-    // console.log(this.props, 'PROPS IN RENDER FUNCTION');
-    // console.log(items, 'ITEMS IN RENDER FUNCTION');
     const { items } = this.props;
 
     if (!items) {
@@ -125,6 +131,7 @@ class WaiterOrders extends React.Component {
                   <Button
                     appearance="primary"
                     onClick={() => {
+                      this.setState({ id: item.venueproduct[0].id });
                       this.setState({ show: true });
                     }}
                   >
@@ -137,7 +144,10 @@ class WaiterOrders extends React.Component {
         </div>
         <Modal
           show={this.state.show}
-          onHide={() => this.setState({ show: false })}
+          onHide={() => {
+            this.setState({ id: '' });
+            this.setState({ show: false });
+          }}
         >
           <Modal.Header>
             <Modal.Title>Modal Title</Modal.Title>
@@ -150,7 +160,16 @@ class WaiterOrders extends React.Component {
               >
                 Men-Count:
               </label>
-              <input type="number" id="mencount" name="mencount" />
+              <input
+                type="number"
+                id="mencount"
+                name="mencount"
+                value={this.state.menCount}
+                onChange={event =>
+                  this.setState({ menCount: event.target.value })
+                }
+                // onChange={handleChange('menCount')}
+              />
               <label htmlFor="menagegrp" style={{ marginLeft: '10px' }}>
                 Men age group:
               </label>
@@ -158,6 +177,11 @@ class WaiterOrders extends React.Component {
                 name="menagegrp"
                 id="menagegrp"
                 style={{ marginLeft: '33px' }}
+                value={this.state.menAgeGroup}
+                onChange={event =>
+                  this.setState({ menAgeGroup: event.target.value })
+                }
+                // onChange={handleChange('menAgeGroup')}
               >
                 <option value="22">22</option>
                 <option value="23">23</option>
@@ -177,7 +201,15 @@ class WaiterOrders extends React.Component {
               >
                 Women-Count:
               </label>
-              <input type="number" id="womencount" name="womencount" />
+              <input
+                type="number"
+                id="womencount"
+                name="womencount"
+                value={this.state.womenCount}
+                onChange={event =>
+                  this.setState({ womenCount: event.target.value })
+                }
+              />
 
               <label htmlFor="womenagegrp" style={{ marginLeft: '10px' }}>
                 Women age group:
@@ -186,6 +218,10 @@ class WaiterOrders extends React.Component {
                 name="womenagegrp"
                 id="womenagegrp"
                 style={{ marginLeft: '10px' }}
+                value={this.state.womenAgeGroup}
+                onChange={event =>
+                  this.setState({ womenAgeGroup: event.target.value })
+                }
               >
                 <option value="26">26</option>
                 <option value="27">27</option>
@@ -202,10 +238,15 @@ class WaiterOrders extends React.Component {
               }}
               appearance="primary"
             >
-              Ok
+              Order
             </Button>
             <Button
               onClick={() => {
+                this.setState({ id: '' });
+                this.setState({ menCount: '' });
+                this.setState({ womenCount: '' });
+                this.setState({ menAgeGroup: '' });
+                this.setState({ womenAgeGroup: '' });
                 this.setState({ show: false });
               }}
               appearance="subtle"

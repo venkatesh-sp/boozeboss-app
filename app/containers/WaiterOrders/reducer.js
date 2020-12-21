@@ -9,7 +9,8 @@ import {
   GET_ITEMS_SUCCESS,
   GET_ITEMS_ERROR,
   GET_ITEMS_REQUEST,
-  GET_ITEMS_MODALRENDER
+  ORDER_ITEMS_REQUEST,
+  GET_ITEMS_MODALRENDER,
 } from './constants';
 
 export const initialState = fromJS({
@@ -17,7 +18,8 @@ export const initialState = fromJS({
   success: null,
   isLoading: null,
   items: null,
-  shouldRenderModal:false
+  shouldRenderModal: false,
+  orderDetails: {},
 });
 
 function otpReducer(state = initialState, action) {
@@ -28,6 +30,8 @@ function otpReducer(state = initialState, action) {
       return state.set('items', action.items);
     case GET_ITEMS_ERROR:
       return state.set('error', action.error).set('isLoading', false);
+    case ORDER_ITEMS_REQUEST:
+      return state.set('orderDetails', action.details);
     default:
       return state;
   }
