@@ -46,6 +46,7 @@ import injectSaga from 'utils/injectSaga';
 import AuthPage from 'containers/AuthPage/Loadable';
 import Otp from 'containers/Otp';
 import Cart from 'containers/Cart';
+import WaiterOrders from 'containers/WaiterOrders';
 import OutletInfo from '../Outlet';
 import OrderInfo from '../OrderInfo';
 import saga from './saga';
@@ -89,7 +90,7 @@ class App extends React.Component {
             exact
             path="/"
             component={HomePage}
-            scopesRequired={['GUEST', 'AGENCY', 'BRAND', 'REGION']}
+            scopesRequired={['GUEST', 'AGENCY', 'BRAND', 'REGION', 'OUTLET']}
             rolesRequired={[
               'OWNER',
               'MANAGER',
@@ -97,6 +98,7 @@ class App extends React.Component {
               'REGULAR',
               'VIP',
               'VIP',
+              'WAITER',
             ]}
           />
           <GuardedRoute path="/signup" component={SignupPage} />
@@ -114,11 +116,11 @@ class App extends React.Component {
               'VIP',
             ]}
           />
-          <Route
+          <PrivateRoute
             path="/scanner"
             component={QrScanner}
-            // scopesRequired={['AGENCY', 'OUTLET']}
-            // rolesRequired={['OWNER', 'MANAGER', 'STAFF']}
+            scopesRequired={['AGENCY', 'OUTLET']}
+            rolesRequired={['OWNER', 'MANAGER', 'STAFF', 'WAITER']}
           />
           <PrivateRoute
             exact
@@ -222,6 +224,7 @@ class App extends React.Component {
           <Route path="/auth" component={AuthPage} />
           <Route path="/otp" component={Otp} />
           <Route path="/cart" component={Cart} />
+          <PrivateRoute path="/waiter-orders" component={WaiterOrders} />
           <Route path="/terms" component={Terms} />
           <Route path="/privacy" component={Privacy} />
           <Route path="/help" component={Help} />

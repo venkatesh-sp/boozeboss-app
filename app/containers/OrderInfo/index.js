@@ -8,7 +8,11 @@ import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 
-import { makeSelectCartItems } from './selectors';
+import {
+  makeSelectCartItems,
+  makeSelectCurrentOutlet,
+  makeSelectOutletInfo,
+} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
@@ -22,6 +26,7 @@ class OrderInfo extends React.Component {
     this.props.getCartItems();
   }
   render() {
+    console.log(this.props);
     if (!this.props.cartItems) {
       return <>Loading..</>;
     }
@@ -45,7 +50,22 @@ class OrderInfo extends React.Component {
           {_.size(this.props.cartItems.items)} Items Ordered
         </p>
         <ButtonGroup justified style={{ padding: '15px' }}>
-          <Button appearance="ghost">Back to Menu</Button>
+          <Button
+            appearance="ghost"
+            onClick={() => {
+              const { history, currentoutlet, outlet } = this.props;
+
+              history.push({
+                pathname: '/outlet',
+                search:
+                  currentoutlet === 'outletevent'
+                    ? `outlet_event=${outlet.id}`
+                    : `outlet_venue=${outlet.id}`,
+              });
+            }}
+          >
+            Back to Menu
+          </Button>
           <Button appearance="ghost">Close Bill</Button>
         </ButtonGroup>
       </>
@@ -59,6 +79,8 @@ OrderInfo.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   cartItems: makeSelectCartItems(),
+  outlet: makeSelectOutletInfo(),
+  currentoutlet: makeSelectCurrentOutlet(),
 });
 
 function mapDispatchToProps(dispatch) {
