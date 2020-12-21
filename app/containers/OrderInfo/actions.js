@@ -9,6 +9,9 @@ import {
   GET_CART_ITEMS_REQUEST,
   GET_CART_ITEMS_SUCCESS,
   GET_CART_ITEMS_ERROR,
+  ADD_CART_ITEMS_REQUEST,
+  ADD_CART_ITEMS_SUCCESS,
+  ADD_CART_ITEMS_ERROR,
 } from './constants';
 
 export function getCartItems() {
@@ -28,6 +31,28 @@ export function getCartItemsError(error) {
   status(error, 'error');
   return {
     type: GET_CART_ITEMS_ERROR,
+    error,
+  };
+}
+
+export function addCartItems(items) {
+  return {
+    type: ADD_CART_ITEMS_REQUEST,
+    items,
+  };
+}
+
+export function addCartItemsSuccess(success) {
+  return {
+    type: ADD_CART_ITEMS_SUCCESS,
+    success,
+  };
+}
+
+export function addCartItemsError(error) {
+  status(error, 'error');
+  return {
+    type: ADD_CART_ITEMS_ERROR,
     error,
   };
 }

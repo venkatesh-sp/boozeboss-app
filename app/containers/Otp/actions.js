@@ -12,13 +12,11 @@ import {
   CHECK_EMAIL_VERIFICATION_REQUEST,
   CHECK_EMAIL_VERIFICATION_SUCCESS,
   CHECK_EMAIL_VERIFICATION_ERROR,
-  ADD_CART_ITEMS_REQUEST,
-  ADD_CART_ITEMS_SUCCESS,
-  ADD_CART_ITEMS_ERROR,
 } from './constants';
 
 // Check code
 export function checkSMSVerification(phone_number, code) {
+  console.log(code, phone_number);
   return {
     type: CHECK_SMS_VERIFICATION_REQUEST,
     phone_number,
@@ -27,7 +25,6 @@ export function checkSMSVerification(phone_number, code) {
 }
 
 export function checkSMSVerificationSuccess(success) {
-  status(success, 'success');
   return {
     type: CHECK_SMS_VERIFICATION_SUCCESS,
     success,
@@ -51,7 +48,6 @@ export function checkEmailVerification(email, code) {
 }
 
 export function checkEmailVerificationSuccess(success) {
-  status(success, 'success');
   return {
     type: CHECK_EMAIL_VERIFICATION_SUCCESS,
     success,
@@ -62,29 +58,6 @@ export function checkEmailVerificationError(error) {
   status(error, 'error');
   return {
     type: CHECK_EMAIL_VERIFICATION_ERROR,
-    error,
-  };
-}
-
-export function addCartItems(items) {
-  return {
-    type: ADD_CART_ITEMS_REQUEST,
-    items,
-  };
-}
-
-export function addCartItemsSuccess(success) {
-  status(success, 'success');
-  return {
-    type: ADD_CART_ITEMS_SUCCESS,
-    success,
-  };
-}
-
-export function addCartItemsError(error) {
-  status(error, 'error');
-  return {
-    type: ADD_CART_ITEMS_ERROR,
     error,
   };
 }

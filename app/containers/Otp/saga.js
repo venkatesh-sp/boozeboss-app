@@ -7,7 +7,6 @@ import _ from 'lodash';
 import {
   CHECK_SMS_VERIFICATION_REQUEST,
   CHECK_EMAIL_VERIFICATION_REQUEST,
-  ADD_CART_ITEMS_REQUEST,
 } from './constants';
 
 import {
@@ -15,11 +14,11 @@ import {
   checkSMSVerificationError,
   checkEmailVerificationSuccess,
   checkEmailVerificationError,
-  addCartItems,
 } from './actions';
 import { ADD_CART_ITEM } from '../Cart/constants';
 
 function* checkSMSVerificationSaga(params) {
+  console.log(params, 'params');
   const { phone_number, code, props } = params;
   const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
     process.env.API_PORT
@@ -31,8 +30,10 @@ function* checkSMSVerificationSaga(params) {
 
   try {
     const response = yield call(request, requestURL, options);
+    console.log(response, 'response');
     yield put(checkSMSVerificationSuccess(response));
   } catch (error) {
+    console.log(error, 'error');
     const jsonError = yield error.response ? error.response.json() : error;
     yield put(checkSMSVerificationError(jsonError));
   }
@@ -57,25 +58,6 @@ function* checkEmailVerificationSaga(params) {
   }
 }
 
-function* addCartItemsSaga(params) {
-  const { items, history } = params.items;
-  const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
-    process.env.API_PORT
-  }/api/cart`;
-  const options = {
-    method: 'POST',
-    body: JSON.stringify(items),
-  };
-
-  try {
-    const response = yield call(request, requestURL, options);
-    history.push('/orders');
-  } catch (error) {
-    const jsonError = yield error.response ? error.response.json() : error;
-    yield put(checkEmailVerificationError(jsonError));
-  }
-}
-
 function* checkVerificationSMSRequest() {
   yield takeLatest(CHECK_SMS_VERIFICATION_REQUEST, checkSMSVerificationSaga);
 }
@@ -87,14 +69,9 @@ function* checkVerificationEmailRequest() {
   );
 }
 
-function* addCartItemsRequest() {
-  yield takeLatest(ADD_CART_ITEMS_REQUEST, addCartItemsSaga);
-}
-
 export default function* rootSaga() {
   yield all([
     fork(checkVerificationSMSRequest),
     fork(checkVerificationEmailRequest),
-    fork(addCartItemsRequest),
   ]);
 }
