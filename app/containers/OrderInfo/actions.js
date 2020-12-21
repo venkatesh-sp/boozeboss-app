@@ -43,7 +43,6 @@ export function addCartItems(items) {
 }
 
 export function addCartItemsSuccess(success) {
-  status(success, 'success');
   return {
     type: ADD_CART_ITEMS_SUCCESS,
     success,

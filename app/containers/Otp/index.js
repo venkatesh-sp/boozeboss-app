@@ -72,6 +72,7 @@ class Otp extends Component {
   };
 
   handleSubmit = () => {
+    console.log(this.state);
     if (
       !this.state.otp ||
       this.state.otp.length < 6 ||

@@ -24,7 +24,6 @@ export function checkSMSVerification(phone_number, code) {
 }
 
 export function checkSMSVerificationSuccess(success) {
-  status(success, 'success');
   return {
     type: CHECK_SMS_VERIFICATION_SUCCESS,
     success,
@@ -48,7 +47,6 @@ export function checkEmailVerification(email, code) {
 }
 
 export function checkEmailVerificationSuccess(success) {
-  status(success, 'success');
   return {
     type: CHECK_EMAIL_VERIFICATION_SUCCESS,
     success,
