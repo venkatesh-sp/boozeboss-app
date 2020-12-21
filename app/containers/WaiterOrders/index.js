@@ -11,6 +11,7 @@ import {
   Paragraph,
   InputGroup,
   InputNumber,
+  SelectPicker,
 } from 'rsuite';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -114,7 +115,13 @@ class WaiterOrders extends React.Component {
     // console.log(items.items, 'ITEMS ARRAY FROM RESPONSE IN RENDER PREETHAM');
     return (
       <>
-        <div style={{ backgroundColor: '#030303', height: '100vh' }}>
+        <div
+          style={{
+            backgroundColor: '#030303',
+            height: '100vh',
+            overflowY: 'scroll',
+          }}
+        >
           <Helmet>
             <title>Waiter Orders</title>
             <meta name="description" content="Description of Waiter Orders" />
@@ -128,7 +135,7 @@ class WaiterOrders extends React.Component {
               setItemInfo({ [name]: value });
             };
 
-            const { venueproduct, eventproduct } = item;
+            const { venueproduct, eventproduct, quantity } = item;
             console.log(item);
             const product =
               venueproduct && venueproduct.length > 0
@@ -138,10 +145,7 @@ class WaiterOrders extends React.Component {
                 : null;
 
             return (
-              <div
-                style={{ backgroundColor: '#030303', paddingBottom: '30px' }}
-                key={index}
-              >
+              <div style={{ backgroundColor: '#030303' }} key={index}>
                 <StyledMenuDiv>
                   <StyledFlexContainer>
                     <StyledText size="16px" color="#ffffff" weight="bold">
@@ -152,8 +156,8 @@ class WaiterOrders extends React.Component {
                     </StyledText>
                   </StyledFlexContainer>
                   <StyledFlexContainer>
-                    <StyledText size="16px" color="#ffffff" weight="bold">
-                      Portfolio: {product.portfolio}
+                    <StyledText size="16px" color="#ffffff">
+                      Quantity: {quantity}
                     </StyledText>
                     <Button
                       appearance="primary"
@@ -161,7 +165,7 @@ class WaiterOrders extends React.Component {
                         this.setState({ id: product.id, show: true });
                       }}
                     >
-                      Book
+                      Add Info
                     </Button>
                   </StyledFlexContainer>
                 </StyledMenuDiv>
@@ -176,18 +180,59 @@ class WaiterOrders extends React.Component {
             }}
           >
             <Modal.Header>
-              <Modal.Title>Modal Title</Modal.Title>
+              <Modal.Title>More Info</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <div>
+              <div style={{ marginTop: '5px', marginBottom: '5px' }}>
                 <label>Men Count:</label>
-                <InputNumber defaultValue={1} max={100} min={1} />
+                <InputNumber
+                  defaultValue={1}
+                  max={100}
+                  min={1}
+                  style={{ width: '25%' }}
+                />
+              </div>
+              <div style={{ marginTop: '5px', marginBottom: '5px' }}>
                 <label>Men Age Group:</label>
-                <InputNumber defaultValue={20} max={100} min={20} step={10} />
+                {/* <InputNumber defaultValue={20} max={100} min={20} step={10} /> */}
+                <br />
+                <SelectPicker
+                  data={[
+                    { label: '21 - 30', value: '21-30' },
+                    { label: '31 - 40', value: '31-40' },
+                    { label: '41 - 50', value: '41-50' },
+                    { label: '51 - 60', value: '51-60' },
+                    { label: '61 - 70', value: '61-70' },
+                    { label: '71 - 80', value: '71-80' },
+                  ]}
+                  style={{ width: 224 }}
+                  searchable={false}
+                />
+              </div>
+              <div style={{ marginTop: '5px', marginBottom: '5px' }}>
                 <label>Women Count:</label>
-                <InputNumber defaultValue={1} max={100} min={1} />
+                <InputNumber
+                  defaultValue={1}
+                  max={100}
+                  min={1}
+                  style={{ width: '25%' }}
+                />
+              </div>
+              <div style={{ marginTop: '5px', marginBottom: '5px' }}>
                 <label>Women Age Group:</label>
-                <InputNumber defaultValue={20} max={100} min={20} step={10} />
+                <br />
+                <SelectPicker
+                  data={[
+                    { label: '21 - 30', value: '21-30' },
+                    { label: '31 - 40', value: '31-40' },
+                    { label: '41 - 50', value: '41-50' },
+                    { label: '51 - 60', value: '51-60' },
+                    { label: '61 - 70', value: '61-70' },
+                    { label: '71 - 80', value: '71-80' },
+                  ]}
+                  style={{ width: 224 }}
+                  searchable={false}
+                />
               </div>
             </Modal.Body>
             <Modal.Footer>
@@ -197,7 +242,7 @@ class WaiterOrders extends React.Component {
                 }}
                 appearance="primary"
               >
-                Order
+                Submit
               </Button>
               <Button
                 onClick={() => {
@@ -214,6 +259,15 @@ class WaiterOrders extends React.Component {
               </Button>
             </Modal.Footer>
           </Modal>
+          <Button
+            appearance="primary"
+            style={{ width: '100%', borderRadius: '0px', marginTop: '10px' }}
+            onClick={() => {
+              this.props.history.push('/scanner');
+            }}
+          >
+            Confirm Order
+          </Button>
         </div>
       </>
     );

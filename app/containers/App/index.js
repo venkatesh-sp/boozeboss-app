@@ -224,7 +224,12 @@ class App extends React.Component {
           <Route path="/auth" component={AuthPage} />
           <Route path="/otp" component={Otp} />
           <Route path="/cart" component={Cart} />
-          <PrivateRoute path="/waiter-orders" component={WaiterOrders} />
+          <PrivateRoute
+            path="/waiter-orders"
+            component={WaiterOrders}
+            scopesRequired={['OUTLET']}
+            rolesRequired={['WAITER']}
+          />
           <Route path="/terms" component={Terms} />
           <Route path="/privacy" component={Privacy} />
           <Route path="/help" component={Help} />
