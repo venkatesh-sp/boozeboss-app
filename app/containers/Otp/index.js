@@ -72,17 +72,20 @@ class Otp extends Component {
   };
 
   handleSubmit = () => {
-    console.log(this.state);
+    console.log(this.state, 'click');
     if (
       !this.state.otp ||
       this.state.otp.length < 6 ||
       this.state.otp.length > 6
     )
       return Alert.error('Incorrect OTP', 2000);
-    if (this.state.phone_number)
+    if ((this.state.phone_number, 'phone')) {
+      console.log(this.state);
       this.props.checkSMSVerification(this.state.phone_number, this.state.otp);
-    else if (this.state.email)
+    } else if (this.state.email) {
+      console.log(this.state, 'email');
       this.props.checkEmailVerification(this.state.email, this.state.otp);
+    }
   };
 
   render() {

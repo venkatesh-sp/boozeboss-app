@@ -18,6 +18,7 @@ import {
 import { ADD_CART_ITEM } from '../Cart/constants';
 
 function* checkSMSVerificationSaga(params) {
+  console.log(params, 'params');
   const { phone_number, code, props } = params;
   const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
     process.env.API_PORT
@@ -29,8 +30,10 @@ function* checkSMSVerificationSaga(params) {
 
   try {
     const response = yield call(request, requestURL, options);
+    console.log(response, 'response');
     yield put(checkSMSVerificationSuccess(response));
   } catch (error) {
+    console.log(error, 'error');
     const jsonError = yield error.response ? error.response.json() : error;
     yield put(checkSMSVerificationError(jsonError));
   }
