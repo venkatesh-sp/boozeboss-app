@@ -19,7 +19,11 @@ import {
 import reducer from './reducer';
 import saga from './saga';
 
-import { checkSMSVerification, checkEmailVerification } from './actions';
+import {
+  checkSMSVerification,
+  checkEmailVerification,
+  addCartItems,
+} from './actions';
 
 const StyledOtpDiv = styled.div`
   padding: 30px;
@@ -75,20 +79,22 @@ class Otp extends Component {
     )
       return Alert.error('Incorrect OTP', 2000);
     if (this.state.phone_number)
-      this.props.checkSMSVerification(
-        this.state.phone_number,
-        this.state.otp,
-        this.props,
-      );
+      this.props.checkSMSVerification(this.state.phone_number, this.state.otp);
     else if (this.state.email)
-      this.props.checkEmailVerification(
-        this.state.email,
-        this.state.otp,
-        this.props,
-      );
+      this.props.checkEmailVerification(this.state.email, this.state.otp);
   };
 
   render() {
+    if (this.props.success === true) {
+      const items = _.map(_.toPairs(this.props.cartItems), data => {
+        const key = `${this.props.currentoutlet}menu_id`;
+        return {
+          [key]: parseInt(data[0]),
+          quantity: parseInt(data[1]),
+        };
+      });
+      this.props.addCartItems({ items, history: this.props.history });
+    }
     return (
       <StyledOtpDiv>
         <StyledText size="15px" color="#A4A8B7">
@@ -127,10 +133,11 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    checkSMSVerification: (phone_number, code, props) =>
-      dispatch(checkSMSVerification(phone_number, code, props)),
-    checkEmailVerification: (email, code, props) =>
-      dispatch(checkEmailVerification(email, code, props)),
+    checkSMSVerification: (phone_number, code) =>
+      dispatch(checkSMSVerification(phone_number, code)),
+    checkEmailVerification: (email, code) =>
+      dispatch(checkEmailVerification(email, code)),
+    addCartItems: items => dispatch(addCartItems(items)),
   };
 }
 

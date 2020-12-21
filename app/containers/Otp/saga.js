@@ -32,15 +32,6 @@ function* checkSMSVerificationSaga(params) {
   try {
     const response = yield call(request, requestURL, options);
     yield put(checkSMSVerificationSuccess(response));
-    const items = _.map(_.toPairs(props.cartItems), data => {
-      const key = `${props.currentoutlet}menu_id`;
-      return {
-        [key]: parseInt(data[0]),
-        quantity: parseInt(data[1]),
-      };
-    });
-
-    yield put(addCartItems({ items, history: props.history }));
   } catch (error) {
     const jsonError = yield error.response ? error.response.json() : error;
     yield put(checkSMSVerificationError(jsonError));

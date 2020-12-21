@@ -16,17 +16,20 @@ export const initialState = fromJS({
   error: null,
   success: null,
   isLoading: null,
-  outlet: null,
-  currentOutlet: null,
-  cartitems: null,
 });
 
 function otpReducer(state = initialState, action) {
   switch (action.type) {
     case CHECK_SMS_VERIFICATION_SUCCESS:
-      return state.set('error', null).set('isLoading', null);
+      return state
+        .set('error', null)
+        .set('isLoading', null)
+        .set('success', true);
     case CHECK_EMAIL_VERIFICATION_SUCCESS:
-      return state.set('error', null).set('isLoading', null);
+      return state
+        .set('error', null)
+        .set('isLoading', null)
+        .set('success', true);
     case CHECK_SMS_VERIFICATION_ERROR:
       return state.set('error', action.error).set('isLoading', false);
     case CHECK_EMAIL_VERIFICATION_ERROR:

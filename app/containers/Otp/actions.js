@@ -18,12 +18,11 @@ import {
 } from './constants';
 
 // Check code
-export function checkSMSVerification(phone_number, code, props) {
+export function checkSMSVerification(phone_number, code) {
   return {
     type: CHECK_SMS_VERIFICATION_REQUEST,
     phone_number,
     code,
-    props,
   };
 }
 
@@ -43,12 +42,11 @@ export function checkSMSVerificationError(error) {
   };
 }
 
-export function checkEmailVerification(email, code, props) {
+export function checkEmailVerification(email, code) {
   return {
     type: CHECK_EMAIL_VERIFICATION_REQUEST,
     email,
     code,
-    props,
   };
 }
 
