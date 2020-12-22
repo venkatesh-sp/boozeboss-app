@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-const selectOtp = state => state.outlet;
+const selectOtp = state => state.otp;
 
 const makeSelectError = () =>
   createSelector(

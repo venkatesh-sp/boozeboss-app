@@ -21,7 +21,7 @@ export const initialState = fromJS({
   cartitems: null,
 });
 
-function otpReducer(state = initialState, action) {
+function orderReducer(state = initialState, action) {
   switch (action.type) {
     case GET_CART_ITEMS_REQUEST:
       return state.set('isLoading', true);
@@ -40,4 +40,4 @@ function otpReducer(state = initialState, action) {
   }
 }
 
-export default otpReducer;
+export default orderReducer;

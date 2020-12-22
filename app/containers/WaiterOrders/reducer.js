@@ -22,7 +22,7 @@ export const initialState = fromJS({
   orderDetails: {},
 });
 
-function otpReducer(state = initialState, action) {
+function waiterReducer(state = initialState, action) {
   switch (action.type) {
     case GET_ITEMS_REQUEST:
       return state.set('isLoading', true);
@@ -37,4 +37,4 @@ function otpReducer(state = initialState, action) {
   }
 }
 
-export default otpReducer;
+export default waiterReducer;

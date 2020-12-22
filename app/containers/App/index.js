@@ -44,7 +44,7 @@ import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 
 import AuthPage from 'containers/AuthPage/Loadable';
-import Otp from 'containers/Otp';
+import Otp from 'containers/OtpPage';
 import Cart from 'containers/Cart';
 import WaiterOrders from 'containers/WaiterOrders';
 import OutletInfo from '../Outlet';

@@ -6,7 +6,7 @@
 
 import { defineMessages } from 'react-intl';
 
-export const scope = 'app.containers.Otp';
+export const scope = 'app.containers.OtpPage';
 
 export default defineMessages({
   header: {
