@@ -12,6 +12,7 @@ import {
   InputGroup,
   InputNumber,
   SelectPicker,
+  Alert,
 } from 'rsuite';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -97,23 +98,33 @@ class AcceptOrders extends React.Component {
       return <>Loading...</>;
     }
 
-    const items = _.map(_.toPairs(cartItems), data => {
+    let items = _.map(_.toPairs(cartItems), data => {
       const product = _.find(outlet.menu, ['id', parseInt(data[0])]);
-      product.quantity = parseInt(data[1]);
-      if (this.state.items.length === 0 && this.state.currentOutlet) {
-        this.setState({
-          items: [
-            ...this.state.items,
-            {
-              data: {},
-              [`${this.state.currentOutlet}menu_id`]: product.id,
-              quantity: product.quantity,
-            },
-          ],
-        });
+      if (product) {
+        product.quantity = parseInt(data[1]);
+        if (this.state.items.length === 0 && this.state.currentOutlet) {
+          this.setState({
+            items: [
+              ...this.state.items,
+              {
+                data: {},
+                [`${this.state.currentOutlet}menu_id`]: product.id,
+                quantity: product.quantity,
+              },
+            ],
+          });
+        }
       }
+
       return product;
     });
+    items = _.remove(items, undefined);
+    if (items.length === 0) {
+      Alert.error("Outlet Doesn't Match", 2500);
+      this.props.history.push({
+        pathname: '/scanner',
+      });
+    }
     return (
       <>
         <div
