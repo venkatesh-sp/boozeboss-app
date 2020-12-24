@@ -8,6 +8,9 @@ import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 
+import QRCode from 'react-qr-code';
+import _ from 'lodash';
+import { Button, ButtonGroup } from 'rsuite';
 import {
   makeSelectCartItems,
   makeSelectCurrentOutlet,
@@ -18,9 +21,6 @@ import reducer from './reducer';
 import saga from './saga';
 
 import { getCartItems, addCartItems, closeBill } from './actions';
-import QRCode from 'react-qr-code';
-import _ from 'lodash';
-import { Button, ButtonGroup } from 'rsuite';
 
 class OrderInfo extends React.Component {
   componentDidMount() {
@@ -42,6 +42,7 @@ class OrderInfo extends React.Component {
     this.props.addCartItems(items);
     // console.log(this.props.userDetails, 'USER DETAILS FROM STORE');
   }
+
   render() {
     // console.log(this.props.user.wallet.id, 'BY PREETHAM VARANASI 23-12-2020');
     if (!this.props.cartItems) {

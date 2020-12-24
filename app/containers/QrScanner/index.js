@@ -14,13 +14,13 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
+import QrReader from 'react-qr-reader';
+import styled from 'styled-components';
+import { Message } from 'rsuite';
 import makeSelectQrScanner from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import QrReader from 'react-qr-reader';
-import styled from 'styled-components';
-import { Message } from 'rsuite';
 
 const StyledCameraContainer = styled.div``;
 
@@ -102,6 +102,7 @@ export class QrScanner extends React.Component {
       }
     }
   };
+
   handleError = err => {
     this.setState({ error: true });
   };
@@ -119,10 +120,7 @@ export class QrScanner extends React.Component {
           {state && state.message ? (
             <Message type="info" description={state.message} />
           ) : (
-            <Message
-              type="info"
-              description={'Place the code near the camera'}
-            />
+            <Message type="info" description="Place the code near the camera" />
           )}
           <QrReader
             delay={300}
