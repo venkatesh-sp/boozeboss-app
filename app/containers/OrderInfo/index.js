@@ -81,7 +81,7 @@ class OrderInfo extends React.Component {
           <Button
             appearance="ghost"
             onClick={() => {
-              this.props.closeBill(this.props.user.id);
+              this.props.history.push('/orders-summary');
             }}
           >
             Close Bill
@@ -109,7 +109,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getCartItems: () => dispatch(getCartItems()),
     addCartItems: items => dispatch(addCartItems(items)),
-    closeBill: account_id => dispatch(closeBill(account_id)),
+    getOrderSummary: account_id => dispatch(getOrderSummary(account_id)),
   };
 }
 

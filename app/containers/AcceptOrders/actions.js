@@ -13,6 +13,9 @@ import {
   GET_OUTLET_VENUE_REQUEST,
   GET_OUTLET_VENUE_SUCCESS,
   GET_OUTLET_VENUE_ERROR,
+  ADD_CART_ITEMS_REQUEST,
+  ADD_CART_ITEMS_SUCCESS,
+  ADD_CART_ITEMS_ERROR,
 } from './constants';
 
 export function getCartItems(ID) {
@@ -82,6 +85,29 @@ export function getOutletEventSuccess(event) {
 export function getOutletEventError(error) {
   return {
     type: GET_OUTLET_EVENT_ERROR,
+    error,
+  };
+}
+
+export function addCartItems(items) {
+  return {
+    type: ADD_CART_ITEMS_REQUEST,
+    items,
+  };
+}
+
+export function addCartItemsSuccess(success) {
+  status(success, 'success');
+  return {
+    type: ADD_CART_ITEMS_SUCCESS,
+    success,
+  };
+}
+
+export function addCartItemsError(error) {
+  status(error, 'error');
+  return {
+    type: ADD_CART_ITEMS_ERROR,
     error,
   };
 }

@@ -46,7 +46,7 @@ import injectSaga from 'utils/injectSaga';
 import AuthPage from 'containers/AuthPage/Loadable';
 import Otp from 'containers/OtpPage';
 import Cart from 'containers/Cart';
-// import WaiterOrders from 'containers/WaiterOrders';
+import OrdersSummary from 'containers/OrdersSummary';
 import AcceptOrders from 'containers/AcceptOrders';
 import OutletInfo from '../Outlet';
 import OrderInfo from '../OrderInfo';
@@ -230,6 +230,12 @@ class App extends React.Component {
             component={AcceptOrders}
             scopesRequired={['OUTLET']}
             rolesRequired={['WAITER']}
+          />
+          <PrivateRoute
+            path="/orders-summary"
+            component={OrdersSummary}
+            scopesRequired={['OUTLET', 'GUEST']}
+            rolesRequired={['WAITER', 'REGULAR']}
           />
           <Route path="/terms" component={Terms} />
           <Route path="/privacy" component={Privacy} />

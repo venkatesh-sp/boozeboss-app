@@ -23,7 +23,7 @@ import { makeSelectUser, makeSelectOutlet } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
-import { getOutletVenue, getOutletEvent } from './actions';
+import { getOutletVenue, getOutletEvent, addCartItems } from './actions';
 
 const StyledMenuDiv = styled.div`
   width: 100%;
@@ -98,7 +98,18 @@ class AcceptOrders extends React.Component {
     const items = _.map(_.toPairs(cartItems), data => {
       const product = _.find(outlet.menu, ['id', parseInt(data[0])]);
       product.quantity = parseInt(data[1]);
-
+      if (this.state.items.length === 0 && this.state.currentOutlet) {
+        this.setState({
+          items: [
+            ...this.state.items,
+            {
+              data: {},
+              [`${this.state.currentOutlet}menu_id`]: product.id,
+              quantity: product.quantity,
+            },
+          ],
+        });
+      }
       return product;
     });
     return (
@@ -339,7 +350,13 @@ class AcceptOrders extends React.Component {
               borderRadius: '0px',
             }}
             onClick={() => {
-              console.log(this.state);
+              if (customer) {
+                this.props.addCartItems({
+                  items: this.state.items,
+                  account_id: customer,
+                  history: this.props.history,
+                });
+              }
             }}
           >
             Confirm Order
@@ -364,7 +381,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getOutletVenue: venueId => dispatch(getOutletVenue(venueId)),
     getOutletEvent: eventId => dispatch(getOutletEvent(eventId)),
-    getUser: () => dispatch(getUser()),
+    addCartItems: items => dispatch(addCartItems(items)),
   };
 }
 

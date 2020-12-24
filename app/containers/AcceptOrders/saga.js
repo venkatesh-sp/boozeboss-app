@@ -7,6 +7,7 @@ import _ from 'lodash';
 import {
   GET_OUTLET_VENUE_REQUEST,
   GET_OUTLET_EVENT_REQUEST,
+  ADD_CART_ITEMS_REQUEST,
 } from './constants';
 
 import {
@@ -14,25 +15,29 @@ import {
   getOutletVenueSuccess,
   getOutletEventSuccess,
   getOutletEventError,
+  addCartItemsSuccess,
+  addCartItemsError,
 } from './actions';
 
-// function* getCartItemsSaga(params) {
-//   const { ID } = params;
-//   const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
-//     process.env.API_PORT
-//   }/api/cart/${ID}`;
-//   const options = {
-//     method: 'GET',
-//   };
+function* addCartItemsSaga(params) {
+  const { items, account_id, history } = params.items;
+  const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
+    process.env.API_PORT
+  }/api/cart/${account_id}`;
+  const options = {
+    method: 'POST',
+    body: JSON.stringify(items),
+  };
 
-//   try {
-//     const response = yield call(request, requestURL, options);
-//     yield put(getCartItemsSuccess(response));
-//   } catch (error) {
-//     const jsonError = yield error.response ? error.response.json() : error;
-//     yield put(getCartItemsError(jsonError));
-//   }
-// }
+  try {
+    const response = yield call(request, requestURL, options);
+    yield put(addCartItemsSuccess(response));
+    history.push('/');
+  } catch (error) {
+    const jsonError = yield error.response ? error.response.json() : error;
+    yield put(addCartItemsError(jsonError));
+  }
+}
 
 function* getOutletVenueSaga(params) {
   const { venueId } = params;
@@ -80,6 +85,13 @@ function* getOutletEventRequest() {
   yield takeLatest(GET_OUTLET_EVENT_REQUEST, getOutletEventSaga);
 }
 
+function* addCartItemsRequest() {
+  yield takeLatest(ADD_CART_ITEMS_REQUEST, addCartItemsSaga);
+}
 export default function* rootSaga() {
-  yield all([fork(getOutletVenueRequest), fork(getOutletEventRequest)]);
+  yield all([
+    fork(getOutletVenueRequest),
+    fork(getOutletEventRequest),
+    fork(addCartItemsRequest),
+  ]);
 }
