@@ -23,6 +23,10 @@ import {
   makeSelectSuccess,
   makeSelectError,
   makeSelectItems,
+  makeOutletVenues,
+  makeSelectCurrentOutlet,
+  makeSelectUser,
+  makeSelectOultlet,
 } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -31,6 +35,8 @@ import {
   getCartItems,
   getCartItemsSuccess,
   getCartItemsError,
+  getAllItemsRequest,
+  getOutletVenue,
 } from './actions';
 const CartItems = styled.div`
   overflow: scroll;
@@ -79,6 +85,7 @@ const ButtonStyles = {
 class WaiterOrders extends React.Component {
   state = {
     show: false,
+    items: null,
     id: '',
     menCount: 0, //CHANGED FROM menCount:'',
     menAgeGroup: '',
@@ -87,36 +94,41 @@ class WaiterOrders extends React.Component {
   };
 
   componentDidMount() {
-    // console.log(this.props.history.location.state,"FROM COMPONENT DID MOUNT")
-    const { user } = this.props.history.location.state;
-    this.props.getCartItems(user);
+    console.log(this.props, 'FROM COMPONENT DID MOUNT');
+    const { cartItems } = this.props.history.location.state;
+    console.log(cartItems, 'CART ITEMS FROM COMPONENTDIDMOUNT FUNCTION');
+    const { outlet } = this.props.user;
+    if (outlet) {
+      const { outletvenue_id, outletevent_id } = outlet;
+
+      outletvenue_id
+        ? this.props.getOutletVenue(outletvenue_id)
+        : this.props.getOutletVenue(outletevent_id);
+    }
   }
 
   close() {
     this.setState({ show: false });
-    // console.log(this.state.show, 'SHOW VARIABLE AFTE CLOSING');
   }
 
   open() {
     this.setState({ show: true });
-    // console.log(this.state.show, 'SHOW VARIABLE AFTE Opening');
   }
-  // handleChange = name => event => {
-  //   this.setState({ [name]: event.target.value });
-  // };
-  // ADD to store value in state
+
   handleChange = (value, name) => {
     this.setState({ [name]: value });
   };
 
+
   render() {
     const { items } = this.props;
-
+    const { currentoutlet } = this.props;
+    console.log(currentoutlet, 'CURRENT OUTLETS IN RENDER FUNCTION');
+    const { cartItems } = this.props.history.location.state;
+    this.setState({ items: cartItems });
     if (!items) {
       return <>Loading...</>;
     }
-
-    // console.log(items.items, 'ITEMS ARRAY FROM RESPONSE IN RENDER PREETHAM');
     return (
       <>
         <div
@@ -131,10 +143,6 @@ class WaiterOrders extends React.Component {
             <meta name="description" content="Description of Waiter Orders" />
           </Helmet>
           {items.items.map((item, index) => {
-            // const [showModal, setShowModal] = React.useState(false);
-
-            // const [itemInfo, setItemInfo] = React.useState({});
-
             const handleChange = (value, name) => {
               setItemInfo({ [name]: value });
             };
@@ -315,11 +323,16 @@ WaiterOrders.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   items: makeSelectItems(),
+  currentoutlet: makeSelectCurrentOutlet(),
+  user: makeSelectUser(),
+  outlet: makeSelectOultlet(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getCartItems: (userId) => dispatch(getCartItems(userId)),
+    getCartItems: userId => dispatch(getCartItems(userId)),
+    getOutletVenue: venueId => dispatch(getOutletVenue(venueId)),
+    getUser: () => dispatch(getUser()),
   };
 }
 

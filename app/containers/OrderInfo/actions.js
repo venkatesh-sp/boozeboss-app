@@ -12,6 +12,9 @@ import {
   ADD_CART_ITEMS_REQUEST,
   ADD_CART_ITEMS_SUCCESS,
   ADD_CART_ITEMS_ERROR,
+  CLOSE_BILL_REQUEST,
+  CLOSE_BILL_SUCCESS,
+  CLOSE_BILL_ERROR,
 } from './constants';
 
 export function getCartItems() {
@@ -53,6 +56,28 @@ export function addCartItemsError(error) {
   status(error, 'error');
   return {
     type: ADD_CART_ITEMS_ERROR,
+    error,
+  };
+}
+
+export function closeBill(account_id) {
+  return {
+    type: CLOSE_BILL_REQUEST,
+    account_id,
+  };
+}
+
+export function closeBillSuccess(success) {
+  return {
+    type: CLOSE_BILL_SUCCESS,
+    success,
+  };
+}
+
+export function closeBillError(error) {
+  status(error, 'error');
+  return {
+    type: CLOSE_BILL_ERROR,
     error,
   };
 }

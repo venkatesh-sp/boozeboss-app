@@ -11,6 +11,9 @@ import {
   GET_ITEMS_REQUEST,
   ORDER_ITEMS_REQUEST,
   GET_ITEMS_MODALRENDER,
+  GET_OUTLET_VENUE_REQUEST,
+  GET_OUTLET_VENUE_SUCCESS,
+  GET_OUTLET_VENUE_ERROR,
 } from './constants';
 
 export const initialState = fromJS({
@@ -20,6 +23,8 @@ export const initialState = fromJS({
   items: null,
   shouldRenderModal: false,
   orderDetails: {},
+  currentOutlet: null,
+  outlet: null,
 });
 
 function waiterReducer(state = initialState, action) {
@@ -32,6 +37,14 @@ function waiterReducer(state = initialState, action) {
       return state.set('error', action.error).set('isLoading', false);
     case ORDER_ITEMS_REQUEST:
       return state.set('orderDetails', action.details);
+    case GET_OUTLET_VENUE_REQUEST:
+      return state;
+    case GET_OUTLET_VENUE_SUCCESS:
+      return state
+        .set('currentOutlet', action.venue)
+        .set('outlet', action.venue);
+    case GET_OUTLET_VENUE_ERROR:
+      return state.set('error', action.error);
     default:
       return state;
   }
