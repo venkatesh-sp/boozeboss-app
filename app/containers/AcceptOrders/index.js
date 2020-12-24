@@ -100,7 +100,7 @@ class AcceptOrders extends React.Component {
     if (!outlet) {
       return <>Loading...</>;
     }
-    console.log(this.props);
+
     let items = _.map(_.toPairs(cartItems), data => {
       const product = _.find(outlet.menu, ['id', parseInt(data[0])]);
       if (product) {

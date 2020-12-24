@@ -32,7 +32,7 @@ const StyledMenuDiv = styled.div`
   border-radius: 8px;
   overflow-y: scroll;
   padding: 15px;
-  margin-top: 20px;
+  margin-top: 5px;
 `;
 
 const StyledText = styled.p`
@@ -156,40 +156,44 @@ class OrdersSummary extends React.Component {
             Pay Offline
           </Button>
         </div>
-        {order_summary.map((item, index) => {
-          return (
-            <StyledMenuDiv key={index}>
-              <div>
-                <StyledText size="16px" color="#ffffff" weight="bold">
-                  {item.name}
-                </StyledText>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}
-                >
-                  <StyledText
-                    size="13px"
-                    color="#ffffff"
-                    weight="500"
-                    style={{ marginTop: '5px' }}
+        <div
+          style={{ height: '385px', background: 'black', overflowY: 'scroll' }}
+        >
+          {order_summary.map((item, index) => {
+            return (
+              <StyledMenuDiv>
+                <div key={index}>
+                  <StyledText size="16px" color="#ffffff" weight="bold">
+                    {item.name}
+                  </StyledText>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
                   >
-                    Price: {item.price}
-                  </StyledText>
+                    <StyledText
+                      size="13px"
+                      color="#ffffff"
+                      weight="500"
+                      style={{ marginTop: '5px' }}
+                    >
+                      Price: {item.price}
+                    </StyledText>
 
-                  <StyledText size="13px" color="#ffffff" weight="500">
-                    Qty: {item.quantity}
-                  </StyledText>
-                  <StyledText size="13px" color="#ffffff" weight="500">
-                    Cost: {item.cost}
-                  </StyledText>
+                    <StyledText size="13px" color="#ffffff" weight="500">
+                      Qty: {item.quantity}
+                    </StyledText>
+                    <StyledText size="13px" color="#ffffff" weight="500">
+                      Cost: {item.cost}
+                    </StyledText>
+                  </div>
                 </div>
-              </div>
-            </StyledMenuDiv>
-          );
-        })}
+              </StyledMenuDiv>
+            );
+          })}
+        </div>
         <Button
           appearance="primary"
           style={{
