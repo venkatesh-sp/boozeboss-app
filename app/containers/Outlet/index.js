@@ -405,6 +405,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getOutletEvent: eventId => dispatch(getOutletEvent(eventId)),
     getOutletVenue: venueId => dispatch(getOutletVenue(venueId)),
+
     addCartItem: item => dispatch(addCartItem(item)),
     removeCartItem: item => dispatch(removeCartItem(item)),
   };

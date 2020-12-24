@@ -2,6 +2,8 @@ import { createSelector } from 'reselect';
 
 const selectItems = state => state.waiterOrders;
 
+const selectGlobal = state => state.global;
+
 const makeSelectItems = () =>
   createSelector(
     selectItems,
@@ -20,4 +22,28 @@ const makeSelectSuccess = () =>
     itemsState => itemsState.get('success'),
   );
 
-export { makeSelectSuccess, makeSelectError, makeSelectItems };
+const makeSelectCurrentOutlet = () =>
+  createSelector(
+    selectItems,
+    outletState => outletState.get('currentOutlet'),
+  );
+
+const makeSelectUser = () =>
+  createSelector(
+    selectGlobal,
+    globalState => globalState.get('user'),
+  );
+
+const makeSelectOultlet = () =>
+  createSelector(
+    selectItems,
+    itemsState => itemsState.get('outlet'),
+  );
+export {
+  makeSelectSuccess,
+  makeSelectError,
+  makeSelectItems,
+  makeSelectCurrentOutlet,
+  makeSelectUser,
+  makeSelectOultlet,
+};

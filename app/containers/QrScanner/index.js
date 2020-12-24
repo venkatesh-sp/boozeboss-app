@@ -32,7 +32,7 @@ export class QrScanner extends React.Component {
   };
 
   handleScan = data => {
-    console.log(data);
+    console.log(data, 'FROM SCANNER COMPONENT PREETHAM');
     if (data) {
       const { history } = this.props;
       const json_data = JSON.parse(data);
@@ -96,7 +96,7 @@ export class QrScanner extends React.Component {
         history.push({
           pathname: `/waiter-orders`,
           state: {
-            user: json_data.user,
+            cartItems: json_data.cartItems,
           },
         });
       }
