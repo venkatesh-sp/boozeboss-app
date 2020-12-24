@@ -53,9 +53,9 @@ const StyledCartItemDiv = styled.div`
   margin-top: 16px;
 `;
 const StyledText = styled.p`
-  font-size: ${props => props.size};
-  font-weight: ${props => props.weight};
-  color: ${props => props.color};
+  font-size: ${(props) => props.size};
+  font-weight: ${(props) => props.weight};
+  color: ${(props) => props.color};
   text-align: center;
   margin: 0px;
 `;
@@ -80,9 +80,9 @@ class WaiterOrders extends React.Component {
   state = {
     show: false,
     id: '',
-    menCount: '',
+    menCount: 0, //CHANGED FROM menCount:'',
     menAgeGroup: '',
-    womenCount: '',
+    womenCount: 0, //CHANGED FROM womenCount:'',
     womenAgeGroup: '',
   };
 
@@ -104,6 +104,10 @@ class WaiterOrders extends React.Component {
   // handleChange = name => event => {
   //   this.setState({ [name]: event.target.value });
   // };
+  // ADD to store value in state
+  handleChange = (value, name) => {
+    this.setState({ [name]: value });
+  };
 
   render() {
     const { items } = this.props;
@@ -186,10 +190,12 @@ class WaiterOrders extends React.Component {
               <div style={{ marginTop: '5px', marginBottom: '5px' }}>
                 <label>Men Count:</label>
                 <InputNumber
-                  defaultValue={1}
+                  defaultValue={0} //CHANGED FROM  defaultValue={1}
                   max={100}
-                  min={1}
+                  min={0} //CHANGED FROM  min={1}
                   style={{ width: '25%' }}
+                  //ADD to store value in state
+                  onChange={(value) => this.handleChange(value, 'menCount')}
                 />
               </div>
               <div style={{ marginTop: '5px', marginBottom: '5px' }}>
@@ -207,15 +213,19 @@ class WaiterOrders extends React.Component {
                   ]}
                   style={{ width: 224 }}
                   searchable={false}
+                  //ADD to store value in state
+                  onChange={(value) => this.handleChange(value, 'menAgeGroup')}
                 />
               </div>
               <div style={{ marginTop: '5px', marginBottom: '5px' }}>
                 <label>Women Count:</label>
                 <InputNumber
-                  defaultValue={1}
+                  defaultValue={0} //CHANGED FROM  defaultValue={1}
                   max={100}
-                  min={1}
+                  min={0} //CHANGED FROM  min={1}
                   style={{ width: '25%' }}
+                  //ADD to store value in state
+                  onChange={(value) => this.handleChange(value, 'womenCount')}
                 />
               </div>
               <div style={{ marginTop: '5px', marginBottom: '5px' }}>
@@ -232,6 +242,10 @@ class WaiterOrders extends React.Component {
                   ]}
                   style={{ width: 224 }}
                   searchable={false}
+                  //ADD to store value in state
+                  onChange={(value) =>
+                    this.handleChange(value, 'womenAgeGroup')
+                  }
                 />
               </div>
             </Modal.Body>
@@ -239,6 +253,17 @@ class WaiterOrders extends React.Component {
               <Button
                 onClick={() => {
                   this.setState({ show: false });
+                  //ADD On Submit to send to API
+                  // const {login} = this.props;// Take props
+                  const {
+                    show,
+                    id,
+                    menCount,
+                    menAgeGroup,
+                    womenCount,
+                    womenAgeGroup,
+                  } = this.state;
+                  // login({email, password});// SEND TO API
                 }}
                 appearance="primary"
               >
@@ -294,20 +319,13 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getCartItems: userId => dispatch(getCartItems(userId)),
+    getCartItems: (userId) => dispatch(getCartItems(userId)),
   };
 }
 
-const withConnect = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-);
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 const withReducer = injectReducer({ key: 'waiterOrders', reducer });
 const withSaga = injectSaga({ key: 'waiterOrders', saga });
 
-export default compose(
-  withReducer,
-  withSaga,
-  withConnect,
-)(WaiterOrders);
+export default compose(withReducer, withSaga, withConnect)(WaiterOrders);
