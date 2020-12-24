@@ -192,8 +192,8 @@ class Header extends Component {
                       </Link>
                     )}
                     {this.validateScope(
-                      ['AGENCY'],
-                      ['OWNER', 'MANAGER', 'STAFF'],
+                      ['AGENCY', 'OUTLET'],
+                      ['OWNER', 'MANAGER', 'STAFF', 'WAITER'],
                     ) && (
                       <Link to="/scanner">
                         <Nav.Item

@@ -14,19 +14,33 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { makeSelectUser } from '../App/selectors'
-import { makeSelectError, makeSelectSuccess, makeSelectEvents, makeSelectAgencyEvents } from './selectors';
+import {
+  makeSelectUser,
+  makeSelectIsAgeVerified,
+  makeSelectIsAuthenticated,
+  makeSelectRole,
+  makeSelectScope,
+} from '../App/selectors';
+
+import {
+  makeSelectError,
+  makeSelectSuccess,
+  makeSelectEvents,
+  makeSelectAgencyEvents,
+} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import { makeSelectIsAgeVerified, makeSelectIsAuthenticated, makeSelectRole, makeSelectScope } from '../App/selectors';
 
-import { HomePageContainer } from './components'
+import { HomePageContainer } from './components';
 import { getEvents, getAgencyEvents, submitEventCode } from './actions';
-
+import { getUser } from '../App/actions';
 
 /* eslint-disable react/prefer-stateless-function */
 export class HomePage extends React.Component {
+  componentDidMount() {
+    this.props.getUser();
+  }
 
   render() {
     return (
@@ -35,9 +49,7 @@ export class HomePage extends React.Component {
           <title>Home Page</title>
           <meta name="description" content="Signup for clients" />
         </Helmet>
-        <HomePageContainer 
-          {...this.props}
-        />
+        <HomePageContainer {...this.props} />
       </div>
     );
   }
@@ -61,7 +73,8 @@ function mapDispatchToProps(dispatch) {
   return {
     getEvents: () => dispatch(getEvents()),
     getAgencyEvents: () => dispatch(getAgencyEvents()),
-    submitEventCode: (code) => dispatch(submitEventCode(code)),
+    submitEventCode: code => dispatch(submitEventCode(code)),
+    getUser: () => dispatch(getUser()),
   };
 }
 

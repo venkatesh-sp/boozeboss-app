@@ -18,7 +18,16 @@ const StyledButton = styled(Button)`
 
 export default class HomePageContainer extends Component {
   componentWillMount = () => {
-    const { getEvents, getAgencyEvents, scope, role } = this.props;
+    const {
+      getEvents,
+      getAgencyEvents,
+      scope,
+      role,
+      user,
+      history,
+    } = this.props;
+
+    console.log(this.props);
     if (scope === 'GUEST' || scope === 'BRAND' || scope === 'REGION') {
       getEvents();
     }
@@ -26,10 +35,15 @@ export default class HomePageContainer extends Component {
       getAgencyEvents();
     }
     if (scope === 'OUTLET' && role === 'WAITER') {
-      const { history } = this.props;
-      history.push({
-        pathname: '/scanner',
-      });
+      if (user) {
+        const { outletvenue_id, outletevent_id } = user.outlet;
+        history.push({
+          pathname: '/outlet',
+          search: outletevent_id
+            ? `outlet_event=${outletevent_id}`
+            : `outlet_venue=${outletvenue_id}`,
+        });
+      }
     }
   };
 
@@ -42,6 +56,7 @@ export default class HomePageContainer extends Component {
 
   render() {
     const { isAgeVerified, isAuthenticated, user } = this.props;
+
     return (
       <Container>
         {/* <MessageContainer {...this.props} goToRoute={this.goToRoute} /> */}

@@ -193,7 +193,6 @@ export class OutletInfo extends React.Component {
               alt={name}
               style={{ maxWidth: '100%', minHeight: '250px', width: '100%' }}
               src={cover_image}
-              // src="https://s3.amazonaws.com/bucketeer-e6878da7-c05d-4c40-a450-231af9d5299a/public/cover_images/outletvenues/restaurant.jpg"
             />
           ) : (
             <NoImage style={{ width: '75%' }} />
@@ -312,98 +311,84 @@ export class OutletInfo extends React.Component {
                       inputRef.current.handlePlus();
                     };
                     return (
-                      <>
-                        <StyledMenuDiv key={index}>
-                          <StyledFlexContainer>
-                            <StyledText
-                              size="16px"
-                              color="#ffffff"
-                              weight="bold"
-                            >
-                              {item.name}
-                            </StyledText>
-
-                            <StyledText
-                              size="13px"
-                              color="#ffffff"
-                              weight="normal"
-                            >
-                              {item.description}
-                            </StyledText>
-                          </StyledFlexContainer>
-
-                          <Row
-                            className="show-grid"
-                            style={{ marginTop: '20px' }}
-                            key={index}
-                          >
-                            <Col
-                              xs={12}
-                              xsPush={12}
-                              style={{
-                                color: 'white',
-                                textAlign: 'right',
-                              }}
-                            >
-                              {cartItems && item.id in cartItems ? (
-                                <>
-                                  <InputGroup style={{ width: '100%' }}>
-                                    <InputGroup.Button onClick={handleMinus}>
-                                      -
-                                    </InputGroup.Button>
-                                    <InputNumber
-                                      className="custom-input-number"
-                                      ref={inputRef}
-                                      value={cartItems[item.id]}
-                                      onChange={value => {
-                                        if (parseInt(value) > 0) {
-                                          this.props.addCartItem({
-                                            product: item.id,
-                                            quantity: value,
-                                          });
-                                        } else {
-                                          this.props.removeCartItem({
-                                            product: item.id,
-                                          });
-                                        }
-                                      }}
-                                    />
-                                    <InputGroup.Button onClick={handlePlus}>
-                                      +
-                                    </InputGroup.Button>
-                                  </InputGroup>
-                                </>
-                              ) : (
-                                <Button
-                                  appearance="primary"
-                                  onClick={() => {
-                                    this.props.addCartItem({
-                                      product: item.id,
-                                      quantity: 1,
-                                    });
-                                  }}
-                                >
-                                  + Add
-                                </Button>
-                              )}
-                            </Col>
-                            <Col
-                              xs={12}
-                              xsPull={12}
-                              style={{ marginTop: '10px', color: 'white' }}
-                            >
-                              {item.price}
-                            </Col>
-                          </Row>
+                      <StyledMenuDiv key={index}>
+                        <StyledFlexContainer>
+                          <StyledText size="16px" color="#ffffff" weight="bold">
+                            {item.name}
+                          </StyledText>
 
                           <StyledText
-                            size="16px"
+                            size="13px"
                             color="#ffffff"
                             weight="normal"
-                          />
-                          <StyledFlexContainer />
-                        </StyledMenuDiv>
-                      </>
+                          >
+                            {item.description}
+                          </StyledText>
+                        </StyledFlexContainer>
+
+                        <Row
+                          className="show-grid"
+                          style={{ marginTop: '20px' }}
+                        >
+                          <Col
+                            xs={12}
+                            xsPush={12}
+                            style={{
+                              color: 'white',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {cartItems && item.id in cartItems ? (
+                              <>
+                                <InputGroup style={{ width: '100%' }}>
+                                  <InputGroup.Button onClick={handleMinus}>
+                                    -
+                                  </InputGroup.Button>
+                                  <InputNumber
+                                    className="custom-input-number"
+                                    ref={inputRef}
+                                    value={cartItems[item.id]}
+                                    onChange={value => {
+                                      if (parseInt(value) > 0) {
+                                        this.props.addCartItem({
+                                          product: item.id,
+                                          quantity: value,
+                                        });
+                                      } else {
+                                        this.props.removeCartItem({
+                                          product: item.id,
+                                        });
+                                      }
+                                    }}
+                                  />
+                                  <InputGroup.Button onClick={handlePlus}>
+                                    +
+                                  </InputGroup.Button>
+                                </InputGroup>
+                              </>
+                            ) : (
+                              <Button
+                                appearance="primary"
+                                onClick={() => {
+                                  this.props.addCartItem({
+                                    product: item.id,
+                                    quantity: 1,
+                                  });
+                                }}
+                              >
+                                + Add
+                              </Button>
+                            )}
+                          </Col>
+                          <Col
+                            xs={12}
+                            xsPull={12}
+                            style={{ marginTop: '10px', color: 'white' }}
+                          >
+                            {item.price}
+                          </Col>
+                        </Row>
+                      </StyledMenuDiv>
                     );
                   })}
                 </div>

@@ -20,9 +20,23 @@ import {
 import reducer from './reducer';
 import saga from './saga';
 
-import { getCartItems, addCartItems } from './actions';
+import { getCartItems, addCartItems, closeBill } from './actions';
+
+import { makeSelectRole, makeSelectScope } from '../App/selectors';
 
 class OrderInfo extends React.Component {
+  componentDidMount() {
+    const { user, cartItems, role, scope } = this.props;
+    if (role === 'WAITER') {
+      this.props.history.push({
+        pathname: '/accept-orders',
+        state: {
+          cartItems,
+        },
+      });
+    }
+  }
+
   render() {
     if (!this.props.cartItems || !this.props.user) {
       return <Loader />;
@@ -39,6 +53,7 @@ class OrderInfo extends React.Component {
         >
           <QRCode
             value={JSON.stringify({
+              user: this.props.user.id,
               cartItems: this.props.cartItems,
               type: 'orders',
             })}
@@ -86,6 +101,8 @@ const mapStateToProps = createStructuredSelector({
   outlet: makeSelectOutletInfo(),
   currentoutlet: makeSelectCurrentOutlet(),
   user: makeSelectUser(),
+  role: makeSelectRole(),
+  scope: makeSelectScope(),
 });
 
 function mapDispatchToProps(dispatch) {
