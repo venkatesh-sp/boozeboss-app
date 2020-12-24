@@ -26,6 +26,8 @@ import saga from './saga';
 
 import { getOutletVenue, getOutletEvent, addCartItems } from './actions';
 
+import { getUser } from '../App/actions';
+
 import _ from 'lodash';
 
 const StyledMenuDiv = styled.div`
@@ -63,6 +65,7 @@ class AcceptOrders extends React.Component {
   };
 
   componentDidMount() {
+    this.props.getUser();
     const { outlet } = this.props.user;
     if (outlet) {
       const { outletvenue_id, outletevent_id } = outlet;
@@ -97,7 +100,7 @@ class AcceptOrders extends React.Component {
     if (!outlet) {
       return <>Loading...</>;
     }
-
+    console.log(this.props);
     let items = _.map(_.toPairs(cartItems), data => {
       const product = _.find(outlet.menu, ['id', parseInt(data[0])]);
       if (product) {
@@ -387,7 +390,6 @@ AcceptOrders.propTypes = {
 const mapStateToProps = createStructuredSelector({
   user: makeSelectUser(),
   outlet: makeSelectOutlet(),
-  user: makeSelectUser(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -395,6 +397,7 @@ function mapDispatchToProps(dispatch) {
     getOutletVenue: venueId => dispatch(getOutletVenue(venueId)),
     getOutletEvent: eventId => dispatch(getOutletEvent(eventId)),
     addCartItems: items => dispatch(addCartItems(items)),
+    getUser: () => dispatch(getUser()),
   };
 }
 
