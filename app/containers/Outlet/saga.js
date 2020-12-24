@@ -45,6 +45,7 @@ function* getOutletVenueSaga(params) {
 
   try {
     const response = yield call(request, requestURL, options);
+    console.log(response, 'ITEMS OF THE VENUE FROM OUTLET SAGA');
     yield put(getOutletVenueSuccess(response));
   } catch (error) {
     const jsonError = yield error.response ? error.response.json() : error;

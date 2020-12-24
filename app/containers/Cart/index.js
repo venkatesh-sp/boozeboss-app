@@ -63,6 +63,7 @@ const ButtonStyles = {
 class Cart extends Component {
   render() {
     const { cartItems, outlet } = this.props;
+    // console.log(cartItems, 'CART ITEMS FROM CART COMPONENT PREETHAM VARANASI');
 
     if (!outlet) {
       return <>Loading...</>;
