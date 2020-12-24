@@ -25,6 +25,8 @@ import saga from './saga';
 
 import { getOutletVenue, getOutletEvent, addCartItems } from './actions';
 
+import _ from 'lodash';
+
 const StyledMenuDiv = styled.div`
   width: 100%;
   background: #1a1b1c;
