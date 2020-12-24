@@ -140,12 +140,12 @@ const NoImage = styled(Image)`
 export class OutletInfo extends React.Component {
   state = {
     showMenu: false,
-    filterby: null,
+    menu_category: null,
+    product_category: null,
   };
 
   componentDidMount = () => {
     const value = queryString.parse(this.props.location.search);
-
     if ('outlet_event' in value) {
       this.props.getOutletEvent(value.outlet_event);
     } else if ('outlet_venue' in value) {
@@ -153,8 +153,12 @@ export class OutletInfo extends React.Component {
     }
   };
 
-  handleFilter = filterby => {
-    this.setState({ filterby });
+  handleMenuCategory = menu_category => {
+    this.setState({ menu_category });
+  };
+
+  handleProductCategory = product_category => {
+    this.setState({ product_category, menu_category: null });
   };
 
   render() {
@@ -164,13 +168,16 @@ export class OutletInfo extends React.Component {
     }
 
     const { name, description, menu, cover_image, location } = outlet;
-    const { showMenu, filterby } = this.state;
+    const { showMenu, menu_category, product_category } = this.state;
 
-    let filtered_menu;
-    if (filterby) {
-      filtered_menu = _.filter(menu, { menu_category: filterby });
-    } else {
-      filtered_menu = menu;
+    let filtered_menu = menu;
+
+    if (menu_category && product_category) {
+      filtered_menu = _.filter(menu, { product_category, menu_category });
+    } else if (menu_category) {
+      filtered_menu = _.filter(menu, { menu_category });
+    } else if (product_category) {
+      filtered_menu = _.filter(menu, { product_category });
     }
 
     return (
@@ -220,16 +227,56 @@ export class OutletInfo extends React.Component {
               </>
             ) : (
               <>
+                <div style={{ width: '100%', display: 'flex' }}>
+                  {_.without(
+                    _.map(
+                      _.uniqBy(menu, 'product_category'),
+                      'product_category',
+                    ),
+                    '',
+                  ).map((item, index) => (
+                    <Button
+                      key={index}
+                      style={
+                        item === product_category
+                          ? {
+                              backgroundColor: '#3498ff',
+                              color: '#fff',
+                              width: '50%',
+                              fontWeight: 'bold',
+                              margin: '2px',
+                            }
+                          : { width: '50%', fontWeight: 'bold', margin: '2px' }
+                      }
+                      appearance="default"
+                      onClick={() =>
+                        item !== product_category
+                          ? this.handleProductCategory(item)
+                          : this.handleProductCategory(null)
+                      }
+                    >
+                      {item}
+                    </Button>
+                  ))}
+                </div>
                 <StyledTabsDiv>
                   <StyledTagGroup>
                     {_.without(
-                      _.map(_.uniqBy(menu, 'menu_category'), 'menu_category'),
+                      _.map(
+                        _.uniqBy(
+                          !product_category
+                            ? menu
+                            : _.filter(menu, { product_category }),
+                          'menu_category',
+                        ),
+                        'menu_category',
+                      ),
                       '',
                     ).map((item, index) => (
                       <Button
                         key={index}
                         style={
-                          item === filterby
+                          item === menu_category
                             ? {
                                 backgroundColor: '#3498ff',
                                 color: '#fff',
@@ -241,9 +288,9 @@ export class OutletInfo extends React.Component {
                         }
                         appearance="default"
                         onClick={() =>
-                          item !== filterby
-                            ? this.handleFilter(item)
-                            : this.handleFilter(null)
+                          item !== menu_category
+                            ? this.handleMenuCategory(item)
+                            : this.handleMenuCategory(null)
                         }
                       >
                         {item}
@@ -288,6 +335,7 @@ export class OutletInfo extends React.Component {
                           <Row
                             className="show-grid"
                             style={{ marginTop: '20px' }}
+                            key={index}
                           >
                             <Col
                               xs={12}

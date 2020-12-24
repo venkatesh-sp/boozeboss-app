@@ -20,27 +20,12 @@ import saga from './saga';
 import { getCartItems, addCartItems } from './actions';
 import QRCode from 'react-qr-code';
 import _ from 'lodash';
-import { Button, ButtonGroup } from 'rsuite';
+import { Button, ButtonGroup, Loader } from 'rsuite';
 
 class OrderInfo extends React.Component {
-  componentDidMount() {
-    console.log(this.props);
-    const items = _.map(_.toPairs(this.props.cartItems), data => {
-      const key = `${this.props.currentoutlet}menu_id`;
-      return {
-        [key]: parseInt(data[0]),
-        quantity: parseInt(data[1]),
-      };
-    });
-
-    console.log(items);
-
-    this.props.addCartItems(items);
-  }
   render() {
-    console.log(this.props);
-    if (!this.props.cartItems) {
-      return <>Loading..</>;
+    if (!this.props.cartItems || !this.props.user) {
+      return <Loader />;
     }
 
     return (
@@ -67,7 +52,6 @@ class OrderInfo extends React.Component {
             appearance="ghost"
             onClick={() => {
               const { history, currentoutlet, outlet } = this.props;
-
               history.push({
                 pathname: '/outlet',
                 search:
@@ -109,8 +93,8 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-const withReducer = injectReducer({ key: 'cart', reducer });
-const withSaga = injectSaga({ key: 'cart', saga });
+const withReducer = injectReducer({ key: 'outlet', reducer });
+const withSaga = injectSaga({ key: 'outlet', saga });
 
 export default compose(
   withReducer,

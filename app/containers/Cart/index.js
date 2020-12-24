@@ -41,7 +41,7 @@ const StyledText = styled.p`
   font-size: ${props => props.size};
   font-weight: ${props => props.weight};
   color: ${props => props.color};
-  text-align: center;
+  text-align: left;
   margin: 0px;
 `;
 const StyledFlexContainer = styled.div`
@@ -91,7 +91,7 @@ class Cart extends Component {
               </StyledText>
             </StyledFlexContainer>
             <div style={{ marginTop: '16px' }}>
-              <Row>
+              <Row key={index}>
                 <Col xs={12} xsPush={12}>
                   <InputGroup style={{ width: '100%' }}>
                     <InputGroup.Button onClick={handleMinus}>
