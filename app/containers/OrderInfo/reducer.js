@@ -12,6 +12,9 @@ import {
   ADD_CART_ITEMS_SUCCESS,
   ADD_CART_ITEMS_ERROR,
   ADD_CART_ITEMS_REQUEST,
+  CLOSE_BILL_REQUEST,
+  CLOSE_BILL_SUCCESS,
+  CLOSE_BILL_ERROR,
 } from './constants';
 
 export const initialState = fromJS({
@@ -19,6 +22,7 @@ export const initialState = fromJS({
   success: null,
   isLoading: null,
   cartitems: null,
+  currentOutlet: null,
 });
 
 function orderReducer(state = initialState, action) {
@@ -34,6 +38,12 @@ function orderReducer(state = initialState, action) {
     case ADD_CART_ITEMS_SUCCESS:
       return state.set('success', true);
     case ADD_CART_ITEMS_ERROR:
+      return state.set('error', action.error).set('isLoading', false);
+    case CLOSE_BILL_REQUEST:
+      return state.set('isLoading', true);
+    case CLOSE_BILL_SUCCESS:
+      return state.set('success', true);
+    case CLOSE_BILL_ERROR:
       return state.set('error', action.error).set('isLoading', false);
     default:
       return state;

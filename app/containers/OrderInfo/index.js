@@ -8,6 +8,9 @@ import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 
+import QRCode from 'react-qr-code';
+import _ from 'lodash';
+import { Button, ButtonGroup, Loader } from 'rsuite';
 import {
   makeSelectCartItems,
   makeSelectCurrentOutlet,
@@ -18,9 +21,6 @@ import reducer from './reducer';
 import saga from './saga';
 
 import { getCartItems, addCartItems } from './actions';
-import QRCode from 'react-qr-code';
-import _ from 'lodash';
-import { Button, ButtonGroup, Loader } from 'rsuite';
 
 class OrderInfo extends React.Component {
   render() {
@@ -39,7 +39,7 @@ class OrderInfo extends React.Component {
         >
           <QRCode
             value={JSON.stringify({
-              user: this.props.user.id,
+              cartItems: this.props.cartItems,
               type: 'orders',
             })}
           />
@@ -63,7 +63,14 @@ class OrderInfo extends React.Component {
           >
             Back to Menu
           </Button>
-          <Button appearance="ghost">Close Bill</Button>
+          <Button
+            appearance="ghost"
+            onClick={() => {
+              this.props.closeBill(this.props.user.id);
+            }}
+          >
+            Close Bill
+          </Button>
         </ButtonGroup>
       </>
     );
@@ -85,6 +92,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getCartItems: () => dispatch(getCartItems()),
     addCartItems: items => dispatch(addCartItems(items)),
+    closeBill: account_id => dispatch(closeBill(account_id)),
   };
 }
 
