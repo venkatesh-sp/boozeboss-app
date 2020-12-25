@@ -242,7 +242,8 @@ class AuthPage extends Component {
   handleSubmit = () => {
     const { verifyEmailPhone, history } = this.props;
     if (this.state.email) {
-      verifyEmailPhone({ email: this.state.email, history });
+      Alert.error('Email Service Not Active, Please Use Phone Number', 2500);
+      // verifyEmailPhone({ email: this.state.email, history });
     } else if (this.state.phone) {
       verifyEmailPhone({ phone_number: this.state.phone, history });
     } else {

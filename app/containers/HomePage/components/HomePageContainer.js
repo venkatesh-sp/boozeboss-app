@@ -43,6 +43,8 @@ export default class HomePageContainer extends Component {
             ? `outlet_event=${outletevent_id}`
             : `outlet_venue=${outletvenue_id}`,
         });
+      } else {
+        history.push('/scanner');
       }
     }
   };
