@@ -100,6 +100,15 @@ export class QrScanner extends React.Component {
           },
         });
       }
+
+      if (json_data.type === 'orders-summary') {
+        history.push({
+          pathname: `/orders-summary`,
+          state: {
+            user: json_data.user,
+          },
+        });
+      }
     }
   };
 

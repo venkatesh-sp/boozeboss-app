@@ -105,7 +105,12 @@ class AcceptOrders extends React.Component {
       const product = _.find(outlet.menu, ['id', parseInt(data[0])]);
       if (product) {
         product.quantity = parseInt(data[1]);
-        if (this.state.items.length === 0 && this.state.currentOutlet) {
+        if (
+          !_.find(this.state.items, {
+            [`${this.state.currentOutlet}menu_id`]: product.id,
+          }) &&
+          this.state.currentOutlet
+        ) {
           this.setState({
             items: [
               ...this.state.items,
@@ -128,12 +133,14 @@ class AcceptOrders extends React.Component {
         pathname: '/scanner',
       });
     }
+
+    console.log(this.state, items);
     return (
       <>
         <div
           style={{
             backgroundColor: '#030303',
-            height: '100vh',
+            height: '90vh',
             overflowY: 'scroll',
           }}
         >
@@ -366,6 +373,7 @@ class AcceptOrders extends React.Component {
               borderRadius: '0px',
             }}
             onClick={() => {
+              console.log(this.state.items);
               if (customer) {
                 this.props.addCartItems({
                   items: this.state.items,

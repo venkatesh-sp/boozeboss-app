@@ -46,10 +46,12 @@ class OrdersSummary extends React.Component {
     const { user, role, scope, getOrdersSummary, getUser } = this.props;
 
     getUser();
+
     if (role === 'REGULAR' && scope === 'GUEST' && user) {
       getOrdersSummary(user.id);
     } else if (role === 'WAITER' && scope === 'OUTLET') {
-      //
+      const { user } = this.props.history.location.state;
+      getOrdersSummary(user);
     }
   }
 
@@ -57,6 +59,8 @@ class OrdersSummary extends React.Component {
     if (!this.props.user || !this.props.items) {
       return <Loader />;
     }
+
+    const { role, scope } = this.props;
 
     const { items: products } = this.props.items;
 
@@ -81,33 +85,45 @@ class OrdersSummary extends React.Component {
       };
     });
 
-    return (
-      <>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            marginTop: '10px',
-          }}
-        >
-          <QRCode
-            value={JSON.stringify({
-              user: this.props.user.id,
-              items: this.props.items.items,
-              type: 'orders-summary',
-            })}
-          />
-        </div>
-        <div
-          style={{
-            width: '100%',
-            display: 'flex',
-            marginTop: '10px',
-            padding: '10px',
-          }}
-        >
+    const buttons =
+      role === 'WAITER' && scope === 'OUTLET' ? (
+        <>
           <Button
-            style={{ width: '50%', fontWeight: 'bold', margin: '2px' }}
+            style={{
+              width: '50%',
+              fontWeight: 'bold',
+              margin: '2px',
+            }}
+            appearance="ghost"
+            onClick={() => {
+              this.props.history.push('/');
+            }}
+          >
+            Paid Online
+          </Button>
+
+          <Button
+            style={{
+              width: '50%',
+              fontWeight: 'bold',
+              margin: '2px',
+            }}
+            appearance="ghost"
+            onClick={() => {
+              this.props.history.push('/');
+            }}
+          >
+            Paid Offline
+          </Button>
+        </>
+      ) : (
+        <>
+          <Button
+            style={{
+              width: '50%',
+              fontWeight: 'bold',
+              margin: '2px',
+            }}
             appearance="ghost"
             onClick={() => {
               let APP_URL =
@@ -123,31 +139,23 @@ class OrdersSummary extends React.Component {
                 currency: 'NGN',
                 country: 'NG',
                 payment_options: 'card, mobilemoneyghana, ussd',
-                // specified redirect URL
                 redirect_url: APP_URL + '/orders-summary',
                 customer: {
                   email: this.props.user.email,
                   phone_number: this.props.user.phone_number,
                   name: this.props.user.first_name + this.props.user.last_name,
                 },
-                callback: function(data) {
-                  console.log(data, 'callback data');
-                },
-                onclose: function() {
-                  // close modal
-                },
-                // customizations: {
-                //   title: this.props.outlet.name,
-                //   description: 'Payment for items in cart',
-                //   logo: this.props.outlet.cover_image,
-                // },
               });
             }}
           >
             Pay Online
           </Button>
           <Button
-            style={{ width: '50%', fontWeight: 'bold', margin: '2px' }}
+            style={{
+              width: '50%',
+              fontWeight: 'bold',
+              margin: '2px',
+            }}
             appearance="ghost"
             onClick={() => {
               //
@@ -155,6 +163,34 @@ class OrdersSummary extends React.Component {
           >
             Pay Offline
           </Button>
+        </>
+      );
+
+    return (
+      <>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: '10px',
+          }}
+        >
+          <QRCode
+            value={JSON.stringify({
+              user: this.props.user.id,
+              type: 'orders-summary',
+            })}
+          />
+        </div>
+        <div
+          style={{
+            width: '100%',
+            display: 'flex',
+            marginTop: '10px',
+            padding: '10px',
+          }}
+        >
+          {buttons}
         </div>
         <div
           style={{ height: '385px', background: 'black', overflowY: 'scroll' }}
