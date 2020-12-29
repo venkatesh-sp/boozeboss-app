@@ -21,6 +21,7 @@ import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 
+import _ from 'lodash';
 import { makeSelectUser, makeSelectOutlet } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -33,8 +34,6 @@ import {
 } from './actions';
 
 import { getUser } from '../App/actions';
-
-import _ from 'lodash';
 
 const StyledMenuDiv = styled.div`
   width: 100%;

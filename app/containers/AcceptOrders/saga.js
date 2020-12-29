@@ -44,7 +44,7 @@ function* addCartItemsSaga(params) {
 
 function* postorderinfoSaga(params) {
   console.log(params, 'PARAMS FROM REQUEST SAGA');
-  const info = params.info;
+  const { info } = params;
   const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
     process.env.API_PORT
   }/api/orderinfo/post-order-info`;
