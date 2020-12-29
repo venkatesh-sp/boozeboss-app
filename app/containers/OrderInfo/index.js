@@ -38,8 +38,17 @@ class OrderInfo extends React.Component {
   }
 
   render() {
-    if (!this.props.cartItems || !this.props.user) {
+    console.log(this.props);
+    if (!this.props.user) {
       return <Loader />;
+    }
+
+    if (!this.props.cartItems) {
+      return (
+        <>
+          <p>No Items...Please add items to the cart</p>
+        </>
+      );
     }
 
     return (
@@ -73,6 +82,9 @@ class OrderInfo extends React.Component {
                   currentoutlet === 'outletevent'
                     ? `outlet_event=${outlet.id}`
                     : `outlet_venue=${outlet.id}`,
+                state: {
+                  cartItems: null,
+                },
               });
             }}
           >

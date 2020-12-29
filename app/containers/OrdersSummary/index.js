@@ -11,7 +11,7 @@ import injectReducer from 'utils/injectReducer';
 
 import QRCode from 'react-qr-code';
 import _ from 'lodash';
-import { Button, ButtonGroup, Loader } from 'rsuite';
+import { Button, ButtonGroup, Loader, Alert } from 'rsuite';
 // import { makeSelectUser } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -45,24 +45,48 @@ class OrdersSummary extends React.Component {
   componentDidMount() {
     const { user, role, scope, getOrdersSummary, getUser } = this.props;
 
-    getUser();
-
-    if (role === 'REGULAR' && scope === 'GUEST' && user) {
-      getOrdersSummary(user.id);
-    } else if (role === 'WAITER' && scope === 'OUTLET') {
+    if (role === 'WAITER' && scope === 'OUTLET') {
       const { user } = this.props.history.location.state;
       getOrdersSummary(user);
+    }
+    if (user) {
+      getOrdersSummary(user.id);
     }
   }
 
   render() {
-    if (!this.props.user || !this.props.items) {
+    if (!this.props.user) {
+      return <Loader />;
+    }
+    const { user, role, scope, getOrdersSummary } = this.props;
+
+    if (user && !this.props.items) {
+      getOrdersSummary(user.id);
+    }
+
+    if (!this.props.items) {
       return <Loader />;
     }
 
-    const { role, scope } = this.props;
-
     const { items: products } = this.props.items;
+
+    if (products.length === 0) {
+      Alert.error('Please Wait till status update..', 2500);
+      getOrdersSummary(user.id);
+
+      return (
+        <Button
+          appearance="ghost"
+          onClick={() => {
+            this.props.history.push({
+              pathname: '/orders',
+            });
+          }}
+        >
+          Go Back
+        </Button>
+      );
+    }
 
     const order_summary = _.map(products, function(item) {
       const { quantity, eventproduct, venueproduct } = item;
@@ -193,12 +217,12 @@ class OrdersSummary extends React.Component {
           {buttons}
         </div>
         <div
-          style={{ height: '385px', background: 'black', overflowY: 'scroll' }}
+          style={{ height: '350px', background: 'black', overflowY: 'scroll' }}
         >
           {order_summary.map((item, index) => {
             return (
-              <StyledMenuDiv>
-                <div key={index}>
+              <StyledMenuDiv key={index}>
+                <div>
                   <StyledText size="16px" color="#ffffff" weight="bold">
                     {item.name}
                   </StyledText>
@@ -230,6 +254,22 @@ class OrdersSummary extends React.Component {
             );
           })}
         </div>
+        <Button
+          appearance="default"
+          style={{
+            position: 'fixed',
+            bottom: '30px',
+            left: '0',
+            width: '100%',
+            borderRadius: '0px',
+            zIndex: '9999',
+          }}
+          onClick={() => {
+            this.props.history.goBack();
+          }}
+        >
+          Go Back
+        </Button>
         <Button
           appearance="primary"
           style={{
