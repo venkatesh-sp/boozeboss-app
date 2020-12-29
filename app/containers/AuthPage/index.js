@@ -18,6 +18,8 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import reducer from './reducer';
 import saga from './saga';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 // import Signup from './Signup';
 import { authenticate, getUser } from '../App/actions';
 import {
@@ -84,8 +86,13 @@ const inputStyles = {
   marginTop: '20px',
   fontSize: '15px',
   backgroundColor: '#fafafa',
-  color: '#a4a8b7',
+  color: '#6c757d',
   borderRadius: '0px',
+};
+
+const styles = {
+  width: '300px',
+  margin: '0.75em',
 };
 
 const CustomButtonGroup = ({ active, toggle }) => (
@@ -110,8 +117,20 @@ const SignIn = ({ handleChange, handleSubmit }) => (
     <StyledText size="17px" color="#363645" weight="bold">
       Already have an account?
     </StyledText>
-    <StyledText>Log in with your registered email or phone number</StyledText>
-    <Input
+    <StyledText>Log in with your registered phone number</StyledText>
+    <PhoneInput
+      style={inputStyles}
+      country="us"
+      enableSearch
+      disableSearchIcon
+      inputProps={{
+        name: 'phone',
+        required: true,
+        autoFocus: true,
+      }}
+      onChange={value => handleChange(value, 'phone')}
+    />
+    {/* <Input
       style={InputStyles}
       placeholder="Email/Phone"
       onChange={value => {
@@ -126,7 +145,7 @@ const SignIn = ({ handleChange, handleSubmit }) => (
           handleChange(value, 'phone');
         }
       }}
-    />
+    /> */}
     <Button style={ButtonStyles} appearance="primary" onClick={handleSubmit}>
       Send OTP
     </Button>
@@ -154,12 +173,19 @@ const SignUp = ({ handleChange, handleSignup }) => (
       type="text"
       placeholder="Email"
     />
-    <Input
+    <PhoneInput
+      style={{ ...inputStyles }}
+      country="us"
+      enableSearch
+      disableSearchIcon
+      inputProps={{
+        name: 'phone',
+        required: true,
+        autoFocus: true,
+      }}
       onChange={value => handleChange(value, 'phone')}
-      style={inputStyles}
-      type="text"
-      placeholder="Phone (prefix with country code)"
     />
+
     <Input
       onChange={value => handleChange(value, 'password')}
       style={inputStyles}

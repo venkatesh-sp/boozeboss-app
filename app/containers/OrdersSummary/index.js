@@ -25,6 +25,7 @@ import {
   makeSelectRole,
   makeSelectScope,
   makeSelectUser,
+  makeSelectUserId,
 } from '../App/selectors';
 
 const StyledMenuDiv = styled.div`
@@ -43,48 +44,48 @@ const StyledText = styled.p`
 
 class OrdersSummary extends React.Component {
   componentDidMount() {
-    const { user, role, scope, getOrdersSummary, getUser } = this.props;
+    const { user, role, scope, getOrdersSummary, getUser, userId } = this.props;
 
     if (role === 'WAITER' && scope === 'OUTLET') {
       const { user } = this.props.history.location.state;
       getOrdersSummary(user);
-    }
-    if (user) {
-      getOrdersSummary(user.id);
+    } else if (role === 'REGULAR' && scope === 'GUEST') {
+      getOrdersSummary(userId);
     }
   }
 
   render() {
-    if (!this.props.user) {
+    console.log(this.props);
+    if (!this.props.user || !this.props.items) {
       return <Loader />;
     }
-    const { user, role, scope, getOrdersSummary } = this.props;
-
-    if (user && !this.props.items) {
-      getOrdersSummary(user.id);
-    }
-
-    if (!this.props.items) {
-      return <Loader />;
-    }
+    const { role, scope } = this.props;
 
     const { items: products } = this.props.items;
 
     if (products.length === 0) {
-      Alert.error('Please Wait till status update..', 2500);
-      getOrdersSummary(user.id);
-
       return (
-        <Button
-          appearance="ghost"
-          onClick={() => {
-            this.props.history.push({
-              pathname: '/orders',
-            });
-          }}
-        >
-          Go Back
-        </Button>
+        <>
+          <p
+            style={{
+              textAlign: 'center',
+              marginTop: '1rem',
+              marginBottom: '1rem',
+            }}
+          >
+            No items scanned by waiter
+          </p>
+          <Button
+            appearance="ghost"
+            onClick={() => {
+              this.props.history.push({
+                pathname: '/orders',
+              });
+            }}
+          >
+            Go Back
+          </Button>
+        </>
       );
     }
 
@@ -297,6 +298,7 @@ OrdersSummary.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   user: makeSelectUser(),
+  userId: makeSelectUserId(),
   role: makeSelectRole(),
   scope: makeSelectScope(),
   items: makeSelectOrdersSummary(),

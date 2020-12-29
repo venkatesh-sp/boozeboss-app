@@ -20,7 +20,7 @@ import {
 import reducer from './reducer';
 import saga from './saga';
 
-import { getCartItems, addCartItems, closeBill } from './actions';
+import { getCartItems, addCartItems } from './actions';
 
 import { makeSelectRole, makeSelectScope } from '../App/selectors';
 
@@ -38,7 +38,6 @@ class OrderInfo extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     if (!this.props.user) {
       return <Loader />;
     }
@@ -46,13 +45,18 @@ class OrderInfo extends React.Component {
     if (!this.props.cartItems) {
       return (
         <>
-          <p>No Items...Please add items to the cart</p>
+          <p style={{ textAlign: 'center', marginTop: '1rem' }}>
+            No Items...Please add items to the cart
+          </p>
         </>
       );
     }
 
     return (
       <>
+        <h5 style={{ textAlign: 'center', marginTop: '1rem' }}>
+          Let waiter scan this code
+        </h5>
         <div
           style={{
             display: 'flex',
@@ -121,7 +125,6 @@ function mapDispatchToProps(dispatch) {
   return {
     getCartItems: () => dispatch(getCartItems()),
     addCartItems: items => dispatch(addCartItems(items)),
-    getOrderSummary: account_id => dispatch(getOrderSummary(account_id)),
   };
 }
 

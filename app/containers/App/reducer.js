@@ -46,6 +46,14 @@ const getAgeVerify = () => {
   return token.is_age_verified;
 };
 
+const getUserId = () => {
+  const hasToken = !!localStorage.getItem('jwt');
+
+  if (!hasToken) return null;
+  const token = decode(localStorage.getItem('jwt'));
+  return token.id || null;
+};
+
 // The initial state of the App
 export const initialState = fromJS({
   loading: false,
@@ -54,6 +62,7 @@ export const initialState = fromJS({
   isAgeVerified: !!localStorage.getItem('jwt') && getAgeVerify(),
   scope: getScope(),
   role: getRole(),
+  userId: getUserId(),
 });
 
 /* eslint-disable default-case, no-param-reassign */

@@ -95,7 +95,7 @@ class Otp extends Component {
     return (
       <StyledOtpDiv>
         <StyledText size="15px" color="#A4A8B7">
-          Plaese Enter OTP
+          Please Enter OTP
         </StyledText>
         <StyledFlexDiv>
           <Input

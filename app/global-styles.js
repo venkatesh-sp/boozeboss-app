@@ -45,6 +45,12 @@ const GlobalStyle = createGlobalStyle`
       display: none;
     }
   }
+
+  .react-tel-input input[type='tel']{
+    border:none;
+    background:transparent;
+    padding-left:30px
+  }
  
 `;
 
