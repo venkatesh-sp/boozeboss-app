@@ -13,6 +13,7 @@ import {
   InputNumber,
   SelectPicker,
   Alert,
+  Input,
 } from 'rsuite';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -24,7 +25,12 @@ import { makeSelectUser, makeSelectOutlet } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
-import { getOutletVenue, getOutletEvent, addCartItems } from './actions';
+import {
+  getOutletVenue,
+  getOutletEvent,
+  addCartItems,
+  addOrderInfoRequest,
+} from './actions';
 
 import { getUser } from '../App/actions';
 
@@ -55,6 +61,7 @@ class AcceptOrders extends React.Component {
   state = {
     show: false,
     items: [],
+    customerName: '',
     menCount: 0, // CHANGED FROM menCount:'',
     menAgeGroup: '',
     womenCount: 0, // CHANGED FROM womenCount:'',
@@ -148,6 +155,31 @@ class AcceptOrders extends React.Component {
             <title>Waiter Orders</title>
             <meta name="description" content="Description of Waiter Orders" />
           </Helmet>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              textAlign: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <label
+              style={{
+                color: 'white',
+                marginTop: '20px',
+              }}
+              htmlFor="customer-name"
+            >
+              Name:
+            </label>
+            <Input
+              name="customer-name"
+              style={{ width: '345px', marginTop: '10px', marginLeft: '10px' }}
+              onChange={value => this.handleChange(value, 'customerName')}
+              value={this.state.customerName}
+            />
+          </div>
+
           {items.map((item, index) => (
             <div style={{ backgroundColor: '#030303' }} key={index}>
               <StyledMenuDiv>
@@ -289,8 +321,8 @@ class AcceptOrders extends React.Component {
                     womenAgeGroup,
                     items,
                     quantity,
+                    customerName,
                   } = this.state;
-
                   const is_exist = _.find(items, [
                     `${this.state.currentOutlet}menu_id`,
                     product_id,
@@ -305,6 +337,7 @@ class AcceptOrders extends React.Component {
                             menAgeGroup,
                             womenCount,
                             womenAgeGroup,
+                            customerName,
                           },
                           [`${this.state.currentOutlet}menu_id`]: product_id,
                           quantity,
@@ -318,6 +351,7 @@ class AcceptOrders extends React.Component {
                       quantity: null,
                       show: false,
                     });
+                    console.log(this.state, 'STATE IN IF BLOCK');
                   } else {
                     const items = _.remove(items, {
                       [`${this.state.currentOutlet}menu_id`]: product_id,
@@ -326,6 +360,7 @@ class AcceptOrders extends React.Component {
                     this.setState({
                       items: _.concat(items, {
                         data: {
+                          customerName,
                           menCount,
                           menAgeGroup,
                           womenCount,
@@ -342,6 +377,19 @@ class AcceptOrders extends React.Component {
                       quantity: null,
                       show: false,
                     });
+                    console.log(
+                      this.state.items,
+                      'STATE IN ELSE BLOCK FRom onclick Function',
+                    );
+                    // this.props.addOrderInfoRequest({
+                    //   customer_name: 'Preetham',
+                    //   outleteventmenu_id: null,
+                    //   outletvenuemenu_id: this.state.product_id,
+                    //   men_count: this.state.menCount,
+                    //   men_age_group: this.state.menAgeGroup,
+                    //   women_count: this.state.womenCount,
+                    //   woment_age_group: this.state.womenAgeGroup,
+                    // });
                   }
                 }}
                 appearance="primary"
@@ -373,13 +421,17 @@ class AcceptOrders extends React.Component {
               borderRadius: '0px',
             }}
             onClick={() => {
-              console.log(this.state.items);
+              console.log(this.state.items, 'ITEMS ARRAY IN ON CLICK BUTTON');
               if (customer) {
                 this.props.addCartItems({
                   items: this.state.items,
                   account_id: customer,
                   history: this.props.history,
                 });
+              } else {
+                // TO DO
+                console.log(this.state.items, 'ITEMS ARRAY IN ELSE Condition');
+                this.props.history.push('/waiter-orderSummary');
               }
             }}
           >
@@ -406,6 +458,7 @@ function mapDispatchToProps(dispatch) {
     getOutletEvent: eventId => dispatch(getOutletEvent(eventId)),
     addCartItems: items => dispatch(addCartItems(items)),
     getUser: () => dispatch(getUser()),
+    addOrderInfoRequest: data => dispatch(addOrderInfoRequest(data)),
   };
 }
 

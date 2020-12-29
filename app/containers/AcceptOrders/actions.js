@@ -16,6 +16,9 @@ import {
   ADD_CART_ITEMS_REQUEST,
   ADD_CART_ITEMS_SUCCESS,
   ADD_CART_ITEMS_ERROR,
+  ADD_INFO_REQUEST,
+  ADD_INFO_REQUEST_SUCCESS,
+  ADD_INFO_REQUEST_ERROR,
 } from './constants';
 
 export function getCartItems(ID) {
@@ -108,6 +111,27 @@ export function addCartItemsError(error) {
   status(error, 'error');
   return {
     type: ADD_CART_ITEMS_ERROR,
+    error,
+  };
+}
+
+export function addOrderInfoRequest(info) {
+  return {
+    type: ADD_INFO_REQUEST,
+    info,
+  };
+}
+
+export function addOrderInfoSuccess(success) {
+  return {
+    type: ADD_INFO_REQUEST_SUCCESS,
+    success,
+  };
+}
+
+export function addOrderInfoError(error) {
+  return {
+    type: ADD_INFO_REQUEST_ERROR,
     error,
   };
 }

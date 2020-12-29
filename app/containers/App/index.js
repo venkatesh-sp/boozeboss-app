@@ -48,6 +48,7 @@ import Otp from 'containers/OtpPage';
 import Cart from 'containers/Cart';
 import OrdersSummary from 'containers/OrdersSummary';
 import AcceptOrders from 'containers/AcceptOrders';
+import WaiterOrderSummary from 'containers/WaiterOrderSummary';
 import OutletInfo from '../Outlet';
 import OrderInfo from '../OrderInfo';
 import saga from './saga';
@@ -225,6 +226,7 @@ class App extends React.Component {
           <Route path="/auth" component={AuthPage} />
           <Route path="/otp" component={Otp} />
           <Route path="/cart" component={Cart} />
+          <Route path="/waiter-orderSummary" component={WaiterOrderSummary} />
           <PrivateRoute
             path="/accept-orders"
             component={AcceptOrders}
