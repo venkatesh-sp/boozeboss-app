@@ -88,19 +88,22 @@ class OrdersSummary extends React.Component {
         </>
       );
     }
-
+    let current_outlet;
     const order_summary = _.map(products, function(item) {
       const { quantity, eventproduct, venueproduct } = item;
       let product;
       if (eventproduct.length !== 0) {
         product = eventproduct[0];
+        current_outlet = product.outlet_event_id;
       } else if (venueproduct.length !== 0) {
         product = venueproduct[0];
+        current_outlet = product.outlet_venue_id;
       }
 
       if (!product) {
         return <>No Items</>;
       }
+
       const price = parseFloat(product.price.replace(',', ''));
       return {
         name: product.name,
@@ -109,6 +112,25 @@ class OrdersSummary extends React.Component {
         cost: price * quantity,
       };
     });
+
+    const venues = [14, 21, 24, 29];
+    let subaccounts;
+
+    if (current_outlet && venues.includes(current_outlet)) {
+      // Beirut id
+      if (current_outlet === 29) {
+        subaccounts = [{ id: 'RS_ED0212976C94424980A0F74AB6E701F3' }];
+      } else if (current_outlet === 24) {
+        // A bar called Paper
+        subaccounts = [{ id: 'RS_88ABF9E7A03533DF1A9A8AB7EBCBF9AE' }];
+      } else if (current_outlet === 21) {
+        // Bleu Abuja
+        subaccounts = [{ id: 'RS_4ADB4D50A1F574AB9B55FF8CEF2F29F1' }];
+      } else if (current_outlet === 14) {
+        // The Cabin
+        subaccounts = [{ id: 'RS_1BA48F796E080012F51A6B46FDBC205F' }];
+      }
+    }
 
     const buttons =
       role === 'WAITER' && scope === 'OUTLET' ? (
@@ -165,6 +187,7 @@ class OrdersSummary extends React.Component {
                 country: 'NG',
                 payment_options: 'card, mobilemoneyghana, ussd',
                 redirect_url: APP_URL + '/orders-summary',
+                subaccounts,
                 customer: {
                   email: this.props.user.email,
                   phone_number: this.props.user.phone_number,

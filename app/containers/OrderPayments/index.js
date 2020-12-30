@@ -111,7 +111,30 @@ class OrderPayments extends React.Component {
 
     let qrcodedata;
     if (current_outlet && venues.includes(current_outlet)) {
-      qrcodedata = (
+      // Beirut id
+      if (current_outlet === 29) {
+        qrcodedata = (
+          <QRCode value="https://flutterwave.com/pay/s1lluk6gzes2" />
+        );
+      } else if (current_outlet === 24) {
+        // A bar called Paper
+        qrcodedata = (
+          <QRCode value="https://flutterwave.com/pay/kwka4qqq4hrt" />
+        );
+      } else if (current_outlet === 21) {
+        // Bleu Abuja
+        qrcodedata = (
+          <QRCode value="https://flutterwave.com/pay/dd08mnedqcfg" />
+        );
+      } else if (current_outlet === 14) {
+        // The Cabin
+        qrcodedata = (
+          <QRCode value="https://flutterwave.com/pay/z1ede3hm5z4l" />
+        );
+      }
+    }
+    return (
+      <>
         <div
           style={{
             display: 'flex',
@@ -119,13 +142,9 @@ class OrderPayments extends React.Component {
             marginTop: '10px',
           }}
         >
-          <QRCode value="https://flutterwave.com/pay/s1lluk6gzes2" />
+          {qrcodedata}
         </div>
-      );
-    }
-    return (
-      <>
-        {qrcodedata}
+
         <div
           style={{
             width: '100%',
