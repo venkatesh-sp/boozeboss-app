@@ -114,7 +114,7 @@ class OrdersSummary extends React.Component {
     });
 
     const venues = [14, 21, 24, 29];
-    let subaccounts;
+    let subaccounts = [];
 
     if (current_outlet && venues.includes(current_outlet)) {
       // Beirut id
@@ -131,6 +131,8 @@ class OrdersSummary extends React.Component {
         subaccounts = [{ id: 'RS_1BA48F796E080012F51A6B46FDBC205F' }];
       }
     }
+
+    console.log(subaccounts, JSON.stringify(subaccounts));
 
     const buttons =
       role === 'WAITER' && scope === 'OUTLET' ? (
@@ -187,7 +189,7 @@ class OrdersSummary extends React.Component {
                 country: 'NG',
                 payment_options: 'card, mobilemoneyghana, ussd',
                 redirect_url: APP_URL + '/orders-summary',
-                subaccounts,
+                subaccounts: JSON.stringify(subaccounts),
                 customer: {
                   email: this.props.user.email,
                   phone_number: this.props.user.phone_number,
