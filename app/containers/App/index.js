@@ -50,6 +50,7 @@ import OrdersSummary from 'containers/OrdersSummary';
 import AcceptOrders from 'containers/AcceptOrders';
 import OutletInfo from '../Outlet';
 import OrderInfo from '../OrderInfo';
+import OrderPayments from '../OrderPayments';
 import saga from './saga';
 import GlobalStyle from '../../global-styles';
 
@@ -221,6 +222,13 @@ class App extends React.Component {
             component={OrderInfo}
             scopesRequired={[]}
             rolesRequired={[]}
+          />
+          <Route
+            exact
+            path="/order-payment"
+            component={OrderPayments}
+            scopesRequired={['OUTLET']}
+            rolesRequired={['WAITER']}
           />
           <Route path="/auth" component={AuthPage} />
           <Route path="/otp" component={Otp} />

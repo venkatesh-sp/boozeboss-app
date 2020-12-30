@@ -380,6 +380,14 @@ class AcceptOrders extends React.Component {
                   account_id: customer,
                   history: this.props.history,
                 });
+              } else {
+                this.props.history.push({
+                  pathname: '/order-payment',
+                  state: {
+                    items: items,
+                    user: this.props.user,
+                  },
+                });
               }
             }}
           >
