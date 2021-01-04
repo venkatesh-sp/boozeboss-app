@@ -382,6 +382,7 @@ class AcceptOrders extends React.Component {
               } else {
                 this.props.addInfoRequest({
                   data: this.state.items,
+                  costumerName: this.state.costumerName,
                 });
                 this.props.history.push({
                   pathname: '/order-payment',

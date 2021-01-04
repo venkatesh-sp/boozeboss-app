@@ -23,7 +23,6 @@ const StyledText = styled.p`
 
 class OrderPayments extends React.Component {
   render() {
-    console.log(this.props);
     const { state } = this.props.location;
     if (!state || !state.items) {
       return <Loader />;
