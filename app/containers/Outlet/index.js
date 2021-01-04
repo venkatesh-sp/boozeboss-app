@@ -166,7 +166,7 @@ export class OutletInfo extends React.Component {
     if (!outlet) {
       return <>Loading...</>;
     }
-    console.log('Outlet Page props\n', this.props);
+
     const { name, description, menu, cover_image, location } = outlet;
     const { showMenu, menu_category, product_category } = this.state;
 
