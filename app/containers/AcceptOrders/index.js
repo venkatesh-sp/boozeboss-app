@@ -141,7 +141,6 @@ class AcceptOrders extends React.Component {
       });
     }
 
-    console.log(this.state, items);
     return (
       <>
         <div
@@ -180,33 +179,38 @@ class AcceptOrders extends React.Component {
                   <Button
                     appearance="primary"
                     onClick={() => {
-                      const { items, currentOutlet } = this.state;
+                      const { items, currentOutlet, costumerName } = this.state;
                       const is_exist = _.find(items, [
                         `${currentOutlet}menu_id`,
                         item.id,
                       ]);
-                      if (!is_exist) {
-                        this.setState({
-                          show: true,
-                          product_id: item.id,
-                          quantity: item.quantity,
-                        });
+                      if (costumerName !== '') {
+                        //NEW
+                        if (!is_exist) {
+                          this.setState({
+                            show: true,
+                            product_id: item.id,
+                            quantity: item.quantity,
+                          });
+                        } else {
+                          const {
+                            menCount,
+                            menAgeGroup,
+                            womenCount,
+                            womenAgeGroup,
+                          } = is_exist.data;
+                          this.setState({
+                            show: true,
+                            product_id: item.id,
+                            quantity: item.quantity,
+                            menCount,
+                            menAgeGroup,
+                            womenCount,
+                            womenAgeGroup,
+                          });
+                        }
                       } else {
-                        const {
-                          menCount,
-                          menAgeGroup,
-                          womenCount,
-                          womenAgeGroup,
-                        } = is_exist.data;
-                        this.setState({
-                          show: true,
-                          product_id: item.id,
-                          quantity: item.quantity,
-                          menCount,
-                          menAgeGroup,
-                          womenCount,
-                          womenAgeGroup,
-                        });
+                        Alert.warning('Add Costumer Name', 2500);
                       }
                     }}
                   >
@@ -319,6 +323,7 @@ class AcceptOrders extends React.Component {
                       ...this.state.items,
                       {
                         customer_name: this.state.costumerName,
+                        ordered: true,
                         data: {
                           menCount,
                           menAgeGroup,
@@ -368,8 +373,6 @@ class AcceptOrders extends React.Component {
               borderRadius: '0px',
             }}
             onClick={() => {
-              console.log(this.state.items);
-
               if (customer) {
                 this.props.addCartItems({
                   items: this.state.items,

@@ -43,7 +43,6 @@ function* addCartItemsSaga(params) {
 }
 //ADD info saga
 function* addInfoSaga(params) {
-  console.log('\nInfo params saga\n', params);
   const info = params.info;
   const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
     process.env.API_PORT
@@ -52,11 +51,10 @@ function* addInfoSaga(params) {
     method: 'POST',
     body: JSON.stringify(info),
   };
-  console.log(info, 'PREETHAM CHECK');
+
   try {
     const response = yield call(request, requestURL, options);
     yield put(addInfoSuccess(response));
-    history.push('/');
   } catch (error) {
     const jsonError = yield error.response ? error.response.json() : error;
     yield put(addInfoError(jsonError));
