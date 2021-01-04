@@ -369,9 +369,7 @@ class AcceptOrders extends React.Component {
             }}
             onClick={() => {
               console.log(this.state.items);
-              this.props.addInfoRequest({
-                data: this.state.items,
-              });
+
               if (customer) {
                 this.props.addCartItems({
                   items: this.state.items,
@@ -379,6 +377,9 @@ class AcceptOrders extends React.Component {
                   history: this.props.history,
                 });
               } else {
+                this.props.addInfoRequest({
+                  data: this.state.items,
+                });
                 this.props.history.push({
                   pathname: '/order-payment',
                   state: {
