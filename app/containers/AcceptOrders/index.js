@@ -10,6 +10,7 @@ import {
   Modal,
   Paragraph,
   InputGroup,
+  Input,
   InputNumber,
   SelectPicker,
   Alert,
@@ -24,7 +25,12 @@ import { makeSelectUser, makeSelectOutlet } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
-import { getOutletVenue, getOutletEvent, addCartItems } from './actions';
+import {
+  getOutletVenue,
+  getOutletEvent,
+  addCartItems,
+  addInfoRequest,
+} from './actions';
 
 import { getUser } from '../App/actions';
 
@@ -55,6 +61,7 @@ class AcceptOrders extends React.Component {
   state = {
     show: false,
     items: [],
+    costumerName: '',
     menCount: 0, // CHANGED FROM menCount:'',
     menAgeGroup: '',
     womenCount: 0, // CHANGED FROM womenCount:'',
@@ -148,6 +155,13 @@ class AcceptOrders extends React.Component {
             <title>Waiter Orders</title>
             <meta name="description" content="Description of Waiter Orders" />
           </Helmet>
+          <Input
+            placeholder="Costumer Name"
+            style={{ width: '100%', marginTop: '10px' }}
+            // ADD to store value in state
+            onChange={value => this.handleChange(value, 'costumerName')}
+            value={this.state.costumerName}
+          />
           {items.map((item, index) => (
             <div style={{ backgroundColor: '#030303' }} key={index}>
               <StyledMenuDiv>
@@ -295,36 +309,16 @@ class AcceptOrders extends React.Component {
                     `${this.state.currentOutlet}menu_id`,
                     product_id,
                   ]);
-                  if (!is_exist) {
-                    this.setState({
-                      items: [
-                        ...this.state.items,
-                        {
-                          data: {
-                            menCount,
-                            menAgeGroup,
-                            womenCount,
-                            womenAgeGroup,
-                          },
-                          [`${this.state.currentOutlet}menu_id`]: product_id,
-                          quantity,
-                        },
-                      ],
-                      menCount: null,
-                      menAgeGroup: null,
-                      womenCount: null,
-                      womenAgeGroup: null,
-                      product_id: null,
-                      quantity: null,
-                      show: false,
-                    });
-                  } else {
-                    const items = _.remove(items, {
+                  if (is_exist) {
+                    _.remove(items, {
                       [`${this.state.currentOutlet}menu_id`]: product_id,
                     });
-
-                    this.setState({
-                      items: _.concat(items, {
+                  }
+                  this.setState({
+                    items: [
+                      ...this.state.items,
+                      {
+                        customer_name: this.state.costumerName,
                         data: {
                           menCount,
                           menAgeGroup,
@@ -333,16 +327,17 @@ class AcceptOrders extends React.Component {
                         },
                         [`${this.state.currentOutlet}menu_id`]: product_id,
                         quantity,
-                      }),
-                      menCount: null,
-                      menAgeGroup: null,
-                      womenCount: null,
-                      womenAgeGroup: null,
-                      product_id: null,
-                      quantity: null,
-                      show: false,
-                    });
-                  }
+                        payment_type: null,
+                      },
+                    ],
+                    menCount: 0,
+                    menAgeGroup: '',
+                    womenCount: 0,
+                    womenAgeGroup: '',
+                    product_id: null,
+                    quantity: null,
+                    show: false,
+                  });
                 }}
                 appearance="primary"
               >
@@ -374,6 +369,9 @@ class AcceptOrders extends React.Component {
             }}
             onClick={() => {
               console.log(this.state.items);
+              this.props.addInfoRequest({
+                data: this.state.items,
+              });
               if (customer) {
                 this.props.addCartItems({
                   items: this.state.items,
@@ -413,6 +411,7 @@ function mapDispatchToProps(dispatch) {
     getOutletVenue: venueId => dispatch(getOutletVenue(venueId)),
     getOutletEvent: eventId => dispatch(getOutletEvent(eventId)),
     addCartItems: items => dispatch(addCartItems(items)),
+    addInfoRequest: info => dispatch(addInfoRequest(info)),
     getUser: () => dispatch(getUser()),
   };
 }
