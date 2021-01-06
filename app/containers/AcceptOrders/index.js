@@ -61,7 +61,7 @@ class AcceptOrders extends React.Component {
   state = {
     show: false,
     items: [],
-    custumerName: '',
+    customerName: '',
     menCount: 0, // CHANGED FROM menCount:'',
     menAgeGroup: '',
     womenCount: 0, // CHANGED FROM womenCount:'',
@@ -158,8 +158,8 @@ class AcceptOrders extends React.Component {
             placeholder="Costumer Name"
             style={{ width: '100%', marginTop: '10px' }}
             // ADD to store value in state
-            onChange={value => this.handleChange(value, 'custumerName')}
-            value={this.state.custumerName}
+            onChange={value => this.handleChange(value, 'customerName')}
+            value={this.state.customerName}
           />
           {items.map((item, index) => (
             <div style={{ backgroundColor: '#030303' }} key={index}>
@@ -179,12 +179,12 @@ class AcceptOrders extends React.Component {
                   <Button
                     appearance="primary"
                     onClick={() => {
-                      const { items, currentOutlet, custumerName } = this.state;
+                      const { items, currentOutlet, customerName } = this.state;
                       const is_exist = _.find(items, [
                         `${currentOutlet}menu_id`,
                         item.id,
                       ]);
-                      if (custumerName !== '') {
+                      if (customerName !== '') {
                         //NEW
                         if (!is_exist) {
                           this.setState({
@@ -322,7 +322,7 @@ class AcceptOrders extends React.Component {
                     items: [
                       ...this.state.items,
                       {
-                        customer_name: this.state.custumerName,
+                        customer_name: this.state.customerName,
                         ordered: true,
                         data: {
                           menCount,
@@ -382,7 +382,7 @@ class AcceptOrders extends React.Component {
               } else {
                 this.props.addInfoRequest({
                   data: this.state.items,
-                  custumerName: this.state.custumerName,
+                  customerName: this.state.customerName,
                 });
                 this.props.history.push({
                   pathname: '/order-payment',
