@@ -28,6 +28,7 @@ import {
   Alert,
 } from 'rsuite';
 import { Image } from '@styled-icons/feather';
+import { Whatsapp } from '@styled-icons/simple-icons';
 import _ from 'lodash';
 import {
   makeSelectOutletInfo,
@@ -151,6 +152,7 @@ export class OutletInfo extends React.Component {
     } else if ('outlet_venue' in value) {
       this.props.getOutletVenue(value.outlet_venue);
     }
+    console.log(this.props,'OUTLET PROPS');
   };
 
   handleMenuCategory = menu_category => {
@@ -419,6 +421,23 @@ export class OutletInfo extends React.Component {
             )}
           </div>
         </div>
+        <Button
+        href='https://api.whatsapp.com/send?phone=91number'
+        style={{
+          position: 'fixed',
+          width: '60px',
+          height: '60px',
+          bottom: '50px',
+          right: '10px',
+          backgroundColor: '#25D366',
+          color: '#fff',
+          padding: '5px', 
+          borderRadius: '50px',
+          textAlign: 'center',
+          fontSize: '0px',
+          zIndex: '100',
+        }}
+        ><Whatsapp /></Button>
       </div>
     );
   }

@@ -20,6 +20,7 @@ import saga from './saga';
 import messages from './messages';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Whatsapp } from '@styled-icons/simple-icons';
 import {Panel, Loader, Button, Divider} from 'rsuite';
 import { makeSelectCode } from './selectors';
 import {getInviteCode } from './actions'
@@ -102,6 +103,25 @@ export class InviteCodeContainer extends React.PureComponent {
             </Button>
           </Panel>
         )}
+        <Button
+        href='https://api.whatsapp.com/send?phone=91number'
+        style={{
+          position: 'fixed',
+          width: '30px',
+          height: '30px',
+          bottom: '50px',
+          right: '10px',
+          backgroundColor: '#25D366',
+          color: '#fff',
+          padding: '0px', 
+          borderRadius: '50px',
+          textAlign: 'center',
+          fontSize: '0px',
+          zIndex: '100',
+        }}
+        >
+          <Whatsapp />
+        </Button>
       </InviteContainer>
     );
   }

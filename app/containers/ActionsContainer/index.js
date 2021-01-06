@@ -21,9 +21,9 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import { TransferAction, PurchaseAction, OrderAction } from './components';
-import {Divider, Message} from 'rsuite';
+import {Divider, Message, Button} from 'rsuite';
 import styled from 'styled-components';
-
+import { Whatsapp } from '@styled-icons/simple-icons';
 const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -91,6 +91,25 @@ export class ActionsContainer extends React.Component {
             <Message type="info" description="All your purchases, orders and transfers will appear here." />
           )}
         </StyledDiv>
+        <Button
+        href='https://api.whatsapp.com/send?phone=919493871441'
+        style={{
+          position: 'fixed',
+          width: '30px',
+          height: '30px',
+          bottom: '50px',
+          right: '10px',
+          backgroundColor: '#25D366',
+          color: '#fff',
+          padding: '0px', 
+          borderRadius: '50px',
+          textAlign: 'center',
+          fontSize: '0px',
+          zIndex: '100',
+        }}
+        >
+          <Whatsapp />
+        </Button>
       </div>
     );
   }

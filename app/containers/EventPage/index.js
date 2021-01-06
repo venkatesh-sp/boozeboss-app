@@ -11,7 +11,8 @@ import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
+import { Whatsapp } from '@styled-icons/simple-icons';
+import { Button} from 'rsuite';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import { makeSelectEvent, makeSelectCart, makeSelectStatsData } from './selectors';
@@ -53,6 +54,25 @@ export class EventPage extends React.Component {
         <EventContainer 
           {...this.props}
         />
+        <Button
+        href='https://api.whatsapp.com/send?phone=919493871441'
+        style={{
+          position: 'fixed',
+          width: '30px',
+          height: '30px',
+          bottom: '50px',
+          right: '10px',
+          backgroundColor: '#25D366',
+          color: '#fff',
+          padding: '0px', 
+          borderRadius: '50px',
+          textAlign: 'center',
+          fontSize: '0px',
+          zIndex: '100',
+        }}
+        >
+          <Whatsapp />
+        </Button>
       </div>
     );
   }
