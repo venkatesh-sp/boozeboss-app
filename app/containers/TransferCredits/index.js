@@ -14,19 +14,18 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { makeSelectSuccess, makeSelectError} from './selectors';
-import { makeSelectUser } from '../App/selectors'
+import { makeSelectSuccess, makeSelectError } from './selectors';
+import { makeSelectUser } from '../App/selectors';
 import reducer from './reducer';
 import { transfer } from './actions';
 import saga from './saga';
 import messages from './messages';
 import styled from 'styled-components';
-import { Whatsapp } from '@styled-icons/simple-icons';
 import { Panel, Divider, InputNumber, Input, Button } from 'rsuite';
 
 const StyledPanel = styled(Panel)`
   margin: 1em;
-`
+`;
 
 const StyledRow = styled.div`
   display: flex;
@@ -34,43 +33,43 @@ const StyledRow = styled.div`
   align-items: center;
   justify-content: ${props => props.justify || 'flex-start'};
   margin: 10px 0 10px 0;
-`
+`;
 
 const StyledColumn = styled.div`
   display: flex;
   flex-direction: column;
-  flex: ${props => props.flex || '1'}; 
-  align-items: ${props => props.align || 'flex-start'}; 
-`
-
+  flex: ${props => props.flex || '1'};
+  align-items: ${props => props.align || 'flex-start'};
+`;
 
 /* eslint-disable react/prefer-stateless-function */
 export class TransferCredits extends React.Component {
-
   state = {
     amount: 0,
     target_email: null,
-  }
+  };
 
   handleChange = (value, name) => {
-    this.setState({[name]: value});
-  }
+    this.setState({ [name]: value });
+  };
 
   handleTransfer = () => {
-    const {amount, target_email} = this.state;
-    const {transfer} = this.props;
-    if (amount < 1 || !target_email || target_email.length < 1) return alert('Invalid fields');
+    const { amount, target_email } = this.state;
+    const { transfer } = this.props;
+    if (amount < 1 || !target_email || target_email.length < 1)
+      return alert('Invalid fields');
 
-    const should_transfer = confirm(`Are you sure you want to send ${amount} credits to ${target_email}?`);
+    const should_transfer = confirm(
+      `Are you sure you want to send ${amount} credits to ${target_email}?`,
+    );
     if (should_transfer) {
       transfer(amount, target_email);
     }
-    
-  }
-  
+  };
+
   render() {
-    const {amount, target_email} = this.state;
-    const {user} = this.props;
+    const { amount, target_email } = this.state;
+    const { user } = this.props;
     return (
       <div>
         <Helmet>
@@ -85,11 +84,11 @@ export class TransferCredits extends React.Component {
           </StyledRow>
           <StyledRow>
             <StyledColumn>
-              <InputNumber 
+              <InputNumber
                 min={0}
                 max={user && user.wallet.balance}
                 value={amount}
-                onChange={(value) => this.handleChange(value, 'amount')}
+                onChange={value => this.handleChange(value, 'amount')}
               />
             </StyledColumn>
           </StyledRow>
@@ -100,16 +99,16 @@ export class TransferCredits extends React.Component {
           </StyledRow>
           <StyledRow>
             <StyledColumn>
-              <Input 
-                  placeholder="Account Email"
-                  value={target_email}
-                  onChange={(value) => this.handleChange(value, 'target_email')}
+              <Input
+                placeholder="Account Email"
+                value={target_email}
+                onChange={value => this.handleChange(value, 'target_email')}
               />
             </StyledColumn>
           </StyledRow>
           <Divider />
-          <Button 
-            color="green" 
+          <Button
+            color="green"
             block
             disabled={amount < 1 || !target_email || target_email.length < 1}
             onClick={this.handleTransfer}
@@ -117,25 +116,6 @@ export class TransferCredits extends React.Component {
             Transfer
           </Button>
         </StyledPanel>
-        <Button
-        href='https://api.whatsapp.com/send?phone=91number'
-        style={{
-          position: 'fixed',
-          width: '30px',
-          height: '30px',
-          bottom: '50px',
-          right: '10px',
-          backgroundColor: '#25D366',
-          color: '#fff',
-          padding: '0px', 
-          borderRadius: '50px',
-          textAlign: 'center',
-          fontSize: '0px',
-          zIndex: '100',
-        }}
-        >
-          <Whatsapp />
-        </Button>
       </div>
     );
   }
@@ -146,12 +126,13 @@ TransferCredits.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  user: makeSelectUser()
+  user: makeSelectUser(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    transfer: (amount, target_email) => dispatch(transfer(amount, target_email))
+    transfer: (amount, target_email) =>
+      dispatch(transfer(amount, target_email)),
   };
 }
 

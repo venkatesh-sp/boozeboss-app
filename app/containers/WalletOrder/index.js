@@ -14,20 +14,24 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { makeSelectError, makeSelectSuccess, makeSelectOrderIdentifier } from './selectors';
+import {
+  makeSelectError,
+  makeSelectSuccess,
+  makeSelectOrderIdentifier,
+} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import {Panel, Divider, Icon, Message, Button} from 'rsuite';
+import { Panel, Divider, Icon, Message, Button } from 'rsuite';
 import styled from 'styled-components';
-import { Whatsapp } from '@styled-icons/simple-icons';
+
 import { makeSelectUser } from '../App/selectors';
 import { Link } from 'react-router-dom';
-import {createOrder} from './actions'
+import { createOrder } from './actions';
 
 const StyledPanel = styled(Panel)`
   margin: 1em;
-`
+`;
 
 const Summary = styled.div`
   display: flex;
@@ -35,7 +39,7 @@ const Summary = styled.div`
   padding: 10 0 10 0;
   margin: 5px 0 5px 0;
   justify-content: space-between;
-`
+`;
 
 const SummaryColumn = styled.div`
   display: flex;
@@ -43,58 +47,65 @@ const SummaryColumn = styled.div`
   align-items: center;
   justify-content: ${props => props.justify || 'flex-start'};
   flex: ${props => props.flex || 1};
-`
+`;
 
 const Header = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 
 const ProductSummary = props => (
   <Summary>
-    <SummaryColumn>
-      {props.item.product.name}
-    </SummaryColumn>
-    <SummaryColumn justify='flex-end'>
-        <p>{Math.round(props.item.price * props.user.location.currency_conversion * 100) / 100}</p>
-        <Icon icon="circle" style={{color: '#c2b90a', margin: '0 1em 0 0.5em'}}/>
+    <SummaryColumn>{props.item.product.name}</SummaryColumn>
+    <SummaryColumn justify="flex-end">
+      <p>
+        {Math.round(
+          props.item.price * props.user.location.currency_conversion * 100,
+        ) / 100}
+      </p>
+      <Icon
+        icon="circle"
+        style={{ color: '#c2b90a', margin: '0 1em 0 0.5em' }}
+      />
     </SummaryColumn>
   </Summary>
-)
+);
 
 const TotalRow = props => (
   <Summary>
     <SummaryColumn>
-       <b>Total</b>
+      <b>Total</b>
     </SummaryColumn>
-    <SummaryColumn justify='flex-end'>
+    <SummaryColumn justify="flex-end">
       <b>{props.total}</b>
-      <Icon icon="circle" style={{color: '#c2b90a', margin: '0 1em 0 0.5em'}}/>
+      <Icon
+        icon="circle"
+        style={{ color: '#c2b90a', margin: '0 1em 0 0.5em' }}
+      />
     </SummaryColumn>
   </Summary>
-)
+);
 
 /* eslint-disable react/prefer-stateless-function */
 export class WalletOrder extends React.Component {
-  
   state = {
-    cart: null
-  }
+    cart: null,
+  };
 
   componentDidMount = () => {
-    const {history} = this.props;
-    const {state} = history.location;
-    
+    const { history } = this.props;
+    const { state } = history.location;
+
     if (!state || !state.cart) {
-      history.push({pathname: '/'})
+      history.push({ pathname: '/' });
     } else {
-      this.setState({cart: state.cart});
+      this.setState({ cart: state.cart });
     }
-  }
+  };
 
   calculateTotal = () => {
-    const {history, user} = this.props;
-    const {state} = history.location;
+    const { history, user } = this.props;
+    const { state } = history.location;
 
     if (state && state.cart) {
       const total = state.cart.reduce((acc, curr) => acc + curr.price, 0);
@@ -102,54 +113,51 @@ export class WalletOrder extends React.Component {
     } else {
       return 0;
     }
-
-  }
+  };
 
   handleReturn = () => {
-    const {history} = this.props;
+    const { history } = this.props;
     history.push({
-      pathname: `/event/${history.location.state.event_id}`
-    })
-  }
+      pathname: `/event/${history.location.state.event_id}`,
+    });
+  };
 
   handleCreateOrder = () => {
     const { createOrder, history } = this.props;
-    const {cart} = this.state;
+    const { cart } = this.state;
     const transactions = cart.map(item => item.id);
     createOrder(transactions, history);
-  }
+  };
 
   goToAddCredits = () => {
-    const {history} = this.props;
-    history.push({pathname: 'add-credits'});
-  }
+    const { history } = this.props;
+    history.push({ pathname: 'add-credits' });
+  };
 
   render() {
-    const {user, error, success} = this.props;
-    const {cart} = this.state;
+    const { user, error, success } = this.props;
+    const { cart } = this.state;
     return (
       <div>
         <Helmet>
           <title>WalletOrder</title>
           <meta name="description" content="Description of WalletOrder" />
         </Helmet>
-        {error && (
-          <Message 
-          type="error" 
-          description={error}/>
-        )}
-        {success && (
-          <Message 
-          type="success" 
-          description={success}/>
-        )}
+        {error && <Message type="error" description={error} />}
+        {success && <Message type="success" description={success} />}
         {user && user.wallet && user.wallet.balance < this.calculateTotal() && (
-            <Message 
-              type="warning" 
-              description={
-                <p>You have insufficient balance. <a onClick={this.goToAddCredits}>Add more credits to complete this order.</a></p>
-              }/>
-          )}
+          <Message
+            type="warning"
+            description={
+              <p>
+                You have insufficient balance.{' '}
+                <a onClick={this.goToAddCredits}>
+                  Add more credits to complete this order.
+                </a>
+              </p>
+            }
+          />
+        )}
         <StyledPanel shaded>
           <Header>
             <a onClick={this.handleReturn}>Go to Menu</a>
@@ -159,41 +167,30 @@ export class WalletOrder extends React.Component {
           {cart && (
             <React.Fragment>
               {cart.map(item => {
-                return <ProductSummary item={item} {...this.props}/>
+                return <ProductSummary item={item} {...this.props} />;
               })}
             </React.Fragment>
           )}
           <Divider />
-          {cart && (
-            <TotalRow total={this.calculateTotal()} {...this.props}/>
-          )}
+          {cart && <TotalRow total={this.calculateTotal()} {...this.props} />}
           <br />
-          {!success && user && user.wallet && user.wallet.balance < this.calculateTotal() && (
-            <Button block color="green" disabled>Confirm Order</Button>
-          )}
-          {!success && user && user.wallet && user.wallet.balance >= this.calculateTotal() && (
-            <Button block color="green" onClick={this.handleCreateOrder}>Confirm Order</Button>
-          )}
+          {!success &&
+            user &&
+            user.wallet &&
+            user.wallet.balance < this.calculateTotal() && (
+              <Button block color="green" disabled>
+                Confirm Order
+              </Button>
+            )}
+          {!success &&
+            user &&
+            user.wallet &&
+            user.wallet.balance >= this.calculateTotal() && (
+              <Button block color="green" onClick={this.handleCreateOrder}>
+                Confirm Order
+              </Button>
+            )}
         </StyledPanel>
-        <Button
-        href='https://api.whatsapp.com/send?phone=91number'
-        style={{
-          position: 'fixed',
-          width: '30px',
-          height: '30px',
-          bottom: '50px',
-          right: '10px',
-          backgroundColor: '#25D366',
-          color: '#fff',
-          padding: '0px', 
-          borderRadius: '50px',
-          textAlign: 'center',
-          fontSize: '0px',
-          zIndex: '100',
-        }}
-        >
-          <Whatsapp />
-        </Button>
       </div>
     );
   }
@@ -204,7 +201,7 @@ WalletOrder.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  user: makeSelectUser(), 
+  user: makeSelectUser(),
   error: makeSelectError(),
   success: makeSelectSuccess(),
   order_identifier: makeSelectOrderIdentifier(),
@@ -212,7 +209,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    createOrder: (transactions, history) => dispatch(createOrder(transactions, history))
+    createOrder: (transactions, history) =>
+      dispatch(createOrder(transactions, history)),
   };
 }
 

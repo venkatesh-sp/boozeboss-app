@@ -11,7 +11,7 @@ import injectReducer from 'utils/injectReducer';
 import QRCode from 'react-qr-code';
 import _ from 'lodash';
 import { Button, ButtonGroup, Loader } from 'rsuite';
-import { Whatsapp } from '@styled-icons/simple-icons';
+import WhatsAppButton from '../../components/WhatsAppButton';
 import {
   makeSelectCartItems,
   makeSelectCurrentOutlet,
@@ -104,25 +104,7 @@ class OrderInfo extends React.Component {
             Close Bill
           </Button>
         </ButtonGroup>
-        <Button
-        href='https://api.whatsapp.com/send?phone=91number'
-        style={{
-          position: 'fixed',
-          width: '60px',
-          height: '60px',
-          bottom: '50px',
-          right: '10px',
-          backgroundColor: '#25D366',
-          color: '#fff',
-          padding: '5px', 
-          borderRadius: '50px',
-          textAlign: 'center',
-          fontSize: '0px',
-          zIndex: '100',
-        }}
-        >
-          <Whatsapp />
-        </Button>
+        {this.props.scope === 'GUEST' ? <WhatsAppButton /> : ''}
       </>
     );
   }

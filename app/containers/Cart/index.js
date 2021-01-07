@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Whatsapp } from '@styled-icons/simple-icons';
+import WhatsAppButton from '../../components/WhatsAppButton';
 import PropTypes from 'prop-types';
 import { Button, InputGroup, InputNumber, Row, Col } from 'rsuite';
 
@@ -17,6 +17,9 @@ import {
   makeSelectCartItems,
   makeSelectCurrentOutlet,
 } from './selectors';
+import {
+  makeSelectScope,
+} from '../App/selectors';
 
 const CartItems = styled.div`
   overflow: scroll;
@@ -63,8 +66,7 @@ const ButtonStyles = {
 };
 class Cart extends Component {
   render() {
-    const { cartItems, outlet } = this.props;
-
+    const { cartItems, outlet, scope } = this.props;
     if (!outlet) {
       return <>Loading...</>;
     }
@@ -148,23 +150,7 @@ class Cart extends Component {
         }}
       >
         <div style={{ textAlign: 'center', height: '100%' }}>
-        <Button
-        href='https://api.whatsapp.com/send?phone=91number'
-        style={{
-          position: 'fixed',
-          width: '60px',
-          height: '60px',
-          bottom: '50px',
-          right: '10px',
-          backgroundColor: '#25D366',
-          color: '#fff',
-          padding: '5px', 
-          borderRadius: '50px',
-          textAlign: 'center',
-          fontSize: '0px',
-          zIndex: '100',
-        }}
-        ><Whatsapp /></Button>
+        {scope === 'GUEST' ? <WhatsAppButton /> : ''}
           <CartItems>{itemToRender}</CartItems>
           <Button
             style={{
@@ -201,6 +187,7 @@ const mapStateToProps = createStructuredSelector({
   outlet: makeSelectOutletInfo(),
   cartItems: makeSelectCartItems(),
   currentoutlet: makeSelectCurrentOutlet(),
+  scope: makeSelectScope(),
 });
 
 function mapDispatchToProps(dispatch) {

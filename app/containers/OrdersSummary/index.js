@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-
+import WhatsAppButton from '../../components/WhatsAppButton';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
@@ -85,6 +85,7 @@ class OrdersSummary extends React.Component {
           >
             Go Back
           </Button>
+          {scope === 'GUEST' ? <WhatsAppButton /> : ''}
         </>
       );
     }
@@ -312,6 +313,7 @@ class OrdersSummary extends React.Component {
         >
           Total Cost: {_.sumBy(order_summary, 'cost')}
         </Button>
+        {scope === 'GUEST' ? <WhatsAppButton /> : ''}
       </>
     );
   }

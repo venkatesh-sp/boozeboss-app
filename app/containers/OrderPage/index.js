@@ -28,7 +28,7 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import styled from 'styled-components';
-import { Whatsapp } from '@styled-icons/simple-icons';
+import WhatsAppButton from '../../components/WhatsAppButton';
 import { getOrder, cancelOrder, scanOrder, dismiss } from './actions';
 import { Message, Panel, Button, Divider, Icon } from 'rsuite';
 import QRCode from 'react-qr-code';
@@ -138,7 +138,7 @@ export class OrderPage extends React.Component {
   };
 
   render() {
-    const { error, success, order } = this.props;
+    const { error, success, order, scope } = this.props;
     return (
       <div>
         <Helmet>
@@ -209,25 +209,7 @@ export class OrderPage extends React.Component {
             </StyledPanel>
           )}
         </StyledOrderContainer>
-        <Button
-        href='https://api.whatsapp.com/send?phone=91number'
-        style={{
-          position: 'fixed',
-          width: '30px',
-          height: '30px',
-          bottom: '50px',
-          right: '10px',
-          backgroundColor: '#25D366',
-          color: '#fff',
-          padding: '0px', 
-          borderRadius: '50px',
-          textAlign: 'center',
-          fontSize: '0px',
-          zIndex: '100',
-        }}
-        >
-          <Whatsapp />
-        </Button>
+        {scope === 'GUEST' ? <WhatsAppButton /> : ''}
       </div>
     );
   }

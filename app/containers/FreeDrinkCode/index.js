@@ -14,14 +14,18 @@ import { compose } from 'redux';
 import { Panel, Button, Divider } from 'rsuite';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import {makeSelectSuccess, makeSelectError, makeSelectCode, makeSelectProduct} from './selectors';
+import {
+  makeSelectSuccess,
+  makeSelectError,
+  makeSelectCode,
+  makeSelectProduct,
+} from './selectors';
 import { generateCode } from './actions';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import styled from 'styled-components';
-import { Whatsapp } from '@styled-icons/simple-icons';
-import QRCode from "react-qr-code";
+import QRCode from 'react-qr-code';
 
 const InviteContainer = styled.div`
   display: flex;
@@ -29,39 +33,37 @@ const InviteContainer = styled.div`
   margin: 1em;
   justify-content: center;
   flex: 1;
-`
+`;
 
 const InfoSection = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   flex: 1;
-`
+`;
 
 const QRSection = styled.div`
   display: flex;
   flex-direction: column;
   align-content: center;
-  margin: 1em;  
-`
+  margin: 1em;
+`;
 
 /* eslint-disable react/prefer-stateless-function */
 export class FreeDrinkCode extends React.Component {
-
   componentDidMount = () => {
-    const {history, generateCode} = this.props;
-    const {state} = history.location;
-    
+    const { history, generateCode } = this.props;
+    const { state } = history.location;
+
     if (!state || !state.event_guest) {
-      history.push({pathname: '/'})
+      history.push({ pathname: '/' });
     } else {
       generateCode(state.event_guest.event_id, state.event_guest.id);
     }
-  }
-
+  };
 
   render() {
-    const {code, product} = this.props;
+    const { code, product } = this.props;
     return (
       <div>
         <Helmet>
@@ -69,50 +71,43 @@ export class FreeDrinkCode extends React.Component {
           <meta name="description" content="Description of FreeDrinkCode" />
         </Helmet>
         <InviteContainer>
-            <Panel bordered>
-              <InfoSection>
-                <h5>Free Drink</h5>
-                {product && (
-                    <p>{product.product.name} ({product.product.metric_amount} {product.product.metric})</p>
-                )}
-              </InfoSection>
-              <Divider />
-              {code && (
-                <React.Fragment>
-                  <p>Please scan this code at the bar or with a staff to redeem this drink.</p>
-                  <QRSection>
-                    {code ? (
-                      <QRCode value={JSON.stringify({code, type: 'free-drink'})}/>
-                    ) : (
-                      <Loader />
-                    )}
-                  </QRSection>
-                </React.Fragment>
+          <Panel bordered>
+            <InfoSection>
+              <h5>Free Drink</h5>
+              {product && (
+                <p>
+                  {product.product.name} ({product.product.metric_amount}{' '}
+                  {product.product.metric})
+                </p>
               )}
-              <Button block color="green" onClick={() => this.props.history.goBack()}>
-                Go Back
-              </Button>
-            </Panel>
+            </InfoSection>
+            <Divider />
+            {code && (
+              <React.Fragment>
+                <p>
+                  Please scan this code at the bar or with a staff to redeem
+                  this drink.
+                </p>
+                <QRSection>
+                  {code ? (
+                    <QRCode
+                      value={JSON.stringify({ code, type: 'free-drink' })}
+                    />
+                  ) : (
+                    <Loader />
+                  )}
+                </QRSection>
+              </React.Fragment>
+            )}
+            <Button
+              block
+              color="green"
+              onClick={() => this.props.history.goBack()}
+            >
+              Go Back
+            </Button>
+          </Panel>
         </InviteContainer>
-        <Button
-        href='https://api.whatsapp.com/send?phone=91number'
-        style={{
-          position: 'fixed',
-          width: '30px',
-          height: '30px',
-          bottom: '50px',
-          right: '10px',
-          backgroundColor: '#25D366',
-          color: '#fff',
-          padding: '0px', 
-          borderRadius: '50px',
-          textAlign: 'center',
-          fontSize: '0px',
-          zIndex: '100',
-        }}
-        >
-          <Whatsapp />
-        </Button>
       </div>
     );
   }
@@ -130,7 +125,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    generateCode: (event_id, event_guest_id) => dispatch(generateCode(event_id, event_guest_id)),
+    generateCode: (event_id, event_guest_id) =>
+      dispatch(generateCode(event_id, event_guest_id)),
   };
 }
 

@@ -17,6 +17,7 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import QrReader from 'react-qr-reader';
 import styled from 'styled-components';
+import WhatsAppButton from '../../components/WhatsAppButton';
 import {
   Container,
   Message,
@@ -28,13 +29,13 @@ import {
   Alert,
 } from 'rsuite';
 import { Image } from '@styled-icons/feather';
-import { Whatsapp } from '@styled-icons/simple-icons';
 import _ from 'lodash';
 import {
   makeSelectOutletInfo,
   makeSelectCartItems,
   makeSelectCurrentOutlet,
 } from './selectors';
+import { makeSelectScope } from '../App/selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
@@ -152,7 +153,7 @@ export class OutletInfo extends React.Component {
     } else if ('outlet_venue' in value) {
       this.props.getOutletVenue(value.outlet_venue);
     }
-    console.log(this.props,'OUTLET PROPS');
+    console.log(this.props, 'OUTLET PROPS');
   };
 
   handleMenuCategory = menu_category => {
@@ -164,7 +165,7 @@ export class OutletInfo extends React.Component {
   };
 
   render() {
-    const { outlet, cartItems } = this.props;
+    const { outlet, cartItems, scope } = this.props;
     if (!outlet) {
       return <>Loading...</>;
     }
@@ -421,23 +422,7 @@ export class OutletInfo extends React.Component {
             )}
           </div>
         </div>
-        <Button
-        href='https://api.whatsapp.com/send?phone=91number'
-        style={{
-          position: 'fixed',
-          width: '60px',
-          height: '60px',
-          bottom: '50px',
-          right: '10px',
-          backgroundColor: '#25D366',
-          color: '#fff',
-          padding: '5px', 
-          borderRadius: '50px',
-          textAlign: 'center',
-          fontSize: '0px',
-          zIndex: '100',
-        }}
-        ><Whatsapp /></Button>
+        {this.props.scope === 'GUEST' ? <WhatsAppButton /> : ''}
       </div>
     );
   }
@@ -451,6 +436,7 @@ const mapStateToProps = createStructuredSelector({
   outlet: makeSelectOutletInfo(),
   cartItems: makeSelectCartItems(),
   currentoutlet: makeSelectCurrentOutlet(),
+  scope: makeSelectScope(),
 });
 
 function mapDispatchToProps(dispatch) {

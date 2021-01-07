@@ -11,25 +11,25 @@ import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { Whatsapp } from '@styled-icons/simple-icons';
-import { Button} from 'rsuite';
+
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import { makeSelectError, makeSelectSuccess } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import {uploadVerification, submitVerification, checkVerification} from './actions'
+import {
+  uploadVerification,
+  submitVerification,
+  checkVerification,
+} from './actions';
 
-import {Verification} from './components'
-
-
+import { Verification } from './components';
 class VerificationContainer extends React.Component {
-
-  componentDidMount = () => { 
-    const {checkVerification} = this.props;
+  componentDidMount = () => {
+    const { checkVerification } = this.props;
     checkVerification();
-  }
+  };
 
   render() {
     return (
@@ -41,28 +41,7 @@ class VerificationContainer extends React.Component {
             content="Description of VerificationContainer"
           />
         </Helmet>
-        <Verification 
-          {...this.props}
-        />
-        <Button
-        href='https://api.whatsapp.com/send?phone=919493871441'
-        style={{
-          position: 'fixed',
-          width: '30px',
-          height: '30px',
-          bottom: '50px',
-          right: '10px',
-          backgroundColor: '#25D366',
-          color: '#fff',
-          padding: '0px', 
-          borderRadius: '50px',
-          textAlign: 'center',
-          fontSize: '0px',
-          zIndex: '100',
-        }}
-        >
-          <Whatsapp />
-        </Button>
+        <Verification {...this.props} />
       </div>
     );
   }
@@ -80,8 +59,9 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     checkVerification: () => dispatch(checkVerification()),
-    uploadVerification: (verification_type, file) => dispatch(uploadVerification(verification_type, file)),
-    submitVerification: (status) => dispatch(submitVerification(status)),
+    uploadVerification: (verification_type, file) =>
+      dispatch(uploadVerification(verification_type, file)),
+    submitVerification: status => dispatch(submitVerification(status)),
   };
 }
 
