@@ -2,10 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-
 import QRCode from 'react-qr-code';
 import _ from 'lodash';
-import { Button, ButtonGroup, Loader, Alert } from 'rsuite';
+import {
+  Button,
+  ButtonGroup,
+  Loader,
+  Alert,
+  Modal,
+  Notification,
+} from 'rsuite';
 
 const StyledMenuDiv = styled.div`
   background: #1a1b1c;
@@ -22,8 +28,18 @@ const StyledText = styled.p`
 `;
 
 class OrderPayments extends React.Component {
+  state = {
+    show: false,
+  };
+  open = () => {
+    this.setState({ show: true });
+  };
+
+  close = () => {
+    this.setState({ show: false });
+  };
+
   render() {
-    console.log(this.props);
     const { state } = this.props.location;
     if (!state || !state.items) {
       return <Loader />;
@@ -86,9 +102,7 @@ class OrderPayments extends React.Component {
               margin: '2px',
             }}
             appearance="ghost"
-            onClick={() => {
-              //
-            }}
+            onClick={this.open}
           >
             Paid Online
           </Button>
@@ -100,9 +114,7 @@ class OrderPayments extends React.Component {
             margin: '2px',
           }}
           appearance="ghost"
-          onClick={() => {
-            //
-          }}
+          onClick={this.open}
         >
           Paid Offline
         </Button>
@@ -225,6 +237,37 @@ class OrderPayments extends React.Component {
         >
           Total Cost: {_.sumBy(order_summary, 'cost')}
         </Button>
+        <Modal
+          size="xs"
+          show={this.state.show}
+          onHide={this.close}
+          style={{
+            paddingTop: '35%',
+            paddingLeft: '18px',
+            width: '90%',
+          }}
+        >
+          <Modal.Body style={{ textAlign: 'center' }}>
+            <b>Confirm to Close Bill ?</b>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              onClick={() => {
+                this.close;
+                this.props.history.push({
+                  pathname: '/',
+                });
+                this.props.history.go();
+              }}
+              appearance="primary"
+            >
+              Confirm
+            </Button>
+            <Button onClick={this.close} appearance="subtle">
+              Cancel
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </>
     );
   }

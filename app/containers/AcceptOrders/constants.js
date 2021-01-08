@@ -24,3 +24,7 @@ export const GET_OUTLET_EVENT_ERROR = 'app/AcceptOrders/GET_OUTLET_EVENT_ERROR';
 export const ADD_CART_ITEMS_REQUEST = 'app/AcceptOrders/ADD_CART_ITEMS_REQUEST';
 export const ADD_CART_ITEMS_SUCCESS = 'app/AcceptOrders/ADD_CART_ITEMS_SUCCESS';
 export const ADD_CART_ITEMS_ERROR = 'app/AcceptOrders/ADD_CART_ITEMS_ERROR';
+// ADD info constants
+export const ADD_INFO_REQUEST = 'app/AcceptOrders/ADD_INFO_REQUEST';
+export const ADD_INFO_SUCCESS = 'app/AcceptOrders/ADD_INFO_SUCCESS';
+export const ADD_INFO_ERROR = 'app/AcceptOrders/ADD_INFO_ERROR';

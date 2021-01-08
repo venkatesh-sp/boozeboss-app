@@ -17,6 +17,7 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import QrReader from 'react-qr-reader';
 import styled from 'styled-components';
+import WhatsAppButton from '../../components/WhatsAppButton';
 import {
   Container,
   Message,
@@ -34,6 +35,7 @@ import {
   makeSelectCartItems,
   makeSelectCurrentOutlet,
 } from './selectors';
+import { makeSelectScope } from '../App/selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
@@ -162,12 +164,20 @@ export class OutletInfo extends React.Component {
   };
 
   render() {
-    const { outlet, cartItems } = this.props;
+    const { outlet, cartItems, scope } = this.props;
     if (!outlet) {
       return <>Loading...</>;
     }
 
-    const { name, description, menu, cover_image, location } = outlet;
+    const {
+      name,
+      description,
+      menu,
+      cover_image,
+      location,
+      phone_number,
+    } = outlet;
+    console.log(this.props, '\nOUTLET PAGE\n');
     const { showMenu, menu_category, product_category } = this.state;
 
     let filtered_menu = menu;
@@ -419,6 +429,11 @@ export class OutletInfo extends React.Component {
             )}
           </div>
         </div>
+        {this.props.scope === 'GUEST' && phone_number !== null ? (
+          <WhatsAppButton phone_number={phone_number} />
+        ) : (
+          ''
+        )}
       </div>
     );
   }
@@ -432,6 +447,7 @@ const mapStateToProps = createStructuredSelector({
   outlet: makeSelectOutletInfo(),
   cartItems: makeSelectCartItems(),
   currentoutlet: makeSelectCurrentOutlet(),
+  scope: makeSelectScope(),
 });
 
 function mapDispatchToProps(dispatch) {

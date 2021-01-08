@@ -33,6 +33,7 @@ import saga from './saga';
 import messages from './messages';
 
 import { HomePageContainer } from './components';
+
 import { getEvents, getAgencyEvents, submitEventCode } from './actions';
 import { getUser } from '../App/actions';
 

@@ -28,6 +28,7 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import styled from 'styled-components';
+import WhatsAppButton from '../../components/WhatsAppButton';
 import { getOrder, cancelOrder, scanOrder, dismiss } from './actions';
 import { Message, Panel, Button, Divider, Icon } from 'rsuite';
 import QRCode from 'react-qr-code';
@@ -50,7 +51,7 @@ const Summary = styled.div`
   display: flex;
   flex-direction: row;
   padding: 10 0 10 0;
-  margin 5px 0 5px 0;
+  margin: 5px 0 5px 0;
   justify-content: space-between;
 `;
 
@@ -137,7 +138,7 @@ export class OrderPage extends React.Component {
   };
 
   render() {
-    const { error, success, order } = this.props;
+    const { error, success, order, scope } = this.props;
     return (
       <div>
         <Helmet>
@@ -208,6 +209,7 @@ export class OrderPage extends React.Component {
             </StyledPanel>
           )}
         </StyledOrderContainer>
+        {scope === 'GUEST' ? <WhatsAppButton /> : ''}
       </div>
     );
   }

@@ -10,6 +10,7 @@ import {
   Modal,
   Paragraph,
   InputGroup,
+  Input,
   InputNumber,
   SelectPicker,
   Alert,
@@ -24,7 +25,12 @@ import { makeSelectUser, makeSelectOutlet } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
-import { getOutletVenue, getOutletEvent, addCartItems } from './actions';
+import {
+  getOutletVenue,
+  getOutletEvent,
+  addCartItems,
+  addInfoRequest,
+} from './actions';
 
 import { getUser } from '../App/actions';
 
@@ -55,6 +61,7 @@ class AcceptOrders extends React.Component {
   state = {
     show: false,
     items: [],
+    customerName: '',
     menCount: 0, // CHANGED FROM menCount:'',
     menAgeGroup: '',
     womenCount: 0, // CHANGED FROM womenCount:'',
@@ -134,7 +141,6 @@ class AcceptOrders extends React.Component {
       });
     }
 
-    console.log(this.state, items);
     return (
       <>
         <div
@@ -148,6 +154,13 @@ class AcceptOrders extends React.Component {
             <title>Waiter Orders</title>
             <meta name="description" content="Description of Waiter Orders" />
           </Helmet>
+          <Input
+            placeholder="Costumer Name"
+            style={{ width: '100%', marginTop: '10px' }}
+            // ADD to store value in state
+            onChange={value => this.handleChange(value, 'customerName')}
+            value={this.state.customerName}
+          />
           {items.map((item, index) => (
             <div style={{ backgroundColor: '#030303' }} key={index}>
               <StyledMenuDiv>
@@ -166,33 +179,38 @@ class AcceptOrders extends React.Component {
                   <Button
                     appearance="primary"
                     onClick={() => {
-                      const { items, currentOutlet } = this.state;
+                      const { items, currentOutlet, customerName } = this.state;
                       const is_exist = _.find(items, [
                         `${currentOutlet}menu_id`,
                         item.id,
                       ]);
-                      if (!is_exist) {
-                        this.setState({
-                          show: true,
-                          product_id: item.id,
-                          quantity: item.quantity,
-                        });
+                      if (customerName !== '') {
+                        //NEW
+                        if (!is_exist) {
+                          this.setState({
+                            show: true,
+                            product_id: item.id,
+                            quantity: item.quantity,
+                          });
+                        } else {
+                          const {
+                            menCount,
+                            menAgeGroup,
+                            womenCount,
+                            womenAgeGroup,
+                          } = is_exist.data;
+                          this.setState({
+                            show: true,
+                            product_id: item.id,
+                            quantity: item.quantity,
+                            menCount,
+                            menAgeGroup,
+                            womenCount,
+                            womenAgeGroup,
+                          });
+                        }
                       } else {
-                        const {
-                          menCount,
-                          menAgeGroup,
-                          womenCount,
-                          womenAgeGroup,
-                        } = is_exist.data;
-                        this.setState({
-                          show: true,
-                          product_id: item.id,
-                          quantity: item.quantity,
-                          menCount,
-                          menAgeGroup,
-                          womenCount,
-                          womenAgeGroup,
-                        });
+                        Alert.warning('Add Costumer Name', 2500);
                       }
                     }}
                   >
@@ -295,36 +313,17 @@ class AcceptOrders extends React.Component {
                     `${this.state.currentOutlet}menu_id`,
                     product_id,
                   ]);
-                  if (!is_exist) {
-                    this.setState({
-                      items: [
-                        ...this.state.items,
-                        {
-                          data: {
-                            menCount,
-                            menAgeGroup,
-                            womenCount,
-                            womenAgeGroup,
-                          },
-                          [`${this.state.currentOutlet}menu_id`]: product_id,
-                          quantity,
-                        },
-                      ],
-                      menCount: null,
-                      menAgeGroup: null,
-                      womenCount: null,
-                      womenAgeGroup: null,
-                      product_id: null,
-                      quantity: null,
-                      show: false,
-                    });
-                  } else {
-                    const items = _.remove(items, {
+                  if (is_exist) {
+                    _.remove(items, {
                       [`${this.state.currentOutlet}menu_id`]: product_id,
                     });
-
-                    this.setState({
-                      items: _.concat(items, {
+                  }
+                  this.setState({
+                    items: [
+                      ...this.state.items,
+                      {
+                        customer_name: this.state.customerName,
+                        ordered: true,
                         data: {
                           menCount,
                           menAgeGroup,
@@ -333,16 +332,17 @@ class AcceptOrders extends React.Component {
                         },
                         [`${this.state.currentOutlet}menu_id`]: product_id,
                         quantity,
-                      }),
-                      menCount: null,
-                      menAgeGroup: null,
-                      womenCount: null,
-                      womenAgeGroup: null,
-                      product_id: null,
-                      quantity: null,
-                      show: false,
-                    });
-                  }
+                        payment_type: null,
+                      },
+                    ],
+                    menCount: 0,
+                    menAgeGroup: '',
+                    womenCount: 0,
+                    womenAgeGroup: '',
+                    product_id: null,
+                    quantity: null,
+                    show: false,
+                  });
                 }}
                 appearance="primary"
               >
@@ -373,7 +373,6 @@ class AcceptOrders extends React.Component {
               borderRadius: '0px',
             }}
             onClick={() => {
-              console.log(this.state.items);
               if (customer) {
                 this.props.addCartItems({
                   items: this.state.items,
@@ -381,6 +380,10 @@ class AcceptOrders extends React.Component {
                   history: this.props.history,
                 });
               } else {
+                this.props.addInfoRequest({
+                  data: this.state.items,
+                  customerName: this.state.customerName,
+                });
                 this.props.history.push({
                   pathname: '/order-payment',
                   state: {
@@ -413,6 +416,7 @@ function mapDispatchToProps(dispatch) {
     getOutletVenue: venueId => dispatch(getOutletVenue(venueId)),
     getOutletEvent: eventId => dispatch(getOutletEvent(eventId)),
     addCartItems: items => dispatch(addCartItems(items)),
+    addInfoRequest: info => dispatch(addInfoRequest(info)),
     getUser: () => dispatch(getUser()),
   };
 }

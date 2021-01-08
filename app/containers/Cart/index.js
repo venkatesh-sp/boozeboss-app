@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import WhatsAppButton from '../../components/WhatsAppButton';
 import PropTypes from 'prop-types';
 import { Button, InputGroup, InputNumber, Row, Col } from 'rsuite';
 
@@ -16,6 +17,7 @@ import {
   makeSelectCartItems,
   makeSelectCurrentOutlet,
 } from './selectors';
+import { makeSelectScope } from '../App/selectors';
 
 const CartItems = styled.div`
   overflow: scroll;
@@ -62,13 +64,10 @@ const ButtonStyles = {
 };
 class Cart extends Component {
   render() {
-    const { cartItems, outlet } = this.props;
-    // console.log(cartItems, 'CART ITEMS FROM CART COMPONENT PREETHAM VARANASI');
-
+    const { cartItems, outlet, scope } = this.props;
     if (!outlet) {
       return <>Loading...</>;
     }
-
     const itemToRender = outlet.menu.map((item, index) => {
       const inputRef = React.createRef();
 
@@ -148,6 +147,11 @@ class Cart extends Component {
         }}
       >
         <div style={{ textAlign: 'center', height: '100%' }}>
+          {scope === 'GUEST' && outlet.phone_number !== null ? (
+            <WhatsAppButton phone_number={outlet.phone_number} />
+          ) : (
+            ''
+          )}
           <CartItems>{itemToRender}</CartItems>
           <Button
             style={{
@@ -184,6 +188,7 @@ const mapStateToProps = createStructuredSelector({
   outlet: makeSelectOutletInfo(),
   cartItems: makeSelectCartItems(),
   currentoutlet: makeSelectCurrentOutlet(),
+  scope: makeSelectScope(),
 });
 
 function mapDispatchToProps(dispatch) {

@@ -15,6 +15,9 @@ import {
   ADD_CART_ITEMS_REQUEST,
   ADD_CART_ITEMS_SUCCESS,
   ADD_CART_ITEMS_ERROR,
+  ADD_INFO_REQUEST,
+  ADD_INFO_SUCCESS,
+  ADD_INFO_ERROR,
 } from './constants';
 
 export const initialState = fromJS({
@@ -44,6 +47,12 @@ function waiterReducer(state = initialState, action) {
     case ADD_CART_ITEMS_SUCCESS:
       return state.set('success', action.success);
     case ADD_CART_ITEMS_ERROR:
+      return state.set('error', action.error);
+    case ADD_INFO_REQUEST:
+      return state;
+    case ADD_INFO_SUCCESS:
+      return state.set('success', action.success);
+    case ADD_INFO_ERROR:
       return state.set('error', action.error);
     default:
       return state;
