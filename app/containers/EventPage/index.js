@@ -24,7 +24,6 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import { EventContainer } from './components';
-import WhatsAppButton from '../../components/WhatsAppButton';
 import {
   makeSelectRole,
   makeSelectScope,
@@ -65,7 +64,6 @@ export class EventPage extends React.Component {
           <meta name="description" content="Description of EventPage" />
         </Helmet>
         <EventContainer {...this.props} />
-        {this.props.scope === 'GUEST' ? <WhatsAppButton /> : ''}
       </div>
     );
   }

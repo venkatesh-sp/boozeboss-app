@@ -153,7 +153,6 @@ export class OutletInfo extends React.Component {
     } else if ('outlet_venue' in value) {
       this.props.getOutletVenue(value.outlet_venue);
     }
-    console.log(this.props, 'OUTLET PROPS');
   };
 
   handleMenuCategory = menu_category => {
@@ -170,7 +169,15 @@ export class OutletInfo extends React.Component {
       return <>Loading...</>;
     }
 
-    const { name, description, menu, cover_image, location } = outlet;
+    const {
+      name,
+      description,
+      menu,
+      cover_image,
+      location,
+      phone_number,
+    } = outlet;
+    console.log(this.props, '\nOUTLET PAGE\n');
     const { showMenu, menu_category, product_category } = this.state;
 
     let filtered_menu = menu;
@@ -422,7 +429,11 @@ export class OutletInfo extends React.Component {
             )}
           </div>
         </div>
-        {this.props.scope === 'GUEST' ? <WhatsAppButton /> : ''}
+        {this.props.scope === 'GUEST' && phone_number !== null ? (
+          <WhatsAppButton phone_number={phone_number} />
+        ) : (
+          ''
+        )}
       </div>
     );
   }

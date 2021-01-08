@@ -27,7 +27,6 @@ import messages from './messages';
 import { TransferAction, PurchaseAction, OrderAction } from './components';
 import { Divider, Message, Button } from 'rsuite';
 import styled from 'styled-components';
-import WhatsAppButton from '../../components/WhatsAppButton';
 const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -102,7 +101,6 @@ export class ActionsContainer extends React.Component {
             />
           )}
         </StyledDiv>
-        {scope === 'GUEST' ? <WhatsAppButton /> : ''}
       </div>
     );
   }

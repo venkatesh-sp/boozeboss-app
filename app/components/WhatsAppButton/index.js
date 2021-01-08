@@ -1,14 +1,15 @@
 import React from 'react';
 import { Button } from 'rsuite';
 import { Whatsapp } from '@styled-icons/simple-icons';
-function WhatsAppButton() {
+function WhatsAppButton({ phone_number }) {
+  const whatsappurl = `https://api.whatsapp.com/send?phone=${phone_number}`;
   return (
     <Button
-      href="https://api.whatsapp.com/send?phone=91number"
+      href={whatsappurl}
       style={{
         position: 'fixed',
-        width: '60px',
-        height: '60px',
+        width: '40px',
+        height: '40px',
         bottom: '50px',
         right: '10px',
         backgroundColor: '#25D366',

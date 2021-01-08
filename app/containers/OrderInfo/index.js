@@ -42,7 +42,7 @@ class OrderInfo extends React.Component {
     if (!this.props.user) {
       return <Loader />;
     }
-
+    const { outlet } = this.props;
     if (!this.props.cartItems) {
       return (
         <>
@@ -104,7 +104,11 @@ class OrderInfo extends React.Component {
             Close Bill
           </Button>
         </ButtonGroup>
-        {this.props.scope === 'GUEST' ? <WhatsAppButton /> : ''}
+        {this.props.scope === 'GUEST' && outlet.phone_number !== null ? (
+          <WhatsAppButton phone_number={outlet.phone_number} />
+        ) : (
+          ''
+        )}
       </>
     );
   }

@@ -17,9 +17,7 @@ import {
   makeSelectCartItems,
   makeSelectCurrentOutlet,
 } from './selectors';
-import {
-  makeSelectScope,
-} from '../App/selectors';
+import { makeSelectScope } from '../App/selectors';
 
 const CartItems = styled.div`
   overflow: scroll;
@@ -70,7 +68,6 @@ class Cart extends Component {
     if (!outlet) {
       return <>Loading...</>;
     }
-
     const itemToRender = outlet.menu.map((item, index) => {
       const inputRef = React.createRef();
 
@@ -150,7 +147,11 @@ class Cart extends Component {
         }}
       >
         <div style={{ textAlign: 'center', height: '100%' }}>
-        {scope === 'GUEST' ? <WhatsAppButton /> : ''}
+          {scope === 'GUEST' && outlet.phone_number !== null ? (
+            <WhatsAppButton phone_number={outlet.phone_number} />
+          ) : (
+            ''
+          )}
           <CartItems>{itemToRender}</CartItems>
           <Button
             style={{

@@ -43,14 +43,14 @@ function* addCartItemsSaga(params) {
 }
 //ADD info saga
 function* addInfoSaga(params) {
-  const { data, costumerName } = params.info;
-  const costumer_name = costumerName;
+  const { data, customerName } = params.info;
+  const customer_name = customerName;
   const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
     process.env.API_PORT
   }/api/orderinfo/post-order-info`;
   const options = {
     method: 'POST',
-    body: JSON.stringify({ data, costumer_name }),
+    body: JSON.stringify({ data, customer_name }),
   };
 
   try {

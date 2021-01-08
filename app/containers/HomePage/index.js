@@ -33,7 +33,7 @@ import saga from './saga';
 import messages from './messages';
 
 import { HomePageContainer } from './components';
-import WhatsAppButton from '../../components/WhatsAppButton';
+
 import { getEvents, getAgencyEvents, submitEventCode } from './actions';
 import { getUser } from '../App/actions';
 
@@ -51,7 +51,6 @@ export class HomePage extends React.Component {
           <meta name="description" content="Signup for clients" />
         </Helmet>
         <HomePageContainer {...this.props} />
-        {this.props.scope === 'GUEST' ? <WhatsAppButton /> : ''}
       </div>
     );
   }
