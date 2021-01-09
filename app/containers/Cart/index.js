@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import WhatsAppButton from '../../components/WhatsAppButton';
 import PropTypes from 'prop-types';
 import { Button, InputGroup, InputNumber, Row, Col } from 'rsuite';
 
@@ -147,11 +146,6 @@ class Cart extends Component {
         }}
       >
         <div style={{ textAlign: 'center', height: '100%' }}>
-          {scope === 'GUEST' && outlet.phone_number !== null ? (
-            <WhatsAppButton phone_number={outlet.phone_number} />
-          ) : (
-            ''
-          )}
           <CartItems>{itemToRender}</CartItems>
           <Button
             style={{
