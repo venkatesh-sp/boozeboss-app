@@ -125,7 +125,7 @@ class Header extends Component {
         </HeaderSection>
         <HeaderSection justify="flex-end">
           <Link to="/">
-            <StyledImage src={require('images/logo_transparent.png')} />
+            <StyledImage src={require('images/tomatiapp.png')} />
           </Link>
         </HeaderSection>
         {user && user.wallet ? (
@@ -154,7 +154,7 @@ class Header extends Component {
         >
           <Drawer.Header>
             <Drawer.Title>
-              <StyledDrawerLogo src={require('images/logo_transparent.png')} />
+              <StyledDrawerLogo src={require('images/tomatiapp.png')} />
             </Drawer.Title>
           </Drawer.Header>
           <Drawer.Body>

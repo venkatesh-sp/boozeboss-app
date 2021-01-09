@@ -17,7 +17,6 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import QrReader from 'react-qr-reader';
 import styled from 'styled-components';
-import WhatsAppButton from '../../components/WhatsAppButton';
 import {
   Container,
   Message,
@@ -429,11 +428,6 @@ export class OutletInfo extends React.Component {
             )}
           </div>
         </div>
-        {this.props.scope === 'GUEST' && phone_number !== null ? (
-          <WhatsAppButton phone_number={phone_number} />
-        ) : (
-          ''
-        )}
       </div>
     );
   }

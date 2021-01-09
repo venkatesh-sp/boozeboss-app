@@ -28,7 +28,6 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import styled from 'styled-components';
-import WhatsAppButton from '../../components/WhatsAppButton';
 import { getOrder, cancelOrder, scanOrder, dismiss } from './actions';
 import { Message, Panel, Button, Divider, Icon } from 'rsuite';
 import QRCode from 'react-qr-code';
@@ -209,7 +208,6 @@ export class OrderPage extends React.Component {
             </StyledPanel>
           )}
         </StyledOrderContainer>
-        {scope === 'GUEST' ? <WhatsAppButton /> : ''}
       </div>
     );
   }
