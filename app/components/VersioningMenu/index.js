@@ -22,13 +22,6 @@ const StyledField = styled.div`
   margin: 0 5px 0 0;
   color: white;
 `;
-
-const StyledImage = styled.img`
-  height: 1.5em;
-  width: 3.5em;
-  background-color: white;
-`;
-
 export default class VersioningMenu extends Component {
   render() {
     return (
@@ -66,8 +59,11 @@ export default class VersioningMenu extends Component {
           </Link>
         </StyledField>
         <StyledField>
-          <a href="https://wa.me/message/HGRXRF5QIYCWH1">
-            <StyledImage src={require('images/tomatiapp.png')} />
+          <a
+            style={{ color: 'white' }}
+            href="https://wa.me/message/HGRXRF5QIYCWH1"
+          >
+            Contact
           </a>
         </StyledField>
       </StyledMenu>
