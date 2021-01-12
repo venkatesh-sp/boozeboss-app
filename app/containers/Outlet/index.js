@@ -337,7 +337,7 @@ export class OutletInfo extends React.Component {
 
                         <Row
                           className="show-grid"
-                          style={{ marginTop: '20px' }}
+                          style={{ marginTop: '20px', display: 'none' }}
                         >
                           <Col
                             xs={12}
@@ -411,6 +411,7 @@ export class OutletInfo extends React.Component {
                     width: '100%',
                     borderRadius: '0px',
                     zIndex: '9999',
+                    display: 'none',
                   }}
                   onClick={() => {
                     const { outlet, cartItems, currentoutlet } = this.props;
