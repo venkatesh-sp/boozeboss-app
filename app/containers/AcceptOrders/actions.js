@@ -123,7 +123,7 @@ export function addInfoRequest(info) {
 }
 
 export function addInfoSuccess(success) {
-  status(success, 'success');
+  status(success.Status, 'success');
   return {
     type: ADD_INFO_SUCCESS,
     success,

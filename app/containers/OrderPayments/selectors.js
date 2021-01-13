@@ -16,12 +16,6 @@ const makeSelectSuccess = () =>
     itemsState => itemsState.get('success'),
   );
 
-const makeSelectItems = () =>
-  createSelector(
-    selectItems,
-    itemsState => itemsState.get('orderedItems'),
-  );
-
 const makeSelectUser = () =>
   createSelector(
     selectGlobal,
@@ -33,10 +27,4 @@ const makeSelectOutlet = () =>
     selectItems,
     itemsState => itemsState.get('outlet'),
   );
-export {
-  makeSelectSuccess,
-  makeSelectError,
-  makeSelectUser,
-  makeSelectOutlet,
-  makeSelectItems,
-};
+export { makeSelectSuccess, makeSelectError, makeSelectUser, makeSelectOutlet };

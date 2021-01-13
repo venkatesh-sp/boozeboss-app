@@ -239,6 +239,11 @@ class Header extends Component {
                           </Nav.Item>
                         </Link>
                       )}
+                    <a href="https://wa.me/message/HGRXRF5QIYCWH1">
+                      <Nav.Item icon={<Icon icon="info" />}>
+                        Contact Support
+                      </Nav.Item>
+                    </a>
                     <Nav.Item onClick={this.handleLogout}>Logout</Nav.Item>
                   </Nav>
                 ) : (
@@ -260,6 +265,11 @@ class Header extends Component {
                         Signup
                       </Nav.Item>
                     </Link>
+                    <a href="https://wa.me/message/HGRXRF5QIYCWH1">
+                      <Nav.Item icon={<Icon icon="info" />}>
+                        Contact Support
+                      </Nav.Item>
+                    </a>
                   </Nav>
                 )}
               </Sidenav.Body>

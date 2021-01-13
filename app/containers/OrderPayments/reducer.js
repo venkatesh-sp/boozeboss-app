@@ -12,12 +12,9 @@ import {
   GET_OUTLET_EVENT_REQUEST,
   GET_OUTLET_EVENT_SUCCESS,
   GET_OUTLET_EVENT_ERROR,
-  ADD_CART_ITEMS_REQUEST,
-  ADD_CART_ITEMS_SUCCESS,
-  ADD_CART_ITEMS_ERROR,
-  ADD_INFO_REQUEST,
-  ADD_INFO_SUCCESS,
-  ADD_INFO_ERROR,
+  ADD_BILLED_REQUEST,
+  ADD_BILLED_SUCCESS,
+  ADD_BILLED_ERROR,
 } from './constants';
 
 export const initialState = fromJS({
@@ -26,7 +23,6 @@ export const initialState = fromJS({
   isLoading: null,
   currentOutlet: null,
   outlet: null,
-  orderedItems: null,
 });
 
 function waiterReducer(state = initialState, action) {
@@ -43,19 +39,11 @@ function waiterReducer(state = initialState, action) {
       return state.set('outlet', action.event);
     case GET_OUTLET_EVENT_ERROR:
       return state.set('error', action.error);
-    case ADD_CART_ITEMS_REQUEST:
+    case ADD_BILLED_REQUEST:
       return state;
-    case ADD_CART_ITEMS_SUCCESS:
+    case ADD_BILLED_SUCCESS:
       return state.set('success', action.success);
-    case ADD_CART_ITEMS_ERROR:
-      return state.set('error', action.error);
-    case ADD_INFO_REQUEST:
-      return state;
-    case ADD_INFO_SUCCESS:
-      return state
-        .set('success', action.success.Status)
-        .set('orderedItems', action.success.insertedData);
-    case ADD_INFO_ERROR:
+    case ADD_BILLED_ERROR:
       return state.set('error', action.error);
     default:
       return state;
