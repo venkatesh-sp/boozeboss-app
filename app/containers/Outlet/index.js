@@ -337,7 +337,7 @@ export class OutletInfo extends React.Component {
 
                         <Row
                           className="show-grid"
-                          style={{ marginTop: '20px', display: 'none' }}
+                          style={{ marginTop: '20px' }}
                         >
                           <Col
                             xs={12}
@@ -349,7 +349,9 @@ export class OutletInfo extends React.Component {
                           >
                             {cartItems && item.id in cartItems ? (
                               <>
-                                <InputGroup style={{ width: '100%' }}>
+                                <InputGroup
+                                  style={{ width: '100%', display: 'none' }}
+                                >
                                   <InputGroup.Button onClick={handleMinus}>
                                     -
                                   </InputGroup.Button>
@@ -384,6 +386,7 @@ export class OutletInfo extends React.Component {
                                     quantity: 1,
                                   });
                                 }}
+                                style={{ display: 'none' }}
                               >
                                 + Add
                               </Button>
