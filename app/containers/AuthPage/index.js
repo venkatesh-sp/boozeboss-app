@@ -255,7 +255,9 @@ class AuthPage extends Component {
       this.props.history.push('/orders');
     } else {
       const { state } = location;
-      this.setState({ active: state.active });
+      if (state) {
+        this.setState({ active: state.active });
+      }
     }
   }
 

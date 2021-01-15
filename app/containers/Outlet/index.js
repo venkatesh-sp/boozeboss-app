@@ -143,12 +143,10 @@ const NoImage = styled(Image)`
 export class OutletInfo extends React.Component {
   state = {
     showMenu: false,
-    showProductCategory: false,
-    showOrderCategory: false,
     menu_category: null,
     product_category: null,
     outlet_category: null,
-    orders_category: null,
+    currentLevel: 'level1',
   };
 
   componentDidMount = () => {
@@ -160,27 +158,8 @@ export class OutletInfo extends React.Component {
       this.props.getOutletVenue(value.outlet_venue);
     }
   };
-
-  handleMenuCategory = menu_category => {
-    this.setState({ menu_category });
-  };
-
-  handleProductCategory = (product_category, outlet_category) => {
-    this.setState({
-      product_category,
-      outlet_category,
-      menu_category: null,
-      showOrderCategory: true,
-    });
-  };
-
-  handlerOutletCategory = outlet_category => {
-    this.setState({
-      outlet_category,
-      product_category: null,
-      menu_category: null,
-      showProductCategory: true,
-    });
+  handleFilter = props => {
+    this.setState(props);
   };
 
   render() {
@@ -199,28 +178,54 @@ export class OutletInfo extends React.Component {
       phone_number,
     } = outlet;
 
-    console.log(menu);
-    console.log(this.props, '\nOUTLET PAGE\n');
     const {
       showMenu,
-      showProductCategory,
-      showOrderCategory,
       menu_category,
       product_category,
       outlet_category,
-      orders_category,
+      currentLevel,
     } = this.state;
+
+    const outlet_menu = _.without(
+      _.map(_.uniqBy(menu, 'outlet_category'), 'outlet_category'),
+      '',
+      null,
+    );
+
+    if (!outlet_menu.length > 0 && currentLevel === 'level1') {
+      this.setState({ currentLevel: 'level2' });
+    }
+
+    let product_menu = _.without(
+      _.map(_.uniqBy(menu, 'product_category'), 'product_category'),
+      '',
+      null,
+    );
+
+    if (outlet_menu) {
+      const items = _.filter(menu, { outlet_category });
+
+      product_menu = _.without(
+        _.map(_.uniqBy(items, 'product_category'), 'product_category'),
+        '',
+        null,
+      );
+    }
 
     let filtered_menu = menu;
 
-    if (menu_category && product_category) {
-      filtered_menu = _.filter(menu, { product_category, menu_category });
-    } else if (menu_category) {
-      filtered_menu = _.filter(menu, { menu_category });
-    } else if (product_category && outlet_category) {
+    if (product_category && outlet_category) {
       filtered_menu = _.filter(menu, { product_category, outlet_category });
-    } else if (outlet_category) {
+    } else if (product_category && !outlet_category) {
+      filtered_menu = _.filter(menu, { product_category });
+    } else if (!product_category && outlet_category) {
       filtered_menu = _.filter(menu, { outlet_category });
+    }
+
+    let items_list = filtered_menu;
+
+    if (menu_category) {
+      items_list = _.filter(filtered_menu, { product_category, menu_category });
     }
 
     return (
@@ -270,152 +275,137 @@ export class OutletInfo extends React.Component {
             ) : (
               <>
                 <div style={{ width: '100%', display: 'block' }}>
-                  {!showProductCategory ? (
-                    <div>
-                      {_.without(
-                        _.map(
-                          _.uniqBy(menu, 'outlet_category'),
-                          'outlet_category',
-                        ),
-                        '',
-                      ).map((item, index) => (
-                        <Button
-                          key={index}
-                          style={
-                            item === outlet_category
-                              ? {
-                                  backgroundColor: '#3498ff',
-                                  color: '#fff',
-                                  width: '100%',
-                                  fontWeight: 'bold',
-                                  margin: '2px',
-                                }
-                              : {
-                                  width: '100%',
-                                  fontWeight: 'bold',
-                                  margin: '2px',
-                                }
-                          }
-                          appearance="default"
-                          onClick={() =>
-                            item !== outlet_category
-                              ? this.handlerOutletCategory(item)
-                              : this.handlerOutletCategory(null)
-                          }
-                        >
-                          {item}
-                        </Button>
-                      ))}
-                    </div>
-                  ) : (
-                    <div style={{ width: '100%', display: 'block' }}>
-                      {!showOrderCategory ? (
-                        <div>
-                          {_.without(
-                            _.map(
-                              _.uniqBy(menu, 'product_category'),
-                              'product_category',
-                            ),
-                            '',
-                          ).map((item, index) => (
+                  {
+                    {
+                      level1: (
+                        <p>
+                          {outlet_menu.map((item, index) => (
                             <Button
                               key={index}
                               style={
-                                item === product_category
+                                item === outlet_category
                                   ? {
                                       backgroundColor: '#3498ff',
                                       color: '#fff',
                                       width: '100%',
                                       fontWeight: 'bold',
                                       margin: '2px',
+                                      marginTop: '10px',
                                     }
                                   : {
                                       width: '100%',
                                       fontWeight: 'bold',
                                       margin: '2px',
+                                      marginTop: '10px',
                                     }
                               }
                               appearance="default"
                               onClick={() =>
-                                item !== product_category
-                                  ? this.handleProductCategory(
-                                      item,
-                                      outlet_category,
-                                    )
-                                  : this.handleProductCategory(null)
+                                this.handleFilter({
+                                  outlet_category: item,
+                                  currentLevel: 'level2',
+                                })
                               }
                             >
                               {item}
                             </Button>
                           ))}
-                          {!_.isEmpty(cartItems) ? (
-                            <Button
-                              appearance="primary"
-                              style={{
-                                position: 'fixed',
-                                bottom: '0',
-                                left: '0',
-                                width: '100%',
-                                borderRadius: '0px',
-                                zIndex: '0',
-                              }}
-                              onClick={() => {
-                                const {
-                                  outlet,
-                                  cartItems,
-                                  currentoutlet,
-                                } = this.props;
-                                if (!_.isEmpty(cartItems))
-                                  this.props.history.push('/cart');
-                                else Alert.warning('Add Items to cart', 2500);
-                              }}
-                            >
-                              {_.size(cartItems || {}) > 0
-                                ? `Place Order-${_.size(cartItems || {})} Item${
-                                    _.size(cartItems || {}) > 1 ? 's' : ''
-                                  }`
-                                : 'Add Items'}
-                            </Button>
-                          ) : null}
-                        </div>
-                      ) : (
+                        </p>
+                      ),
+                      level2: (
+                        <p>
+                          {product_menu.map((item, index) => {
+                            return (
+                              <Button
+                                key={index}
+                                style={
+                                  item === product_category
+                                    ? {
+                                        backgroundColor: '#3498ff',
+                                        color: '#fff',
+                                        width: '100%',
+                                        fontWeight: 'bold',
+                                        margin: '2px',
+                                        marginTop: '10px',
+                                      }
+                                    : {
+                                        width: '100%',
+                                        fontWeight: 'bold',
+                                        margin: '2px',
+                                        marginTop: '10px',
+                                      }
+                                }
+                                appearance="default"
+                                onClick={() =>
+                                  this.handleFilter({
+                                    product_category: item,
+                                    currentLevel: 'level3',
+                                  })
+                                }
+                              >
+                                {item}
+                              </Button>
+                            );
+                          })}
+                          <Button
+                            appearance="primary"
+                            style={{
+                              width: '100%',
+                              marginTop: '10px',
+                            }}
+                            onClick={() =>
+                              this.handleFilter({
+                                menu_category: null,
+                                product_category: null,
+                                outlet_category: null,
+                                currentLevel: 'level1',
+                              })
+                            }
+                          >
+                            Back
+                          </Button>
+                        </p>
+                      ),
+                      level3: (
                         <div>
                           <StyledTabsDiv>
                             <StyledTagGroup>
                               {_.without(
                                 _.map(
-                                  _.uniqBy(
-                                    !product_category
-                                      ? menu
-                                      : _.filter(menu, { product_category }),
-                                    'menu_category',
-                                  ),
+                                  _.uniqBy(filtered_menu, 'menu_category'),
                                   'menu_category',
                                 ),
                                 '',
+                                null,
                               ).map((item, index) => (
-                                <Button
-                                  key={index}
-                                  style={
-                                    item === menu_category
-                                      ? {
-                                          backgroundColor: '#3498ff',
-                                          color: '#fff',
-                                          borderRadius: '42px',
-                                          marginRight: '10px',
-                                          fontWeight: 'bold',
-                                        }
-                                      : TabButtonStyles
-                                  }
-                                  appearance="default"
-                                  onClick={() =>
-                                    item !== menu_category
-                                      ? this.handleMenuCategory(item)
-                                      : this.handleMenuCategory(null)
-                                  }
-                                >
-                                  {item}
-                                </Button>
+                                <>
+                                  <Button
+                                    key={index}
+                                    style={
+                                      item === menu_category
+                                        ? {
+                                            backgroundColor: '#3498ff',
+                                            color: '#fff',
+                                            borderRadius: '42px',
+                                            marginRight: '10px',
+                                            fontWeight: 'bold',
+                                          }
+                                        : TabButtonStyles
+                                    }
+                                    appearance="default"
+                                    onClick={() =>
+                                      item !== menu_category
+                                        ? this.handleFilter({
+                                            menu_category: item,
+                                          })
+                                        : this.handleFilter({
+                                            menu_category: null,
+                                          })
+                                    }
+                                  >
+                                    {item}
+                                  </Button>
+                                </>
                               ))}
                             </StyledTagGroup>
                           </StyledTabsDiv>
@@ -426,12 +416,13 @@ export class OutletInfo extends React.Component {
                               borderRadius: '0px',
                               zIndex: '0',
                             }}
-                            onClick={() => {
-                              this.setState({
-                                showOrderCategory: false,
-                                product_category: true,
-                              });
-                            }}
+                            onClick={() =>
+                              this.handleFilter({
+                                menu_category: null,
+                                product_category: null,
+                                currentLevel: 'level2',
+                              })
+                            }
                           >
                             Back
                           </Button>
@@ -441,8 +432,7 @@ export class OutletInfo extends React.Component {
                               paddingBottom: '30px',
                             }}
                           >
-                            {console.log(this.props, 'props')}
-                            {filtered_menu.map((item, index) => {
+                            {items_list.map((item, index) => {
                               const inputRef = React.createRef();
 
                               const handleMinus = () => {
@@ -473,7 +463,7 @@ export class OutletInfo extends React.Component {
 
                                   <Row
                                     className="show-grid"
-                                    style={{ marginTop: '20px' }}
+                                    // style={{ marginTop: '20px' }}
                                   >
                                     <Col
                                       xs={12}
@@ -540,7 +530,25 @@ export class OutletInfo extends React.Component {
                                         color: 'white',
                                       }}
                                     >
-                                      {item.price}
+                                      <img
+                                        src={require('images/ngn_currency.svg')}
+                                        style={{
+                                          width: '12px',
+                                          filter: 'invert(1)',
+                                          marginTop: '-3px',
+                                        }}
+                                      />
+                                      <span
+                                        style={{
+                                          fontSize: '14px',
+                                          fontWeight: '600',
+                                          marginLeft: '3px',
+                                          marginTop: '3px',
+                                        }}
+                                      >
+                                        {' '}
+                                        {item.price}
+                                      </span>
                                     </Col>
                                   </Row>
 
@@ -553,6 +561,7 @@ export class OutletInfo extends React.Component {
                                       width: '100%',
                                       borderRadius: '0px',
                                       zIndex: '0',
+                                      display: 'none',
                                     }}
                                     onClick={() => {
                                       const {
@@ -582,9 +591,9 @@ export class OutletInfo extends React.Component {
                             })}
                           </div>
                         </div>
-                      )}
-                    </div>
-                  )}
+                      ),
+                    }[currentLevel]
+                  }
                 </div>
               </>
             )}
