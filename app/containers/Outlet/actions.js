@@ -13,6 +13,7 @@ import {
   GET_OUTLET_VENUE_ERROR,
   ADD_CART_ITEM,
   REMOVE_CART_ITEM,
+  CLEAR_CART_ITEM,
 } from './constants';
 
 export function getOutletEvent(eventId) {
@@ -68,5 +69,11 @@ export function removeCartItem(item) {
   return {
     type: REMOVE_CART_ITEM,
     item,
+  };
+}
+
+export function clearCartItem() {
+  return {
+    type: CLEAR_CART_ITEM,
   };
 }

@@ -16,6 +16,7 @@ import {
   GET_OUTLET_VENUE_ERROR,
   ADD_CART_ITEM,
   REMOVE_CART_ITEM,
+  CLEAR_CART_ITEM,
 } from './constants';
 
 export const initialState = fromJS({
@@ -54,6 +55,8 @@ function outletReducer(state = initialState, action) {
         'cartitems',
         _.omit(state.get('cartitems'), [action.item.product]),
       );
+    case CLEAR_CART_ITEM:
+      return state.set('cartitems', null);
     default:
       return state;
   }

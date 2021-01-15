@@ -14,3 +14,4 @@ export const GET_OUTLET_VENUE_ERROR = 'app/Outlet/GET_OUTLET_VENUE_ERROR';
 
 export const ADD_CART_ITEM = 'app/Outlet/ADD_CART_ITEM';
 export const REMOVE_CART_ITEM = 'app/Outlet/REMOVE_CART_ITEM';
+export const CLEAR_CART_ITEM = 'app/Outlet/CLEAR_CART_ITEM';

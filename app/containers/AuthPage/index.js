@@ -250,10 +250,12 @@ class AuthPage extends Component {
   }
 
   componentDidMount() {
-    const { user, history, verifyEmailPhone } = this.props;
-
+    const { user, history, verifyEmailPhone, location } = this.props;
     if (user) {
       this.props.history.push('/orders');
+    } else {
+      const { state } = location;
+      this.setState({ active: state.active });
     }
   }
 

@@ -244,7 +244,14 @@ class Header extends Component {
                 ) : (
                   <Nav pullRight>
                     {/* <Nav.Item icon={<Icon icon='moon-o' />}>Dark Mode<StyledToggle size="md" onChange={toggleTheme} checked={darkTheme} /></Nav.Item> */}
-                    <Link to="/login">
+                    <Link
+                      to={{
+                        pathname: '/auth',
+                        state: {
+                          active: 'signin',
+                        },
+                      }}
+                    >
                       <Nav.Item
                         onClick={() => this.handleMenuClick('/login')}
                         icon={<Icon icon="user" />}
@@ -252,7 +259,14 @@ class Header extends Component {
                         Login
                       </Nav.Item>
                     </Link>
-                    <Link to="/signup">
+                    <Link
+                      to={{
+                        pathname: '/auth',
+                        state: {
+                          active: 'signup',
+                        },
+                      }}
+                    >
                       <Nav.Item
                         onClick={() => this.handleMenuClick('/signup')}
                         icon={<Icon icon="user" />}
