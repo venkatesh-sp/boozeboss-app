@@ -348,34 +348,35 @@ export class OutletInfo extends React.Component {
                               {item}
                             </Button>
                           ))}
-
-                          <Button
-                            appearance="primary"
-                            style={{
-                              position: 'fixed',
-                              bottom: '0',
-                              left: '0',
-                              width: '100%',
-                              borderRadius: '0px',
-                              zIndex: '0',
-                            }}
-                            onClick={() => {
-                              const {
-                                outlet,
-                                cartItems,
-                                currentoutlet,
-                              } = this.props;
-                              if (!_.isEmpty(cartItems))
-                                this.props.history.push('/cart');
-                              else Alert.warning('Add Items to cart', 2500);
-                            }}
-                          >
-                            {_.size(cartItems || {}) > 0
-                              ? `Place Order-${_.size(cartItems || {})} Item${
-                                  _.size(cartItems || {}) > 1 ? 's' : ''
-                                }`
-                              : 'Add Items'}
-                          </Button>
+                          {!_.isEmpty(cartItems) ? (
+                            <Button
+                              appearance="primary"
+                              style={{
+                                position: 'fixed',
+                                bottom: '0',
+                                left: '0',
+                                width: '100%',
+                                borderRadius: '0px',
+                                zIndex: '0',
+                              }}
+                              onClick={() => {
+                                const {
+                                  outlet,
+                                  cartItems,
+                                  currentoutlet,
+                                } = this.props;
+                                if (!_.isEmpty(cartItems))
+                                  this.props.history.push('/cart');
+                                else Alert.warning('Add Items to cart', 2500);
+                              }}
+                            >
+                              {_.size(cartItems || {}) > 0
+                                ? `Place Order-${_.size(cartItems || {})} Item${
+                                    _.size(cartItems || {}) > 1 ? 's' : ''
+                                  }`
+                                : 'Add Items'}
+                            </Button>
+                          ) : null}
                         </div>
                       ) : (
                         <div>
@@ -522,6 +523,9 @@ export class OutletInfo extends React.Component {
                                               product: item.id,
                                               quantity: 1,
                                             });
+                                          }}
+                                          style={{
+                                            display: 'none',
                                           }}
                                         >
                                           + Add

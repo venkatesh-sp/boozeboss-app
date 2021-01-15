@@ -58,14 +58,6 @@ export default class VersioningMenu extends Component {
             Help
           </Link>
         </StyledField>
-        <StyledField>
-          <a
-            style={{ color: 'white' }}
-            href="https://wa.me/message/HGRXRF5QIYCWH1"
-          >
-            Contact
-          </a>
-        </StyledField>
       </StyledMenu>
     );
   }
