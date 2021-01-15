@@ -12,6 +12,20 @@ import {
   Modal,
   Notification,
 } from 'rsuite';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
+
+import injectSaga from 'utils/injectSaga';
+import injectReducer from 'utils/injectReducer';
+
+import { makeSelectUser, makeSelectOutlet } from './selectors';
+import { makeSelectItems } from '../AcceptOrders/selectors';
+import reducer from './reducer';
+import saga from './saga';
+
+import { getOutletVenue, getOutletEvent, addBilledRequest } from './actions';
+
+import { getUser } from '../App/actions';
 
 const StyledMenuDiv = styled.div`
   background: #1a1b1c;
@@ -30,7 +44,25 @@ const StyledText = styled.p`
 class OrderPayments extends React.Component {
   state = {
     show: false,
+    currentOutlet: null,
   };
+
+  componentDidMount() {
+    this.props.getUser();
+    const { outlet } = this.props.user;
+    if (outlet) {
+      const { outletvenue_id, outletevent_id } = outlet;
+
+      outletvenue_id
+        ? this.setState({ currentOutlet: 'outletvenue' }, () =>
+            this.props.getOutletVenue(outletvenue_id),
+          )
+        : this.setState({ currentOutlet: 'outletevent' }, () =>
+            this.props.getOutletEvent(outletevent_id),
+          );
+    }
+  }
+
   open = () => {
     this.setState({ show: true });
   };
@@ -41,6 +73,7 @@ class OrderPayments extends React.Component {
 
   render() {
     const { state } = this.props.location;
+    const orderedItems = this.props.orderedItems;
     if (!state || !state.items) {
       return <Loader />;
     }
@@ -94,7 +127,8 @@ class OrderPayments extends React.Component {
 
     const buttons = (
       <>
-        {current_outlet && venues.includes(current_outlet) && (
+        {current_outlet && (
+          //  && venues.includes(current_outlet)
           <Button
             style={{
               width: '50%',
@@ -122,29 +156,30 @@ class OrderPayments extends React.Component {
     );
 
     let qrcodedata;
-    if (current_outlet && venues.includes(current_outlet)) {
-      // Beirut id
-      if (current_outlet === 29) {
-        qrcodedata = (
-          <QRCode value="https://flutterwave.com/pay/s1lluk6gzes2" />
-        );
-      } else if (current_outlet === 24) {
-        // A bar called Paper
-        qrcodedata = (
-          <QRCode value="https://flutterwave.com/pay/kwka4qqq4hrt" />
-        );
-      } else if (current_outlet === 21) {
-        // Bleu Abuja
-        qrcodedata = (
-          <QRCode value="https://flutterwave.com/pay/dd08mnedqcfg" />
-        );
-      } else if (current_outlet === 14) {
-        // The Cabin
-        qrcodedata = (
-          <QRCode value="https://flutterwave.com/pay/z1ede3hm5z4l" />
-        );
-      }
-    }
+    // if (current_outlet && venues.includes(current_outlet)) {
+    //   // Beirut id
+    //   if (current_outlet === 29) {
+    //     qrcodedata = (
+    //       <QRCode value="https://flutterwave.com/pay/s1lluk6gzes2" />
+    //     );
+    //   } else if (current_outlet === 24) {
+    //     // A bar called Paper
+    //     qrcodedata = (
+    //       <QRCode value="https://flutterwave.com/pay/kwka4qqq4hrt" />
+    //     );
+    //   } else if (current_outlet === 21) {
+    //     // Bleu Abuja
+    //     qrcodedata = (
+    //       <QRCode value="https://flutterwave.com/pay/dd08mnedqcfg" />
+    //     );
+    //   } else if (current_outlet === 14) {
+    //     // The Cabin
+    //     qrcodedata = (
+    //       <QRCode value="https://flutterwave.com/pay/z1ede3hm5z4l" />
+    //     );
+    //   }
+    // }
+
     return (
       <>
         <div
@@ -253,7 +288,11 @@ class OrderPayments extends React.Component {
           <Modal.Footer>
             <Button
               onClick={() => {
+                const orderedItemsIds = orderedItems.map(item => item.id);
                 this.close;
+                this.props.addBilledRequest({
+                  ids: orderedItemsIds,
+                });
                 this.props.history.push({
                   pathname: '/',
                 });
@@ -273,4 +312,35 @@ class OrderPayments extends React.Component {
   }
 }
 
-export default OrderPayments;
+OrderPayments.propTypes = {
+  dispatch: PropTypes.func,
+};
+
+const mapStateToProps = createStructuredSelector({
+  user: makeSelectUser(),
+  outlet: makeSelectOutlet(),
+  orderedItems: makeSelectItems(),
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getOutletVenue: venueId => dispatch(getOutletVenue(venueId)),
+    getOutletEvent: eventId => dispatch(getOutletEvent(eventId)),
+    addBilledRequest: info => dispatch(addBilledRequest(info)),
+    getUser: () => dispatch(getUser()),
+  };
+}
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+const withReducer = injectReducer({ key: 'orderpayments', reducer });
+const withSaga = injectSaga({ key: 'orderpayments', saga });
+
+export default compose(
+  withReducer,
+  withSaga,
+  withConnect,
+)(OrderPayments);
