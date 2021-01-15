@@ -26,6 +26,7 @@ import {
   Row,
   Col,
   Alert,
+  Dropdown,
 } from 'rsuite';
 import { Image } from '@styled-icons/feather';
 import _ from 'lodash';
@@ -44,6 +45,7 @@ import {
   getOutletVenue,
   addCartItem,
   removeCartItem,
+  clearCartItem,
 } from './actions';
 
 const StyledRestuarantContainer = styled.div`
@@ -141,11 +143,16 @@ const NoImage = styled(Image)`
 export class OutletInfo extends React.Component {
   state = {
     showMenu: false,
+    showProductCategory: false,
+    showOrderCategory: false,
     menu_category: null,
     product_category: null,
+    outlet_category: null,
+    orders_category: null,
   };
 
   componentDidMount = () => {
+    this.props.clearCartItem();
     const value = queryString.parse(this.props.location.search);
     if ('outlet_event' in value) {
       this.props.getOutletEvent(value.outlet_event);
@@ -158,12 +165,27 @@ export class OutletInfo extends React.Component {
     this.setState({ menu_category });
   };
 
-  handleProductCategory = product_category => {
-    this.setState({ product_category, menu_category: null });
+  handleProductCategory = (product_category, outlet_category) => {
+    this.setState({
+      product_category,
+      outlet_category,
+      menu_category: null,
+      showOrderCategory: true,
+    });
+  };
+
+  handlerOutletCategory = outlet_category => {
+    this.setState({
+      outlet_category,
+      product_category: null,
+      menu_category: null,
+      showProductCategory: true,
+    });
   };
 
   render() {
     const { outlet, cartItems, scope } = this.props;
+
     if (!outlet) {
       return <>Loading...</>;
     }
@@ -176,8 +198,18 @@ export class OutletInfo extends React.Component {
       location,
       phone_number,
     } = outlet;
+
+    console.log(menu);
     console.log(this.props, '\nOUTLET PAGE\n');
-    const { showMenu, menu_category, product_category } = this.state;
+    const {
+      showMenu,
+      showProductCategory,
+      showOrderCategory,
+      menu_category,
+      product_category,
+      outlet_category,
+      orders_category,
+    } = this.state;
 
     let filtered_menu = menu;
 
@@ -185,8 +217,10 @@ export class OutletInfo extends React.Component {
       filtered_menu = _.filter(menu, { product_category, menu_category });
     } else if (menu_category) {
       filtered_menu = _.filter(menu, { menu_category });
-    } else if (product_category) {
-      filtered_menu = _.filter(menu, { product_category });
+    } else if (product_category && outlet_category) {
+      filtered_menu = _.filter(menu, { product_category, outlet_category });
+    } else if (outlet_category) {
+      filtered_menu = _.filter(menu, { outlet_category });
     }
 
     return (
@@ -235,199 +269,323 @@ export class OutletInfo extends React.Component {
               </>
             ) : (
               <>
-                <div style={{ width: '100%', display: 'flex' }}>
-                  {_.without(
-                    _.map(
-                      _.uniqBy(menu, 'product_category'),
-                      'product_category',
-                    ),
-                    '',
-                  ).map((item, index) => (
-                    <Button
-                      key={index}
-                      style={
-                        item === product_category
-                          ? {
-                              backgroundColor: '#3498ff',
-                              color: '#fff',
-                              width: '50%',
-                              fontWeight: 'bold',
-                              margin: '2px',
-                            }
-                          : { width: '50%', fontWeight: 'bold', margin: '2px' }
-                      }
-                      appearance="default"
-                      onClick={() =>
-                        item !== product_category
-                          ? this.handleProductCategory(item)
-                          : this.handleProductCategory(null)
-                      }
-                    >
-                      {item}
-                    </Button>
-                  ))}
-                </div>
-                <StyledTabsDiv>
-                  <StyledTagGroup>
-                    {_.without(
-                      _.map(
-                        _.uniqBy(
-                          !product_category
-                            ? menu
-                            : _.filter(menu, { product_category }),
-                          'menu_category',
+                <div style={{ width: '100%', display: 'block' }}>
+                  {!showProductCategory ? (
+                    <div>
+                      {_.without(
+                        _.map(
+                          _.uniqBy(menu, 'outlet_category'),
+                          'outlet_category',
                         ),
-                        'menu_category',
-                      ),
-                      '',
-                    ).map((item, index) => (
-                      <Button
-                        key={index}
-                        style={
-                          item === menu_category
-                            ? {
-                                backgroundColor: '#3498ff',
-                                color: '#fff',
-                                borderRadius: '42px',
-                                marginRight: '10px',
-                                fontWeight: 'bold',
-                              }
-                            : TabButtonStyles
-                        }
-                        appearance="default"
-                        onClick={() =>
-                          item !== menu_category
-                            ? this.handleMenuCategory(item)
-                            : this.handleMenuCategory(null)
-                        }
-                      >
-                        {item}
-                      </Button>
-                    ))}
-                  </StyledTagGroup>
-                </StyledTabsDiv>
-
-                <div
-                  style={{ backgroundColor: '#030303', paddingBottom: '30px' }}
-                >
-                  {filtered_menu.map((item, index) => {
-                    const inputRef = React.createRef();
-
-                    const handleMinus = () => {
-                      inputRef.current.handleMinus();
-                    };
-                    const handlePlus = () => {
-                      inputRef.current.handlePlus();
-                    };
-                    return (
-                      <StyledMenuDiv key={index}>
-                        <StyledFlexContainer>
-                          <StyledText size="16px" color="#ffffff" weight="bold">
-                            {item.name}
-                          </StyledText>
-
-                          <StyledText
-                            size="13px"
-                            color="#ffffff"
-                            weight="normal"
-                          >
-                            {item.description}
-                          </StyledText>
-                        </StyledFlexContainer>
-
-                        <Row
-                          className="show-grid"
-                          style={{ marginTop: '20px' }}
+                        '',
+                      ).map((item, index) => (
+                        <Button
+                          key={index}
+                          style={
+                            item === outlet_category
+                              ? {
+                                  backgroundColor: '#3498ff',
+                                  color: '#fff',
+                                  width: '100%',
+                                  fontWeight: 'bold',
+                                  margin: '2px',
+                                }
+                              : {
+                                  width: '100%',
+                                  fontWeight: 'bold',
+                                  margin: '2px',
+                                }
+                          }
+                          appearance="default"
+                          onClick={() =>
+                            item !== outlet_category
+                              ? this.handlerOutletCategory(item)
+                              : this.handlerOutletCategory(null)
+                          }
                         >
-                          <Col
-                            xs={12}
-                            xsPush={12}
+                          {item}
+                        </Button>
+                      ))}
+                    </div>
+                  ) : (
+                    <div style={{ width: '100%', display: 'block' }}>
+                      {!showOrderCategory ? (
+                        <div>
+                          {_.without(
+                            _.map(
+                              _.uniqBy(menu, 'product_category'),
+                              'product_category',
+                            ),
+                            '',
+                          ).map((item, index) => (
+                            <Button
+                              key={index}
+                              style={
+                                item === product_category
+                                  ? {
+                                      backgroundColor: '#3498ff',
+                                      color: '#fff',
+                                      width: '100%',
+                                      fontWeight: 'bold',
+                                      margin: '2px',
+                                    }
+                                  : {
+                                      width: '100%',
+                                      fontWeight: 'bold',
+                                      margin: '2px',
+                                    }
+                              }
+                              appearance="default"
+                              onClick={() =>
+                                item !== product_category
+                                  ? this.handleProductCategory(
+                                      item,
+                                      outlet_category,
+                                    )
+                                  : this.handleProductCategory(null)
+                              }
+                            >
+                              {item}
+                            </Button>
+                          ))}
+                          {!_.isEmpty(cartItems) ? (
+                            <Button
+                              appearance="primary"
+                              style={{
+                                position: 'fixed',
+                                bottom: '0',
+                                left: '0',
+                                width: '100%',
+                                borderRadius: '0px',
+                                zIndex: '0',
+                              }}
+                              onClick={() => {
+                                const {
+                                  outlet,
+                                  cartItems,
+                                  currentoutlet,
+                                } = this.props;
+                                if (!_.isEmpty(cartItems))
+                                  this.props.history.push('/cart');
+                                else Alert.warning('Add Items to cart', 2500);
+                              }}
+                            >
+                              {_.size(cartItems || {}) > 0
+                                ? `Place Order-${_.size(cartItems || {})} Item${
+                                    _.size(cartItems || {}) > 1 ? 's' : ''
+                                  }`
+                                : 'Add Items'}
+                            </Button>
+                          ) : null}
+                        </div>
+                      ) : (
+                        <div>
+                          <StyledTabsDiv>
+                            <StyledTagGroup>
+                              {_.without(
+                                _.map(
+                                  _.uniqBy(
+                                    !product_category
+                                      ? menu
+                                      : _.filter(menu, { product_category }),
+                                    'menu_category',
+                                  ),
+                                  'menu_category',
+                                ),
+                                '',
+                              ).map((item, index) => (
+                                <Button
+                                  key={index}
+                                  style={
+                                    item === menu_category
+                                      ? {
+                                          backgroundColor: '#3498ff',
+                                          color: '#fff',
+                                          borderRadius: '42px',
+                                          marginRight: '10px',
+                                          fontWeight: 'bold',
+                                        }
+                                      : TabButtonStyles
+                                  }
+                                  appearance="default"
+                                  onClick={() =>
+                                    item !== menu_category
+                                      ? this.handleMenuCategory(item)
+                                      : this.handleMenuCategory(null)
+                                  }
+                                >
+                                  {item}
+                                </Button>
+                              ))}
+                            </StyledTagGroup>
+                          </StyledTabsDiv>
+                          <Button
+                            appearance="primary"
                             style={{
-                              color: 'white',
-                              textAlign: 'right',
+                              width: '100%',
+                              borderRadius: '0px',
+                              zIndex: '0',
+                            }}
+                            onClick={() => {
+                              this.setState({
+                                showOrderCategory: false,
+                                product_category: true,
+                              });
                             }}
                           >
-                            {cartItems && item.id in cartItems ? (
-                              <>
-                                <InputGroup
-                                  style={{ width: '100%', display: 'none' }}
-                                >
-                                  <InputGroup.Button onClick={handleMinus}>
-                                    -
-                                  </InputGroup.Button>
-                                  <InputNumber
-                                    className="custom-input-number"
-                                    ref={inputRef}
-                                    value={cartItems[item.id]}
-                                    onChange={value => {
-                                      if (parseInt(value) > 0) {
-                                        this.props.addCartItem({
-                                          product: item.id,
-                                          quantity: value,
-                                        });
-                                      } else {
-                                        this.props.removeCartItem({
-                                          product: item.id,
-                                        });
-                                      }
-                                    }}
-                                  />
-                                  <InputGroup.Button onClick={handlePlus}>
-                                    +
-                                  </InputGroup.Button>
-                                </InputGroup>
-                              </>
-                            ) : (
-                              <Button
-                                appearance="primary"
-                                onClick={() => {
-                                  this.props.addCartItem({
-                                    product: item.id,
-                                    quantity: 1,
-                                  });
-                                }}
-                                style={{ display: 'none' }}
-                              >
-                                + Add
-                              </Button>
-                            )}
-                          </Col>
-                          <Col
-                            xs={12}
-                            xsPull={12}
-                            style={{ marginTop: '10px', color: 'white' }}
+                            Back
+                          </Button>
+                          <div
+                            style={{
+                              backgroundColor: '#030303',
+                              paddingBottom: '30px',
+                            }}
                           >
-                            {item.price}
-                          </Col>
-                        </Row>
-                      </StyledMenuDiv>
-                    );
-                  })}
-                </div>
+                            {console.log(this.props, 'props')}
+                            {filtered_menu.map((item, index) => {
+                              const inputRef = React.createRef();
 
-                <Button
-                  appearance="primary"
-                  style={{
-                    position: 'fixed',
-                    bottom: '0',
-                    left: '0',
-                    width: '100%',
-                    borderRadius: '0px',
-                    zIndex: '9999',
-                    display: 'none',
-                  }}
-                  onClick={() => {
-                    const { outlet, cartItems, currentoutlet } = this.props;
-                    if (!_.isEmpty(cartItems)) this.props.history.push('/cart');
-                    else Alert.warning('Add Items to cart', 2500);
-                  }}
-                >
-                  {_.size(cartItems || {}) > 0
-                    ? `Place Order-${_.size(cartItems || {})} Item${
-                        _.size(cartItems || {}) > 1 ? 's' : ''
-                      }`
-                    : 'Add Items'}
-                </Button>
+                              const handleMinus = () => {
+                                inputRef.current.handleMinus();
+                              };
+                              const handlePlus = () => {
+                                inputRef.current.handlePlus();
+                              };
+                              return (
+                                <StyledMenuDiv key={index}>
+                                  <StyledFlexContainer>
+                                    <StyledText
+                                      size="16px"
+                                      color="#ffffff"
+                                      weight="bold"
+                                    >
+                                      {item.name}
+                                    </StyledText>
+
+                                    <StyledText
+                                      size="13px"
+                                      color="#ffffff"
+                                      weight="normal"
+                                    >
+                                      {item.description}
+                                    </StyledText>
+                                  </StyledFlexContainer>
+
+                                  <Row
+                                    className="show-grid"
+                                    style={{ marginTop: '20px' }}
+                                  >
+                                    <Col
+                                      xs={12}
+                                      xsPush={12}
+                                      style={{
+                                        color: 'white',
+                                        textAlign: 'right',
+                                      }}
+                                    >
+                                      {cartItems && item.id in cartItems ? (
+                                        <>
+                                          <InputGroup style={{ width: '100%' }}>
+                                            <InputGroup.Button
+                                              onClick={handleMinus}
+                                            >
+                                              -
+                                            </InputGroup.Button>
+                                            <InputNumber
+                                              className="custom-input-number"
+                                              ref={inputRef}
+                                              value={cartItems[item.id]}
+                                              onChange={value => {
+                                                if (parseInt(value) > 0) {
+                                                  this.props.addCartItem({
+                                                    product: item.id,
+                                                    quantity: value,
+                                                  });
+                                                } else {
+                                                  this.props.removeCartItem({
+                                                    product: item.id,
+                                                  });
+                                                }
+                                              }}
+                                            />
+                                            <InputGroup.Button
+                                              onClick={handlePlus}
+                                            >
+                                              +
+                                            </InputGroup.Button>
+                                          </InputGroup>
+                                        </>
+                                      ) : (
+                                        <Button
+                                          appearance="primary"
+                                          onClick={() => {
+                                            this.props.addCartItem({
+                                              product: item.id,
+                                              quantity: 1,
+                                            });
+                                          }}
+                                          style={{
+                                            display: 'none',
+                                          }}
+                                        >
+                                          + Add
+                                        </Button>
+                                      )}
+                                    </Col>
+                                    <Col
+                                      xs={12}
+                                      xsPull={12}
+                                      style={{
+                                        marginTop: '10px',
+                                        color: 'white',
+                                      }}
+                                    >
+                                      {item.price}
+                                    </Col>
+                                  </Row>
+
+                                  <Button
+                                    appearance="primary"
+                                    style={{
+                                      position: 'fixed',
+                                      bottom: '0',
+                                      left: '0',
+                                      width: '100%',
+                                      borderRadius: '0px',
+                                      zIndex: '0',
+                                    }}
+                                    onClick={() => {
+                                      const {
+                                        outlet,
+                                        cartItems,
+                                        currentoutlet,
+                                      } = this.props;
+                                      if (!_.isEmpty(cartItems))
+                                        this.props.history.push('/cart');
+                                      else
+                                        Alert.warning(
+                                          'Add Items to cart',
+                                          2500,
+                                        );
+                                    }}
+                                  >
+                                    {_.size(cartItems || {}) > 0
+                                      ? `Place Order-${_.size(
+                                          cartItems || {},
+                                        )} Item${
+                                          _.size(cartItems || {}) > 1 ? 's' : ''
+                                        }`
+                                      : 'Add Items'}
+                                  </Button>
+                                </StyledMenuDiv>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </>
             )}
           </div>
@@ -455,6 +613,7 @@ function mapDispatchToProps(dispatch) {
 
     addCartItem: item => dispatch(addCartItem(item)),
     removeCartItem: item => dispatch(removeCartItem(item)),
+    clearCartItem: () => dispatch(clearCartItem()),
   };
 }
 

@@ -128,9 +128,9 @@ function* checkVerificationSMSRequest() {
 
 export default function* rootSaga() {
   yield all([
-    fork(signupRequest),
-    fork(facebookLoginRequest),
-    fork(getVerificationSMSRequest),
-    fork(checkVerificationSMSRequest),
+    signupRequest(),
+    facebookLoginRequest(),
+    getVerificationSMSRequest(),
+    checkVerificationSMSRequest(),
   ]);
 }
