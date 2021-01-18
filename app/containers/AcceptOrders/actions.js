@@ -100,7 +100,7 @@ export function addCartItems(items) {
 }
 
 export function addCartItemsSuccess(success) {
-  status(success, 'success');
+  status(success.Status, 'success');
   return {
     type: ADD_CART_ITEMS_SUCCESS,
     success,

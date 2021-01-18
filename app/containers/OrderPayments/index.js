@@ -23,7 +23,12 @@ import { makeSelectItems } from '../AcceptOrders/selectors';
 import reducer from './reducer';
 import saga from './saga';
 
-import { getOutletVenue, getOutletEvent, addBilledRequest } from './actions';
+import {
+  getOutletVenue,
+  getOutletEvent,
+  addBilledRequest,
+  addCustomerBilledRequest,
+} from './actions';
 
 import { getUser } from '../App/actions';
 
@@ -78,7 +83,7 @@ class OrderPayments extends React.Component {
       return <Loader />;
     }
 
-    const { items: products, user } = state;
+    const { items: products, user, customer } = state;
 
     const { outlet } = user;
     let current_outlet;
@@ -136,7 +141,7 @@ class OrderPayments extends React.Component {
               margin: '2px',
             }}
             appearance="ghost"
-            onClick={this.open}
+            // onClick={this.open}
           >
             Paid Online
           </Button>
@@ -289,14 +294,28 @@ class OrderPayments extends React.Component {
             <Button
               onClick={() => {
                 const orderedItemsIds = orderedItems.map(item => item.id);
+                // OFFLINE PAYMENT
+                if (customer) {
+                  this.props.addCustomerBilledRequest({
+                    customer_id: customer,
+                    ids: orderedItemsIds,
+                    payment_type: 'offline',
+                  });
+                  this.props.history.push({
+                    pathname: '/',
+                  });
+                  this.props.history.go();
+                } else {
+                  this.props.addBilledRequest({
+                    ids: orderedItemsIds,
+                    payment_type: 'offline',
+                  });
+                  this.props.history.push({
+                    pathname: '/',
+                  });
+                  this.props.history.go();
+                }
                 this.close;
-                this.props.addBilledRequest({
-                  ids: orderedItemsIds,
-                });
-                this.props.history.push({
-                  pathname: '/',
-                });
-                this.props.history.go();
               }}
               appearance="primary"
             >
@@ -326,6 +345,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getOutletVenue: venueId => dispatch(getOutletVenue(venueId)),
     getOutletEvent: eventId => dispatch(getOutletEvent(eventId)),
+    addCustomerBilledRequest: info => dispatch(addCustomerBilledRequest(info)),
     addBilledRequest: info => dispatch(addBilledRequest(info)),
     getUser: () => dispatch(getUser()),
   };

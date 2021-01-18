@@ -514,9 +514,9 @@ export class OutletInfo extends React.Component {
                                               quantity: 1,
                                             });
                                           }}
-                                          style={{
-                                            display: 'none',
-                                          }}
+                                          // style={{
+                                          //   display: 'none',
+                                          // }}
                                         >
                                           + Add
                                         </Button>
@@ -561,7 +561,7 @@ export class OutletInfo extends React.Component {
                                       width: '100%',
                                       borderRadius: '0px',
                                       zIndex: '0',
-                                      display: 'none',
+                                      // display: 'none',
                                     }}
                                     onClick={() => {
                                       const {

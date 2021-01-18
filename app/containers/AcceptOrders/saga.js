@@ -35,7 +35,6 @@ function* addCartItemsSaga(params) {
   try {
     const response = yield call(request, requestURL, options);
     yield put(addCartItemsSuccess(response));
-    history.push('/');
   } catch (error) {
     const jsonError = yield error.response ? error.response.json() : error;
     yield put(addCartItemsError(jsonError));
