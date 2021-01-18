@@ -46,7 +46,9 @@ function waiterReducer(state = initialState, action) {
     case ADD_CART_ITEMS_REQUEST:
       return state;
     case ADD_CART_ITEMS_SUCCESS:
-      return state.set('success', action.success);
+      return state
+        .set('success', action.success.Status)
+        .set('orderedItems', action.success.insertedData);
     case ADD_CART_ITEMS_ERROR:
       return state.set('error', action.error);
     case ADD_INFO_REQUEST:

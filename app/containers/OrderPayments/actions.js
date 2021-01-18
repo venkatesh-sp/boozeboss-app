@@ -6,21 +6,16 @@
 
 import status from 'utils/status';
 import {
-  ORDER_ITEMS_REQUEST,
   GET_OUTLET_VENUE_REQUEST,
   GET_OUTLET_VENUE_SUCCESS,
   GET_OUTLET_VENUE_ERROR,
+  ADD_CUSTOMER_BILLED_REQUEST,
+  ADD_CUSTOMER_BILLED_SUCCESS,
+  ADD_CUSTOMER_BILLED_ERROR,
   ADD_BILLED_REQUEST,
   ADD_BILLED_SUCCESS,
   ADD_BILLED_ERROR,
 } from './constants';
-
-export function postOrder(details) {
-  return {
-    type: ORDER_ITEMS_REQUEST,
-    details,
-  };
-}
 
 export function getOutletVenue(venueId) {
   return {
@@ -64,7 +59,30 @@ export function getOutletEventError(error) {
   };
 }
 
-// ADD billed actions
+// ADD customer billed actions
+export function addCustomerBilledRequest(info) {
+  return {
+    type: ADD_CUSTOMER_BILLED_REQUEST,
+    info,
+  };
+}
+
+export function addCustomerBilledSuccess(success) {
+  status(success, 'success');
+  return {
+    type: ADD_CUSTOMER_BILLED_SUCCESS,
+    success,
+  };
+}
+
+export function addCustomerBilledError(error) {
+  status(error, 'error');
+  return {
+    type: ADD_CUSTOMER_BILLED_ERROR,
+    error,
+  };
+}
+// ADD waiter billed actions
 export function addBilledRequest(info) {
   return {
     type: ADD_BILLED_REQUEST,
