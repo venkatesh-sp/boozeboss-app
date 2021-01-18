@@ -67,6 +67,9 @@ class OrderInfo extends React.Component {
           <QRCode
             value={JSON.stringify({
               user: this.props.user.id,
+              userName: `${this.props.user.first_name} ${
+                this.props.user.last_name
+              }`,
               cartItems: this.props.cartItems,
               type: 'orders',
             })}
