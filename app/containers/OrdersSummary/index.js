@@ -168,7 +168,7 @@ class OrdersSummary extends React.Component {
         <>
           <Button
             style={{
-              width: '50%',
+              width: '100%',
               fontWeight: 'bold',
               margin: '2px',
             }}
@@ -204,6 +204,7 @@ class OrdersSummary extends React.Component {
               width: '50%',
               fontWeight: 'bold',
               margin: '2px',
+              display: 'none',
             }}
             appearance="ghost"
             onClick={() => {

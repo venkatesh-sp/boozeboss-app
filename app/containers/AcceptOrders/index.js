@@ -74,6 +74,11 @@ class AcceptOrders extends React.Component {
   componentDidMount() {
     this.props.getUser();
     const { outlet } = this.props.user;
+    const { userName } = this.props.history.location.state;
+
+    if (userName) {
+      this.setState({ customerName: userName });
+    }
     if (outlet) {
       const { outletvenue_id, outletevent_id } = outlet;
 
@@ -100,7 +105,11 @@ class AcceptOrders extends React.Component {
   };
 
   render() {
-    const { cartItems, user: customer } = this.props.history.location.state;
+    const {
+      cartItems,
+      user: customer,
+      userName,
+    } = this.props.history.location.state;
 
     const { outlet } = this.props;
 
@@ -154,13 +163,22 @@ class AcceptOrders extends React.Component {
             <title>Waiter Orders</title>
             <meta name="description" content="Description of Waiter Orders" />
           </Helmet>
-          <Input
-            placeholder="Costumer Name"
-            style={{ width: '100%', marginTop: '10px' }}
-            // ADD to store value in state
-            onChange={value => this.handleChange(value, 'customerName')}
-            value={this.state.customerName}
-          />
+          {!customer ? (
+            <Input
+              placeholder="Costumer Name"
+              style={{ width: '100%', marginTop: '10px' }}
+              // ADD to store value in state
+              onChange={value => this.handleChange(value, 'customerName')}
+              value={this.state.customerName}
+            />
+          ) : (
+            <Input
+              style={{ width: '100%', marginTop: '10px' }}
+              // ADD to store value in state
+              value={userName}
+            />
+          )}
+
           {items.map((item, index) => (
             <div style={{ backgroundColor: '#030303' }} key={index}>
               <StyledMenuDiv>
@@ -184,33 +202,30 @@ class AcceptOrders extends React.Component {
                         `${currentOutlet}menu_id`,
                         item.id,
                       ]);
-                      if (customerName !== '') {
-                        //NEW
-                        if (!is_exist) {
-                          this.setState({
-                            show: true,
-                            product_id: item.id,
-                            quantity: item.quantity,
-                          });
-                        } else {
-                          const {
-                            menCount,
-                            menAgeGroup,
-                            womenCount,
-                            womenAgeGroup,
-                          } = is_exist.data;
-                          this.setState({
-                            show: true,
-                            product_id: item.id,
-                            quantity: item.quantity,
-                            menCount,
-                            menAgeGroup,
-                            womenCount,
-                            womenAgeGroup,
-                          });
-                        }
+
+                      //NEW
+                      if (!is_exist) {
+                        this.setState({
+                          show: true,
+                          product_id: item.id,
+                          quantity: item.quantity,
+                        });
                       } else {
-                        Alert.warning('Add Costumer Name', 2500);
+                        const {
+                          menCount,
+                          menAgeGroup,
+                          womenCount,
+                          womenAgeGroup,
+                        } = is_exist.data;
+                        this.setState({
+                          show: true,
+                          product_id: item.id,
+                          quantity: item.quantity,
+                          menCount,
+                          menAgeGroup,
+                          womenCount,
+                          womenAgeGroup,
+                        });
                       }
                     }}
                   >
@@ -373,32 +388,36 @@ class AcceptOrders extends React.Component {
               borderRadius: '0px',
             }}
             onClick={() => {
-              if (customer) {
-                this.props.addCartItems({
-                  items: this.state.items,
-                  account_id: customer,
-                  history: this.props.history,
-                });
-                this.props.history.push({
-                  pathname: '/order-payment',
-                  state: {
-                    items: items,
-                    user: this.props.user,
-                    customer: customer,
-                  },
-                });
+              if (this.state.customerName) {
+                if (customer) {
+                  this.props.addCartItems({
+                    items: this.state.items,
+                    account_id: customer,
+                    history: this.props.history,
+                  });
+                  this.props.history.push({
+                    pathname: '/order-payment',
+                    state: {
+                      items: items,
+                      user: this.props.user,
+                      customer: customer,
+                    },
+                  });
+                } else {
+                  this.props.addInfoRequest({
+                    data: this.state.items,
+                    customerName: this.state.customerName,
+                  });
+                  this.props.history.push({
+                    pathname: '/order-payment',
+                    state: {
+                      items: items,
+                      user: this.props.user,
+                    },
+                  });
+                }
               } else {
-                this.props.addInfoRequest({
-                  data: this.state.items,
-                  customerName: this.state.customerName,
-                });
-                this.props.history.push({
-                  pathname: '/order-payment',
-                  state: {
-                    items: items,
-                    user: this.props.user,
-                  },
-                });
+                Alert.warning('Please provide Customer Name!', 2500);
               }
             }}
           >

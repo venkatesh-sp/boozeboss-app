@@ -97,6 +97,7 @@ export class QrScanner extends React.Component {
           state: {
             cartItems: json_data.cartItems,
             user: json_data.user,
+            userName: json_data.userName,
           },
         });
       }
