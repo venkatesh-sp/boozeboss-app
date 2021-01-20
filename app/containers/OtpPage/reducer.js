@@ -12,6 +12,9 @@ import {
   CHECK_SMS_VERIFICATION_SUCCESS,
   CHECK_SMS_VERIFICATION_REQUEST,
   CHECK_EMAIL_VERIFICATION_REQUEST,
+  SEND_MOBILE_OTP_REQUEST,
+  SEND_MOBILE_OTP_SUCCESS,
+  SEND_MOBILE_OTP_ERROR,
 } from './constants';
 
 export const initialState = fromJS({
@@ -34,6 +37,12 @@ function otpReducer(state = initialState, action) {
       return state.set('error', action.error).set('isLoading', false);
     case CHECK_EMAIL_VERIFICATION_ERROR:
       return state.set('error', action.error).set('isLoading', false);
+    case SEND_MOBILE_OTP_REQUEST:
+      return state;
+    case SEND_MOBILE_OTP_SUCCESS:
+      return state;
+    case SEND_MOBILE_OTP_ERROR:
+      return state.set('error', action.error);
     default:
       return state;
   }

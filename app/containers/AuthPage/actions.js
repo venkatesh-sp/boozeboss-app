@@ -72,6 +72,7 @@ export function authSignup(user) {
 
 export function authSignupSuccess(token, success) {
   localStorage.setItem('jwt', token);
+  status(success, 'success');
   return {
     type: ADD_USER_SUCCESS,
     token,
@@ -80,6 +81,7 @@ export function authSignupSuccess(token, success) {
 }
 
 export function authSignupError(error) {
+  status(error, 'error');
   return {
     type: ADD_USER_ERROR,
     error,

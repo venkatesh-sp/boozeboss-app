@@ -140,7 +140,7 @@ const NoImage = styled(Image)`
 `;
 
 /* eslint-disable react/prefer-stateless-function */
-export class OutletInfo extends React.Component {
+export class OutletScanned extends React.Component {
   state = {
     showMenu: false,
     menu_category: null,
@@ -603,7 +603,7 @@ export class OutletInfo extends React.Component {
   }
 }
 
-OutletInfo.propTypes = {
+OutletScanned.propTypes = {
   dispatch: PropTypes.func,
 };
 
@@ -637,4 +637,4 @@ export default compose(
   withReducer,
   withSaga,
   withConnect,
-)(OutletInfo);
+)(OutletScanned);

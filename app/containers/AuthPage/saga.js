@@ -72,7 +72,7 @@ function* signupSaga(params) {
         yield put(sendMobileOtp({ phone_number, history }));
       }
     } else {
-      yield put(authSignupSuccess(null, response.message));
+      yield put(authSignupSuccess(null, response));
     }
   } catch (error) {
     const jsonError = yield error.response ? error.response.json() : error;
