@@ -117,6 +117,7 @@ class OrderPayments extends React.Component {
       );
     }
 
+    //mapping products from location props
     const order_summary = _.map(products, function(item) {
       const { quantity, price, name } = item;
 
@@ -143,7 +144,7 @@ class OrderPayments extends React.Component {
             appearance="ghost"
             // onClick={this.open}
           >
-            Paid Online
+            Pay Online
           </Button>
         )}
         <Button
@@ -155,7 +156,7 @@ class OrderPayments extends React.Component {
           appearance="ghost"
           onClick={this.open}
         >
-          Paid Offline
+          Pay Offline
         </Button>
       </>
     );
@@ -278,6 +279,7 @@ class OrderPayments extends React.Component {
           Total Cost: {_.sumBy(order_summary, 'cost')}
         </Button>
         <Modal
+          //Modal for Confirm Order
           size="xs"
           show={this.state.show}
           onHide={this.close}
@@ -296,6 +298,7 @@ class OrderPayments extends React.Component {
                 const orderedItemsIds = orderedItems.map(item => item.id);
                 // OFFLINE PAYMENT
                 if (customer) {
+                  //Dispatching action to Update cart_items table
                   this.props.addCustomerBilledRequest({
                     customer_id: customer,
                     ids: orderedItemsIds,
@@ -306,6 +309,7 @@ class OrderPayments extends React.Component {
                   });
                   this.props.history.go();
                 } else {
+                  //Dispatching action to update orderinfo table
                   this.props.addBilledRequest({
                     ids: orderedItemsIds,
                     payment_type: 'offline',

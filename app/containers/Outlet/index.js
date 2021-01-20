@@ -158,6 +158,7 @@ export class OutletInfo extends React.Component {
       this.props.getOutletVenue(value.outlet_venue);
     }
   };
+
   handleFilter = props => {
     this.setState(props);
   };
@@ -186,6 +187,7 @@ export class OutletInfo extends React.Component {
       currentLevel,
     } = this.state;
 
+    //Outlet Menu Category
     const outlet_menu = _.without(
       _.map(_.uniqBy(menu, 'outlet_category'), 'outlet_category'),
       '',
@@ -196,6 +198,7 @@ export class OutletInfo extends React.Component {
       this.setState({ currentLevel: 'level2' });
     }
 
+    //Product Menu Category
     let product_menu = _.without(
       _.map(_.uniqBy(menu, 'product_category'), 'product_category'),
       '',
@@ -214,6 +217,7 @@ export class OutletInfo extends React.Component {
 
     let filtered_menu = menu;
 
+    //Filtering Categories
     if (product_category && outlet_category) {
       filtered_menu = _.filter(menu, { product_category, outlet_category });
     } else if (product_category && !outlet_category) {
@@ -487,11 +491,13 @@ export class OutletInfo extends React.Component {
                                               value={cartItems[item.id]}
                                               onChange={value => {
                                                 if (parseInt(value) > 0) {
+                                                  //Dispatch Action to Add Cart Items in Reducer State cartitems
                                                   this.props.addCartItem({
                                                     product: item.id,
                                                     quantity: value,
                                                   });
                                                 } else {
+                                                  //Dispatch Action to Remove Cart Items in Reducer State cartitems
                                                   this.props.removeCartItem({
                                                     product: item.id,
                                                   });
@@ -509,6 +515,7 @@ export class OutletInfo extends React.Component {
                                         <Button
                                           appearance="primary"
                                           onClick={() => {
+                                            //Dispatch Action to Add Cart Items in Reducer State cartitems
                                             this.props.addCartItem({
                                               product: item.id,
                                               quantity: 1,
@@ -564,6 +571,7 @@ export class OutletInfo extends React.Component {
                                       // display: 'none',
                                     }}
                                     onClick={() => {
+                                      //Redirect to cart page if cart is not empty
                                       const {
                                         outlet,
                                         cartItems,

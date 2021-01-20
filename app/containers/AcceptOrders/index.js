@@ -74,8 +74,9 @@ class AcceptOrders extends React.Component {
   componentDidMount() {
     this.props.getUser();
     const { outlet } = this.props.user;
-    const { userName } = this.props.history.location.state;
 
+    const { userName } = this.props.history.location.state;
+    //If Guest Customer scanned QR code
     if (userName) {
       this.setState({ customerName: userName });
     }
@@ -116,7 +117,7 @@ class AcceptOrders extends React.Component {
     if (!outlet) {
       return <>Loading...</>;
     }
-
+    //Mapping cart items from auth
     let items = _.map(_.toPairs(cartItems), data => {
       const product = _.find(outlet.menu, ['id', parseInt(data[0])]);
       if (product) {
@@ -174,7 +175,7 @@ class AcceptOrders extends React.Component {
           ) : (
             <Input
               style={{ width: '100%', marginTop: '10px' }}
-              // ADD to store value in state
+              //Username from guest customer via QR code
               value={userName}
             />
           )}
@@ -197,7 +198,7 @@ class AcceptOrders extends React.Component {
                   <Button
                     appearance="primary"
                     onClick={() => {
-                      const { items, currentOutlet, customerName } = this.state;
+                      const { items, currentOutlet } = this.state;
                       const is_exist = _.find(items, [
                         `${currentOutlet}menu_id`,
                         item.id,
@@ -237,6 +238,7 @@ class AcceptOrders extends React.Component {
           ))}
 
           <Modal
+            //Add Info Modal
             show={this.state.show}
             size="xs"
             onHide={() => {
@@ -388,8 +390,10 @@ class AcceptOrders extends React.Component {
               borderRadius: '0px',
             }}
             onClick={() => {
+              //Check Customer name from Input before Confirming Order
               if (this.state.customerName) {
                 if (customer) {
+                  //Dispatching action to ADD items in cart_items table
                   this.props.addCartItems({
                     items: this.state.items,
                     account_id: customer,
@@ -404,6 +408,7 @@ class AcceptOrders extends React.Component {
                     },
                   });
                 } else {
+                  //Dispatching action to ADD items in orderinfo table
                   this.props.addInfoRequest({
                     data: this.state.items,
                     customerName: this.state.customerName,
