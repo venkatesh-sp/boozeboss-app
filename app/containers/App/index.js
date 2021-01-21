@@ -49,7 +49,6 @@ import Cart from 'containers/Cart';
 import OrdersSummary from 'containers/OrdersSummary';
 import AcceptOrders from 'containers/AcceptOrders';
 import OutletInfo from '../Outlet';
-import OutletScanned from '../OutletScanned';
 import OrderInfo from '../OrderInfo';
 import OrderPayments from '../OrderPayments';
 import saga from './saga';
@@ -214,13 +213,6 @@ class App extends React.Component {
             exact
             path="/outlet"
             component={OutletInfo}
-            scopesRequired={[]}
-            rolesRequired={[]}
-          />
-          <Route
-            exact
-            path="/outlet/scanned"
-            component={OutletScanned}
             scopesRequired={[]}
             rolesRequired={[]}
           />
