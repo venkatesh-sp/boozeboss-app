@@ -23,6 +23,7 @@ import {
   checkSMSVerification,
   checkEmailVerification,
   addCartItems,
+  sendMobileOtp,
 } from './actions';
 
 const StyledOtpDiv = styled.div`
@@ -33,6 +34,7 @@ const StyledText = styled.p`
   font-weight: ${props => props.weight};
   color: ${props => props.color};
   text-align: center;
+  margin-top: 20px;
 `;
 const StyledFlexDiv = styled.div`
   display: flex;
@@ -95,6 +97,10 @@ class Otp extends Component {
     return (
       <StyledOtpDiv>
         <StyledText size="15px" color="#A4A8B7">
+          {this.state.phone_number}
+          {this.state.email}
+        </StyledText>
+        <StyledText size="15px" color="#A4A8B7">
           Please Enter OTP
         </StyledText>
         <StyledFlexDiv>
@@ -111,6 +117,17 @@ class Otp extends Component {
         >
           Submit OTP
         </Button>
+        <StyledText
+          size="15px"
+          color="#3498ff"
+          onClick={() => {
+            const { phone_number } = this.state;
+            const { history, sendMobileOtp } = this.props;
+            sendMobileOtp({ phone_number, history });
+          }}
+        >
+          Resend OTP
+        </StyledText>
       </StyledOtpDiv>
     );
   }
@@ -131,6 +148,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(checkSMSVerification(phone_number, code)),
     checkEmailVerification: (email, code) =>
       dispatch(checkEmailVerification(email, code)),
+    sendMobileOtp: phone_number => dispatch(sendMobileOtp(phone_number)),
   };
 }
 

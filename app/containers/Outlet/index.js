@@ -164,7 +164,6 @@ export class OutletInfo extends React.Component {
 
   render() {
     const { outlet, cartItems, scope } = this.props;
-
     if (!outlet) {
       return <>Loading...</>;
     }
