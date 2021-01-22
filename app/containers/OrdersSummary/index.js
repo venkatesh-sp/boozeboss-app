@@ -147,7 +147,7 @@ class OrdersSummary extends React.Component {
               this.props.history.push('/');
             }}
           >
-            Paid Online
+            Pay Online
           </Button>
 
           <Button
@@ -161,7 +161,7 @@ class OrdersSummary extends React.Component {
               this.props.history.push('/');
             }}
           >
-            Paid Offline
+            Pay Offline
           </Button>
         </>
       ) : (

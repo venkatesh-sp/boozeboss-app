@@ -63,7 +63,9 @@ const ButtonStyles = {
 };
 class Cart extends Component {
   render() {
+    //Taking Cart Items from Outlet Reducer using selector
     const { cartItems, outlet, scope } = this.props;
+
     if (!outlet) {
       return <>Loading...</>;
     }
@@ -102,11 +104,13 @@ class Cart extends Component {
                       value={cartItems[item.id]}
                       onChange={value => {
                         if (parseInt(value) > 0) {
+                          //Dispatch Action to Add Cart Items in Cart Reducer state
                           this.props.addCartItem({
                             product: item.id,
                             quantity: value,
                           });
                         } else {
+                          //Dispatch Action to Remove Cart Items in Cart Reducer state
                           this.props.removeCartItem({
                             product: item.id,
                           });
@@ -160,6 +164,7 @@ class Cart extends Component {
               borderRadius: '0px',
             }}
             onClick={() => {
+              //Redirecting to auth page
               this.props.history.push('/auth');
             }}
           >
