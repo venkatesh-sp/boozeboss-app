@@ -15,12 +15,16 @@ import {
   SEND_MOBILE_OTP_REQUEST,
   SEND_MOBILE_OTP_SUCCESS,
   SEND_MOBILE_OTP_ERROR,
+  VERIFY_EMAIL_PHONE_REQUEST,
+  VERIFY_EMAIL_PHONE_SUCESS,
+  VERIFY_EMAIL_PHONE_ERROR,
 } from './constants';
 
 export const initialState = fromJS({
   error: null,
   success: null,
   isLoading: null,
+  token: null,
 });
 
 function otpReducer(state = initialState, action) {
@@ -42,6 +46,12 @@ function otpReducer(state = initialState, action) {
     case SEND_MOBILE_OTP_SUCCESS:
       return state;
     case SEND_MOBILE_OTP_ERROR:
+      return state.set('error', action.error);
+    case VERIFY_EMAIL_PHONE_REQUEST:
+      return state;
+    case VERIFY_EMAIL_PHONE_SUCESS:
+      return state.set('token', action.token).set('isLoading', false);
+    case VERIFY_EMAIL_PHONE_ERROR:
       return state.set('error', action.error);
     default:
       return state;

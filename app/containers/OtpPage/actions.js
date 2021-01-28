@@ -15,13 +15,16 @@ import {
   SEND_MOBILE_OTP_REQUEST,
   SEND_MOBILE_OTP_SUCCESS,
   SEND_MOBILE_OTP_ERROR,
+  VERIFY_EMAIL_PHONE_REQUEST,
+  VERIFY_EMAIL_PHONE_SUCESS,
+  VERIFY_EMAIL_PHONE_ERROR,
 } from './constants';
 
 // Check code
-export function checkSMSVerification(phone_number, code) {
+export function checkSMSVerification(phone, code) {
   return {
     type: CHECK_SMS_VERIFICATION_REQUEST,
-    phone_number,
+    phone,
     code,
   };
 }
@@ -82,6 +85,30 @@ export function sendMobileOtpSuccess(success) {
 export function sendMobileOtpError(error) {
   return {
     type: SEND_MOBILE_OTP_ERROR,
+    error,
+  };
+}
+
+export function verifyEmailPhone(email_phone) {
+  return {
+    type: VERIFY_EMAIL_PHONE_REQUEST,
+    email_phone,
+  };
+}
+
+export function verifyEmailPhoneSuccess(token, success) {
+  localStorage.setItem('jwt', token);
+  return {
+    type: VERIFY_EMAIL_PHONE_SUCESS,
+    token,
+    success,
+  };
+}
+
+export function verifyEmailPhoneError(error) {
+  status(error, 'error');
+  return {
+    type: VERIFY_EMAIL_PHONE_ERROR,
     error,
   };
 }

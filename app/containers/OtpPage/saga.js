@@ -8,6 +8,7 @@ import {
   CHECK_SMS_VERIFICATION_REQUEST,
   CHECK_EMAIL_VERIFICATION_REQUEST,
   SEND_MOBILE_OTP_REQUEST,
+  VERIFY_EMAIL_PHONE_REQUEST,
 } from './constants';
 
 import {
@@ -17,12 +18,16 @@ import {
   checkEmailVerificationError,
   sendMobileOtpSuccess,
   sendMobileOtpError,
+  verifyEmailPhone,
+  verifyEmailPhoneSuccess,
+  verifyEmailPhoneError,
 } from './actions';
+import { authenticate, getUser } from '../App/actions';
 import { ADD_CART_ITEM } from '../Cart/constants';
 
 function* checkSMSVerificationSaga(params) {
-  console.log(params, 'params');
-  const { phone_number, code, props } = params;
+  const { phone, code, props } = params;
+  const { phone_number, history } = phone;
   const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
     process.env.API_PORT
   }/api/verifications/sms/check-code`;
@@ -33,8 +38,8 @@ function* checkSMSVerificationSaga(params) {
 
   try {
     const response = yield call(request, requestURL, options);
-    console.log(response, 'response');
     yield put(checkSMSVerificationSuccess(response));
+    yield put(verifyEmailPhone({ phone_number, history }));
   } catch (error) {
     console.log(error, 'error');
     const jsonError = yield error.response ? error.response.json() : error;
@@ -80,6 +85,27 @@ function* getSMSVerificationSaga(params) {
   }
 }
 
+function* verifyEmailPhoneSaga(params) {
+  const { email, phone_number, history } = params.email_phone;
+  const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
+    process.env.API_PORT
+  }/api/auth/verify`;
+  const options = {
+    method: 'POST',
+    body: JSON.stringify(email ? { email } : { phone_number }),
+  };
+
+  try {
+    const response = yield call(request, requestURL, options);
+    yield put(verifyEmailPhoneSuccess(response.jwt_token, 'verified'));
+    yield put(getUser());
+    yield put(authenticate(response.jwt_token));
+  } catch (error) {
+    const jsonError = yield error.response ? error.response.json() : error;
+    yield put(verifyEmailPhoneError(jsonError));
+  }
+}
+
 function* checkVerificationSMSRequest() {
   yield takeLatest(CHECK_SMS_VERIFICATION_REQUEST, checkSMSVerificationSaga);
 }
@@ -95,10 +121,14 @@ function* getVerificationSMSRequest() {
   yield takeLatest(SEND_MOBILE_OTP_REQUEST, getSMSVerificationSaga);
 }
 
+function* verifyPhoneEmailRequest() {
+  yield takeLatest(VERIFY_EMAIL_PHONE_REQUEST, verifyEmailPhoneSaga);
+}
 export default function* rootSaga() {
   yield all([
     fork(checkVerificationSMSRequest),
     fork(checkVerificationEmailRequest),
     fork(getVerificationSMSRequest),
+    fork(verifyPhoneEmailRequest),
   ]);
 }

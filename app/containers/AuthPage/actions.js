@@ -18,6 +18,9 @@ import {
   VERIFY_EMAIL_PHONE_REQUEST,
   VERIFY_EMAIL_PHONE_SUCESS,
   VERIFY_EMAIL_PHONE_ERROR,
+  VERIFY_REQUEST,
+  VERIFY_SUCCESS,
+  VERIFY_ERROR,
 } from './constants';
 
 export function sendMobileOtp(phone_number) {
@@ -108,6 +111,33 @@ export function verifyEmailPhoneError(error) {
   status(error, 'error');
   return {
     type: VERIFY_EMAIL_PHONE_ERROR,
+    error,
+  };
+}
+
+export function verify(email_phone) {
+  return {
+    type: VERIFY_REQUEST,
+    email_phone,
+  };
+}
+
+export function verifySuccess(success) {
+  if (success.Message === 'This Email is already taken') {
+    status(success.Message, 'error');
+  } else if (success.Message === 'This Phone Number is already taken') {
+    status(success.Message, 'error');
+  } else status(success.Message, 'success');
+
+  return {
+    type: VERIFY_SUCCESS,
+    success,
+  };
+}
+
+export function verifyError(error) {
+  return {
+    type: VERIFY_ERROR,
     error,
   };
 }
