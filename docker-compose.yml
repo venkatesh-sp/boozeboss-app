@@ -4,8 +4,8 @@ services:
   wallet:
     build:
       context: .
-    environment:
-      REACT_APP_AWS: 'true'
+    env_file:
+      - .env
     ports:
       - 80:3000
     command: npm start
