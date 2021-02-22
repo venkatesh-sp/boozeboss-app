@@ -12,3 +12,6 @@ npm-debug.log
 app/fonts/
 
 .env
+
+yarn.lock
+package-lock.json
