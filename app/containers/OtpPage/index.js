@@ -82,12 +82,25 @@ class Otp extends Component {
     )
       return Alert.error('Incorrect OTP', 2000);
     if (this.state.phone_number) {
-      console.log(this.state);
-      this.props.checkSMSVerification(this.state.phone_number, this.state.otp);
+      this.props.checkSMSVerification(
+        { phone_number: this.state.phone_number, history: this.props.history },
+        this.state.otp,
+      );
     } else if (this.state.email) {
-      console.log(this.state, 'email');
       this.props.checkEmailVerification(this.state.email, this.state.otp);
     }
+  };
+
+  handleLogout = () => {
+    localStorage.clear();
+    this.props.history.push({
+      pathname: '/auth',
+      state: {
+        active: 'signin',
+        phone_number: this.state.phone_number,
+      },
+    });
+    // this.props.history.go();
   };
 
   render() {
@@ -97,8 +110,8 @@ class Otp extends Component {
     return (
       <StyledOtpDiv>
         <StyledText size="15px" color="#A4A8B7">
-          {this.state.phone_number}
-          {this.state.email}
+          Phone Number: {this.state.phone_number}{' '}
+          <a onClick={this.handleLogout}>Edit</a>
         </StyledText>
         <StyledText size="15px" color="#A4A8B7">
           Please Enter OTP
@@ -144,8 +157,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    checkSMSVerification: (phone_number, code) =>
-      dispatch(checkSMSVerification(phone_number, code)),
+    checkSMSVerification: (phone, code) =>
+      dispatch(checkSMSVerification(phone, code)),
     checkEmailVerification: (email, code) =>
       dispatch(checkEmailVerification(email, code)),
     sendMobileOtp: phone_number => dispatch(sendMobileOtp(phone_number)),

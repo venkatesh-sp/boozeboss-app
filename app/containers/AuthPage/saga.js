@@ -7,6 +7,7 @@ import {
   SEND_MOBILE_OTP_REQUEST,
   ADD_USER_REQUEST,
   VERIFY_EMAIL_PHONE_REQUEST,
+  VERIFY_REQUEST,
 } from './constants';
 
 import {
@@ -20,6 +21,8 @@ import {
   verifyEmailPhoneError,
   sendEmailOtp,
   sendMobileOtp,
+  verifySuccess,
+  verifyError,
 } from './actions';
 
 import { authenticate, getUser } from '../App/actions';
@@ -114,8 +117,8 @@ function* verifyEmailPhoneSaga(params) {
     const response = yield call(request, requestURL, options);
 
     yield put(verifyEmailPhoneSuccess(response.jwt_token, 'verified'));
-    yield put(getUser());
-    yield put(authenticate(response.jwt_token));
+    // yield put(getUser());
+    // yield put(authenticate(response.jwt_token));
 
     if (email) {
       // yield put(sendEmailOtp({email, history}));
@@ -125,6 +128,25 @@ function* verifyEmailPhoneSaga(params) {
   } catch (error) {
     const jsonError = yield error.response ? error.response.json() : error;
     yield put(verifyEmailPhoneError(jsonError));
+  }
+}
+
+function* verifySaga(params) {
+  const { email, phone } = params.email_phone;
+  const requestURL = `${process.env.API_SCHEMA}://${process.env.API_HOST}:${
+    process.env.API_PORT
+  }/api/auth/verify-credentials`;
+  const options = {
+    method: 'POST',
+    body: JSON.stringify(email ? { email } : { phone_number: phone }),
+  };
+
+  try {
+    const response = yield call(request, requestURL, options);
+    yield put(verifySuccess(response));
+  } catch (error) {
+    const jsonError = yield error.response ? error.response.json() : error;
+    yield put(verifyError(jsonError));
   }
 }
 
@@ -143,11 +165,15 @@ function* getVerificationEmailRequest() {
 function* verifyPhoneEmailRequest() {
   yield takeLatest(VERIFY_EMAIL_PHONE_REQUEST, verifyEmailPhoneSaga);
 }
+function* verifyRequest() {
+  yield takeLatest(VERIFY_REQUEST, verifySaga);
+}
 export default function* rootSaga() {
   yield all([
     fork(signupRequest),
     fork(getVerificationSMSRequest),
     fork(verifyPhoneEmailRequest),
     fork(getVerificationEmailRequest),
+    fork(verifyRequest),
   ]);
 }

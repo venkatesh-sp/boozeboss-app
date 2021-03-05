@@ -18,6 +18,9 @@ import {
   VERIFY_EMAIL_PHONE_REQUEST,
   VERIFY_EMAIL_PHONE_SUCESS,
   VERIFY_EMAIL_PHONE_ERROR,
+  VERIFY_REQUEST,
+  VERIFY_SUCCESS,
+  VERIFY_ERROR,
 } from './constants';
 
 export const initialState = fromJS({
@@ -48,6 +51,12 @@ function authReducer(state = initialState, action) {
     case VERIFY_EMAIL_PHONE_SUCESS:
       return state.set('token', action.token).set('isLoading', false);
     case VERIFY_EMAIL_PHONE_ERROR:
+      return state.set('error', action.error);
+    case VERIFY_REQUEST:
+      return state;
+    case VERIFY_SUCCESS:
+      return state.set('success', action.success);
+    case VERIFY_ERROR:
       return state.set('error', action.error);
     default:
       return state;

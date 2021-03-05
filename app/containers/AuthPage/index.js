@@ -34,6 +34,7 @@ import {
   sendEmailOtp,
   authSignup,
   verifyEmailPhone,
+  verify,
 } from './actions';
 
 const StyledLoginDiv = styled.div`
@@ -112,7 +113,7 @@ const CustomButtonGroup = ({ active, toggle }) => (
   </ButtonGroup>
 );
 
-const SignIn = ({ handleChange, handleSubmit }) => (
+const SignIn = ({ handleChange, handleSubmit, edit }) => (
   <>
     <StyledText size="17px" color="#363645" weight="bold">
       Already have an account?
@@ -128,6 +129,7 @@ const SignIn = ({ handleChange, handleSubmit }) => (
         required: true,
         autoFocus: true,
       }}
+      value={edit}
       onChange={value => handleChange(value, 'phone')}
     />
     {/* <Input
@@ -152,7 +154,7 @@ const SignIn = ({ handleChange, handleSubmit }) => (
   </>
 );
 
-const SignUp = ({ handleChange, handleSignup }) => (
+const SignUp = ({ handleChange, handleSignup, email, phone, verify }) => (
   <StyledSignupContainer>
     <StyledHeading>Sign Up</StyledHeading>
     <Input
@@ -172,6 +174,15 @@ const SignUp = ({ handleChange, handleSignup }) => (
       style={inputStyles}
       type="text"
       placeholder="Email"
+      onBlur={() => {
+        if (
+          new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(email)
+        ) {
+          verify({ email });
+        } else {
+          Alert.error('Enter Valid Email Address', 2500);
+        }
+      }}
     />
     <PhoneInput
       style={{ ...inputStyles }}
@@ -184,6 +195,9 @@ const SignUp = ({ handleChange, handleSignup }) => (
         autoFocus: true,
       }}
       onChange={value => handleChange(value, 'phone')}
+      onBlur={() => {
+        verify({ phone });
+      }}
     />
 
     <Input
@@ -310,13 +324,18 @@ class AuthPage extends Component {
 
   render() {
     const { token, sendEmailOtp, sendMobileOtp } = this.props;
-
+    let number;
+    console.log('props\n', this.props);
+    if (this.props.location.state !== undefined) {
+      number = this.props.location.state.phone_number;
+    }
     let AccountsComponent;
     if (this.state.active === 'signin') {
       AccountsComponent = (
         <SignIn
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
+          edit={number}
         />
       );
     } else {
@@ -324,6 +343,9 @@ class AuthPage extends Component {
         <SignUp
           handleChange={this.handleChange}
           handleSignup={this.handleSignup}
+          verify={this.props.verify}
+          email={this.state.email}
+          phone={this.state.phone}
         />
       );
     }
@@ -352,6 +374,7 @@ function mapDispatchToProps(dispatch) {
     sendEmailOtp: email => dispatch(sendEmailOtp(email)),
     authSignup: user => dispatch(authSignup(user)),
     verifyEmailPhone: email_phone => dispatch(verifyEmailPhone(email_phone)),
+    verify: email_phone => dispatch(verify(email_phone)),
   };
 }
 

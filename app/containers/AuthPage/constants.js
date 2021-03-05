@@ -21,3 +21,7 @@ export const VERIFY_EMAIL_PHONE_REQUEST =
 export const VERIFY_EMAIL_PHONE_SUCESS =
   'app/AuthPage/VERIFY_EMAIL_PHONE_SUCESS';
 export const VERIFY_EMAIL_PHONE_ERROR = 'app/AuthPage/VERIFY_EMAIL_PHONE_ERROR';
+
+export const VERIFY_REQUEST = 'app/AuthPage/VERIFY_REQUEST';
+export const VERIFY_SUCCESS = 'app/AuthPage/VERIFY_SUCCESS';
+export const VERIFY_ERROR = 'app/AuthPage/VERIFY_ERROR';
