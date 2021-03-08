@@ -34,6 +34,7 @@ import {
   makeSelectOutletInfo,
   makeSelectCartItems,
   makeSelectCurrentOutlet,
+  makeSelectError,
 } from './selectors';
 import { makeSelectScope } from '../App/selectors';
 import reducer from './reducer';
@@ -164,7 +165,44 @@ export class OutletInfo extends React.Component {
   };
 
   render() {
-    const { outlet, cartItems, scope } = this.props;
+    const { outlet, cartItems, scope, error } = this.props;
+    if (error === 'inactive') {
+      return (
+        <>
+          <div>
+            <p
+              style={{
+                fontSize: '18px',
+                color: '#000',
+                textAlign: 'center',
+                marginTop: '10px',
+              }}
+            >
+              Menu is inactive. Please contact restaurant manager
+            </p>
+          </div>
+        </>
+      );
+    }
+    if (error === 'invalid') {
+      return (
+        <>
+          <div>
+            <p
+              style={{
+                fontSize: '18px',
+                color: '#000',
+                textAlign: 'center',
+                marginTop: '10px',
+              }}
+            >
+              Invalid Id
+            </p>
+          </div>
+        </>
+      );
+    }
+
     if (!outlet) {
       return <>Loading...</>;
     }
@@ -186,7 +224,7 @@ export class OutletInfo extends React.Component {
       currentLevel,
     } = this.state;
 
-    //Outlet Menu Category
+    // Outlet Menu Category
     const outlet_menu = _.without(
       _.map(_.uniqBy(menu, 'outlet_category'), 'outlet_category'),
       '',
@@ -197,7 +235,7 @@ export class OutletInfo extends React.Component {
       this.setState({ currentLevel: 'level2' });
     }
 
-    //Product Menu Category
+    // Product Menu Category
     let product_menu = _.without(
       _.map(_.uniqBy(menu, 'product_category'), 'product_category'),
       '',
@@ -216,7 +254,7 @@ export class OutletInfo extends React.Component {
 
     let filtered_menu = menu;
 
-    //Filtering Categories
+    // Filtering Categories
     if (product_category && outlet_category) {
       filtered_menu = _.filter(menu, { product_category, outlet_category });
     } else if (product_category && !outlet_category) {
@@ -317,39 +355,37 @@ export class OutletInfo extends React.Component {
                       ),
                       level2: (
                         <p>
-                          {product_menu.map((item, index) => {
-                            return (
-                              <Button
-                                key={index}
-                                style={
-                                  item === product_category
-                                    ? {
-                                        backgroundColor: '#3498ff',
-                                        color: '#fff',
-                                        width: '100%',
-                                        fontWeight: 'bold',
-                                        margin: '2px',
-                                        marginTop: '10px',
-                                      }
-                                    : {
-                                        width: '100%',
-                                        fontWeight: 'bold',
-                                        margin: '2px',
-                                        marginTop: '10px',
-                                      }
-                                }
-                                appearance="default"
-                                onClick={() =>
-                                  this.handleFilter({
-                                    product_category: item,
-                                    currentLevel: 'level3',
-                                  })
-                                }
-                              >
-                                {item}
-                              </Button>
-                            );
-                          })}
+                          {product_menu.map((item, index) => (
+                            <Button
+                              key={index}
+                              style={
+                                item === product_category
+                                  ? {
+                                      backgroundColor: '#3498ff',
+                                    color: '#fff',
+                                      width: '100%',
+                                      fontWeight: 'bold',
+                                    margin: '2px',
+                                      marginTop: '10px',
+                                  }
+                                  : {
+                                      width: '100%',
+                                    fontWeight: 'bold',
+                                      margin: '2px',
+                                    marginTop: '10px',
+                                    }
+                              }
+                              appearance="default"
+                              onClick={() =>
+                                this.handleFilter({
+                                  product_category: item,
+                                  currentLevel: 'level3',
+                                })
+                              }
+                            >
+                              {item}
+                            </Button>
+                          ))}
                           <Button
                             appearance="primary"
                             style={{
@@ -490,13 +526,13 @@ export class OutletInfo extends React.Component {
                                               value={cartItems[item.id]}
                                               onChange={value => {
                                                 if (parseInt(value) > 0) {
-                                                  //Dispatch Action to Add Cart Items in Reducer State cartitems
+                                                  // Dispatch Action to Add Cart Items in Reducer State cartitems
                                                   this.props.addCartItem({
                                                     product: item.id,
                                                     quantity: value,
                                                   });
                                                 } else {
-                                                  //Dispatch Action to Remove Cart Items in Reducer State cartitems
+                                                  // Dispatch Action to Remove Cart Items in Reducer State cartitems
                                                   this.props.removeCartItem({
                                                     product: item.id,
                                                   });
@@ -514,7 +550,7 @@ export class OutletInfo extends React.Component {
                                         <Button
                                           appearance="primary"
                                           onClick={() => {
-                                            //Dispatch Action to Add Cart Items in Reducer State cartitems
+                                            // Dispatch Action to Add Cart Items in Reducer State cartitems
                                             this.props.addCartItem({
                                               product: item.id,
                                               quantity: 1,
@@ -570,7 +606,7 @@ export class OutletInfo extends React.Component {
                                       // display: 'none',
                                     }}
                                     onClick={() => {
-                                      //Redirect to cart page if cart is not empty
+                                      // Redirect to cart page if cart is not empty
                                       const {
                                         outlet,
                                         cartItems,
@@ -620,6 +656,7 @@ const mapStateToProps = createStructuredSelector({
   cartItems: makeSelectCartItems(),
   currentoutlet: makeSelectCurrentOutlet(),
   scope: makeSelectScope(),
+  error: makeSelectError(),
 });
 
 function mapDispatchToProps(dispatch) {
