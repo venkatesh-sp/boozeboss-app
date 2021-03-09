@@ -176,6 +176,7 @@ export class OutletInfo extends React.Component {
       cover_image,
       location,
       phone_number,
+      logo_img,
     } = outlet;
 
     const {
@@ -186,7 +187,7 @@ export class OutletInfo extends React.Component {
       currentLevel,
     } = this.state;
 
-    //Outlet Menu Category
+    // Outlet Menu Category
     const outlet_menu = _.without(
       _.map(_.uniqBy(menu, 'outlet_category'), 'outlet_category'),
       '',
@@ -197,7 +198,7 @@ export class OutletInfo extends React.Component {
       this.setState({ currentLevel: 'level2' });
     }
 
-    //Product Menu Category
+    // Product Menu Category
     let product_menu = _.without(
       _.map(_.uniqBy(menu, 'product_category'), 'product_category'),
       '',
@@ -216,7 +217,7 @@ export class OutletInfo extends React.Component {
 
     let filtered_menu = menu;
 
-    //Filtering Categories
+    // Filtering Categories
     if (product_category && outlet_category) {
       filtered_menu = _.filter(menu, { product_category, outlet_category });
     } else if (product_category && !outlet_category) {
@@ -240,11 +241,31 @@ export class OutletInfo extends React.Component {
 
         <div style={{ height: '200px', backgroundColor: '#030303' }}>
           {cover_image ? (
-            <img
-              alt={name}
-              style={{ maxWidth: '100%', minHeight: '250px', width: '100%' }}
-              src={cover_image}
-            />
+            <>
+              <img
+                alt={name}
+                style={{
+                  maxWidth: '100%',
+                  minHeight: '250px',
+                  width: '100%',
+                  opacity: '0.8',
+                }}
+                src={cover_image}
+              />
+              <img
+                alt={name}
+                style={{
+                  height: '100px',
+                  width: '100px',
+                  top: 125,
+                  left: 25,
+                  zIndex: 999,
+                  position: 'absolute',
+                  borderRadius: '50%',
+                }}
+                src={logo_img}
+              />
+            </>
           ) : (
             <NoImage style={{ width: '75%' }} />
           )}
@@ -317,39 +338,37 @@ export class OutletInfo extends React.Component {
                       ),
                       level2: (
                         <p>
-                          {product_menu.map((item, index) => {
-                            return (
-                              <Button
-                                key={index}
-                                style={
-                                  item === product_category
-                                    ? {
-                                        backgroundColor: '#3498ff',
-                                        color: '#fff',
-                                        width: '100%',
-                                        fontWeight: 'bold',
-                                        margin: '2px',
-                                        marginTop: '10px',
-                                      }
-                                    : {
-                                        width: '100%',
-                                        fontWeight: 'bold',
-                                        margin: '2px',
-                                        marginTop: '10px',
-                                      }
-                                }
-                                appearance="default"
-                                onClick={() =>
-                                  this.handleFilter({
-                                    product_category: item,
-                                    currentLevel: 'level3',
-                                  })
-                                }
-                              >
-                                {item}
-                              </Button>
-                            );
-                          })}
+                          {product_menu.map((item, index) => (
+                            <Button
+                              key={index}
+                              style={
+                                item === product_category
+                                  ? {
+                                      backgroundColor: '#3498ff',
+                                    color: '#fff',
+                                      width: '100%',
+                                      fontWeight: 'bold',
+                                    margin: '2px',
+                                      marginTop: '10px',
+                                  }
+                                  : {
+                                      width: '100%',
+                                    fontWeight: 'bold',
+                                      margin: '2px',
+                                    marginTop: '10px',
+                                    }
+                              }
+                              appearance="default"
+                              onClick={() =>
+                                this.handleFilter({
+                                  product_category: item,
+                                  currentLevel: 'level3',
+                                })
+                              }
+                            >
+                              {item}
+                            </Button>
+                          ))}
                           <Button
                             appearance="primary"
                             style={{
@@ -490,13 +509,13 @@ export class OutletInfo extends React.Component {
                                               value={cartItems[item.id]}
                                               onChange={value => {
                                                 if (parseInt(value) > 0) {
-                                                  //Dispatch Action to Add Cart Items in Reducer State cartitems
+                                                  // Dispatch Action to Add Cart Items in Reducer State cartitems
                                                   this.props.addCartItem({
                                                     product: item.id,
                                                     quantity: value,
                                                   });
                                                 } else {
-                                                  //Dispatch Action to Remove Cart Items in Reducer State cartitems
+                                                  // Dispatch Action to Remove Cart Items in Reducer State cartitems
                                                   this.props.removeCartItem({
                                                     product: item.id,
                                                   });
@@ -514,7 +533,7 @@ export class OutletInfo extends React.Component {
                                         <Button
                                           appearance="primary"
                                           onClick={() => {
-                                            //Dispatch Action to Add Cart Items in Reducer State cartitems
+                                            // Dispatch Action to Add Cart Items in Reducer State cartitems
                                             this.props.addCartItem({
                                               product: item.id,
                                               quantity: 1,
@@ -570,7 +589,7 @@ export class OutletInfo extends React.Component {
                                       // display: 'none',
                                     }}
                                     onClick={() => {
-                                      //Redirect to cart page if cart is not empty
+                                      // Redirect to cart page if cart is not empty
                                       const {
                                         outlet,
                                         cartItems,
