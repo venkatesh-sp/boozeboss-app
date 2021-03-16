@@ -34,6 +34,7 @@ import {
   makeSelectOutletInfo,
   makeSelectCartItems,
   makeSelectCurrentOutlet,
+  makeSelectError,
 } from './selectors';
 import { makeSelectScope } from '../App/selectors';
 import reducer from './reducer';
@@ -164,7 +165,44 @@ export class OutletInfo extends React.Component {
   };
 
   render() {
-    const { outlet, cartItems, scope } = this.props;
+    const { outlet, cartItems, scope, error } = this.props;
+    if (error === 'inactive') {
+      return (
+        <>
+          <div>
+            <p
+              style={{
+                fontSize: '18px',
+                color: '#000',
+                textAlign: 'center',
+                marginTop: '10px',
+              }}
+            >
+              Menu is inactive. Please contact restaurant manager
+            </p>
+          </div>
+        </>
+      );
+    }
+    if (error === 'invalid') {
+      return (
+        <>
+          <div>
+            <p
+              style={{
+                fontSize: '18px',
+                color: '#000',
+                textAlign: 'center',
+                marginTop: '10px',
+              }}
+            >
+              Invalid Id
+            </p>
+          </div>
+        </>
+      );
+    }
+
     if (!outlet) {
       return <>Loading...</>;
     }
@@ -654,6 +692,7 @@ const mapStateToProps = createStructuredSelector({
   cartItems: makeSelectCartItems(),
   currentoutlet: makeSelectCurrentOutlet(),
   scope: makeSelectScope(),
+  error: makeSelectError(),
 });
 
 function mapDispatchToProps(dispatch) {
