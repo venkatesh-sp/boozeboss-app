@@ -19,6 +19,9 @@ import 'sanitize.css/sanitize.css';
 
 // Import root app
 import App from 'containers/App';
+// Import Sentry
+import * as Sentry from '@sentry/react';
+import { Integrations } from '@sentry/tracing';
 
 // Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';
@@ -45,13 +48,25 @@ openSansObserver.load().then(() => {
 const initialState = {};
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
-
+Sentry.init({
+  // dsn: process.env.SENTRY_CLIENT_ID,
+  dsn:
+    'https://4a3b40d0b2274865a78771ddd244a319@o549625.ingest.sentry.io/5679274',
+  integrations: [new Integrations.BrowserTracing()],
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+});
+// console.log(process.env.SENTRY_ID, 'process.env.SENTRY_DSN');
 const render = messages => {
   ReactDOM.render(
     <Provider store={store}>
       <LanguageProvider messages={messages}>
         <ConnectedRouter history={history}>
-          <App />
+          <Sentry.ErrorBoundary fallback="An error has occurred">
+            <App />
+          </Sentry.ErrorBoundary>
         </ConnectedRouter>
       </LanguageProvider>
     </Provider>,
