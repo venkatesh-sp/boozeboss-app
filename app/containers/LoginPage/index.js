@@ -19,14 +19,11 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 
-
-
-import {LoginForm} from './components';
+import { LoginForm } from './components';
 import { login, facebookAuth } from './actions';
 
 /* eslint-disable react/prefer-stateless-function */
 export class LoginPage extends React.Component {
-
   render() {
     return (
       <div>
@@ -34,9 +31,7 @@ export class LoginPage extends React.Component {
           <title>Login Signup</title>
           <meta name="description" content="Signup for clients" />
         </Helmet>
-        <LoginForm 
-          {...this.props}
-        />
+        <LoginForm {...this.props} />
       </div>
     );
   }
@@ -54,8 +49,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    login: (auth) => dispatch(login(auth)),
-    facebookAuth: (auth) => dispatch(facebookAuth(auth)),
+    login: auth => dispatch(login(auth)),
+    facebookAuth: auth => dispatch(facebookAuth(auth)),
   };
 }
 
