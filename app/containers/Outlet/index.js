@@ -214,6 +214,7 @@ export class OutletInfo extends React.Component {
       cover_image,
       location,
       phone_number,
+      logo_img,
     } = outlet;
 
     const {
@@ -278,11 +279,46 @@ export class OutletInfo extends React.Component {
 
         <div style={{ height: '200px', backgroundColor: '#030303' }}>
           {cover_image ? (
-            <img
-              alt={name}
-              style={{ maxWidth: '100%', minHeight: '250px', width: '100%' }}
-              src={cover_image}
-            />
+            <>
+              <img
+                alt={name}
+                style={{
+                  maxWidth: '100%',
+                  minHeight: '250px',
+                  width: '100%',
+                  opacity: '0.7',
+                }}
+                src={cover_image}
+              />
+              <img
+                alt={name}
+                style={{
+                  height: '100px',
+                  width: '100px',
+                  top: 125,
+                  left: 25,
+                  zIndex: 999,
+                  position: 'absolute',
+                  borderRadius: '50%',
+                  padding: 3,
+                  background: '#fff',
+                }}
+                src={logo_img}
+              />
+              <StyledHeading
+                style={{
+                  height: '100px',
+                  width: '100px',
+                  top: 150,
+                  left: 150,
+                  zIndex: 999,
+                  position: 'absolute',
+                  borderRadius: '50%',
+                }}
+              >
+                {name}
+              </StyledHeading>
+            </>
           ) : (
             <NoImage style={{ width: '75%' }} />
           )}
@@ -362,17 +398,17 @@ export class OutletInfo extends React.Component {
                                 item === product_category
                                   ? {
                                       backgroundColor: '#3498ff',
-                                    color: '#fff',
+                                      color: '#fff',
                                       width: '100%',
                                       fontWeight: 'bold',
-                                    margin: '2px',
+                                      margin: '2px',
                                       marginTop: '10px',
-                                  }
+                                    }
                                   : {
                                       width: '100%',
-                                    fontWeight: 'bold',
+                                      fontWeight: 'bold',
                                       margin: '2px',
-                                    marginTop: '10px',
+                                      marginTop: '10px',
                                     }
                               }
                               appearance="default"
