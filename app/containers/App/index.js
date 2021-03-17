@@ -9,7 +9,9 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
+import { createStructuredSelector } from 'reselect';
 
 import HomePage from 'containers/HomePage/Loadable';
 import VerificationContainer from 'containers/VerificationContainer/Loadable';
@@ -37,7 +39,6 @@ import Header from 'components/Header';
 import Footer from 'components/Footer';
 import PrivateRoute from 'components/PrivateRoute';
 import GuardedRoute from 'components/GuardedRoute';
-
 import PWAPrompt from 'react-ios-pwa-prompt';
 
 import { compose } from 'redux';
@@ -48,6 +49,7 @@ import Otp from 'containers/OtpPage';
 import Cart from 'containers/Cart';
 import OrdersSummary from 'containers/OrdersSummary';
 import AcceptOrders from 'containers/AcceptOrders';
+import { makeSelectUser } from './selectors';
 import OutletInfo from '../Outlet';
 import OrderInfo from '../OrderInfo';
 import OrderPayments from '../OrderPayments';
@@ -71,6 +73,16 @@ class App extends React.Component {
     /* window.FB.getLoginStatus(function(response) {
        console.log(response);
     }); */
+  };
+
+  componentDidMount = () => {
+    console.log(this.props, 'APP PROPS');
+    if (this.props.user) {
+      const userId = this.props.user.id || null;
+      window.hj('identify', userId, {
+        emai: this.props.user.email,
+      });
+    }
   };
 
   render() {
@@ -257,6 +269,15 @@ class App extends React.Component {
   }
 }
 
+const mapStateToProps = createStructuredSelector({
+  user: makeSelectUser(),
+});
+
+const withConnect = connect(mapStateToProps);
+
 const withSaga = injectSaga({ key: 'app', saga });
 
-export default compose(withSaga)(App);
+export default compose(
+  withSaga,
+  withConnect,
+)(App);
