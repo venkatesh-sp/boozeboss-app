@@ -76,13 +76,10 @@ class App extends React.Component {
   };
 
   componentDidMount = () => {
-    console.log(this.props, 'APP PROPS');
-    if (this.props.user) {
-      const userId = this.props.user.id || null;
-      window.hj('identify', userId, {
-        emai: this.props.user.email,
-      });
-    }
+    const userId = this.props.user?.id || null;
+    window.hj('identify', userId, {
+      email: this.props.user?.email,
+    });
   };
 
   render() {
