@@ -49,9 +49,7 @@ const initialState = {};
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 Sentry.init({
-  // dsn: process.env.SENTRY_CLIENT_ID,
-  dsn:
-    'https://4a3b40d0b2274865a78771ddd244a319@o549625.ingest.sentry.io/5679274',
+  dsn: process.env.SENTRY_DSN,
   integrations: [new Integrations.BrowserTracing()],
   // Set tracesSampleRate to 1.0 to capture 100%
   // of transactions for performance monitoring.
