@@ -120,6 +120,7 @@ module.exports = options => ({
       API_HOST: process.env.API_HOST,
       API_PORT: process.env.API_PORT,
       PAYPAL_CLIENT_ID: process.env.PAYPAL_CLIENT_ID,
+      SENTRY_DSN: process.env.SENTRY_DSN,
       PACKAGE_VERSION: JSON.stringify(process.env.npm_package_version),
     }),
   ]),
