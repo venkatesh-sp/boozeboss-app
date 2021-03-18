@@ -166,7 +166,11 @@ export class OutletInfo extends React.Component {
 
   render() {
     const { outlet, cartItems, scope, error } = this.props;
-    if (error === 'inactive') {
+    console.log(outlet);
+    if (!outlet) {
+      return <div>Loading...</div>;
+    }
+    if (!outlet.is_venue_active) {
       return (
         <>
           <div>
@@ -286,7 +290,6 @@ export class OutletInfo extends React.Component {
                   maxWidth: '100%',
                   minHeight: '250px',
                   width: '100%',
-                  opacity: '0.7',
                 }}
                 src={cover_image}
               />
@@ -305,19 +308,29 @@ export class OutletInfo extends React.Component {
                 }}
                 src={logo_img}
               />
-              <StyledHeading
+              <div
                 style={{
-                  height: '100px',
-                  width: '100px',
-                  top: 150,
-                  left: 150,
-                  zIndex: 999,
-                  position: 'absolute',
-                  borderRadius: '50%',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
                 }}
               >
-                {name}
-              </StyledHeading>
+                <StyledHeading
+                  style={{
+                    height: 'auto',
+                    width: '200px',
+                    top: 150,
+                    left: 150,
+                    zIndex: 999,
+                    position: 'absolute',
+                    backdropFilter: 'brightness(20%)',
+                    overflow: 'inherit',
+                    textOverflow: 'inherit',
+                  }}
+                >
+                  {name}
+                </StyledHeading>
+              </div>
             </>
           ) : (
             <NoImage style={{ width: '75%' }} />
@@ -490,6 +503,7 @@ export class OutletInfo extends React.Component {
                               width: '100%',
                               borderRadius: '0px',
                               zIndex: '0',
+                              marginTop: '10px',
                             }}
                             onClick={() =>
                               this.handleFilter({
@@ -592,9 +606,9 @@ export class OutletInfo extends React.Component {
                                               quantity: 1,
                                             });
                                           }}
-                                          // style={{
-                                          //   display: 'none',
-                                          // }}
+                                          style={{
+                                            display: 'none',
+                                          }}
                                         >
                                           + Add
                                         </Button>
@@ -639,7 +653,7 @@ export class OutletInfo extends React.Component {
                                       width: '100%',
                                       borderRadius: '0px',
                                       zIndex: '0',
-                                      // display: 'none',
+                                      display: 'none',
                                     }}
                                     onClick={() => {
                                       // Redirect to cart page if cart is not empty
