@@ -166,7 +166,11 @@ export class OutletInfo extends React.Component {
 
   render() {
     const { outlet, cartItems, scope, error } = this.props;
-    if (error === 'inactive') {
+    console.log(outlet);
+    if (!outlet) {
+      return <div>Loading...</div>;
+    }
+    if (!outlet.is_venue_active) {
       return (
         <>
           <div>
@@ -649,7 +653,7 @@ export class OutletInfo extends React.Component {
                                       width: '100%',
                                       borderRadius: '0px',
                                       zIndex: '0',
-                                      // display: 'none',
+                                      display: 'none',
                                     }}
                                     onClick={() => {
                                       // Redirect to cart page if cart is not empty
