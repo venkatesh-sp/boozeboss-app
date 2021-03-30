@@ -16,6 +16,7 @@ import {
   makeSelectRole,
   makeSelectUser,
 } from '../../containers/App/selectors';
+import Logo from '../../images/Logo.svg';
 
 const MobileHeaderContainer = styled.div`
   display: flex;
@@ -125,7 +126,7 @@ class Header extends Component {
         </HeaderSection>
         <HeaderSection justify="flex-end">
           <Link to="/">
-            <StyledImage src={require('images/tomatiapp.png')} />
+            <StyledImage src={Logo} />
           </Link>
         </HeaderSection>
         {user && user.wallet ? (
@@ -154,7 +155,7 @@ class Header extends Component {
         >
           <Drawer.Header>
             <Drawer.Title>
-              <StyledDrawerLogo src={require('images/tomatiapp.png')} />
+              <StyledDrawerLogo src={Logo} />
             </Drawer.Title>
           </Drawer.Header>
           <Drawer.Body>
